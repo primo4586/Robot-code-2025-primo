@@ -1,12 +1,12 @@
 # Robot-code-2025-primo
 
-hello dear members. for sum of you this is going to be you're first code in first.
+hello dear members. for some of you this is going to be you're first code in first.
 to save me and you some time here is a part docs about...
 
 # how to write a good and orgenize code docs.
 remember that you can always check the codes before, and the the PowerPoint presentation.
-# structure  
-TakeFeedSubsystem is just an example, this need to be adjusted to you're code.  
+(TakeFeedSubsystem is just an example, this need to be adjusted to you're code.)
+# Structure    
   1. class variable fields
 ![image](https://github.com/user-attachments/assets/f1cc25c7-ef6a-4d9f-84fd-1953aab39079)
   2. singelton

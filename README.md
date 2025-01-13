@@ -59,14 +59,14 @@ there is one TalonFX
 -tossCommand- straightforward
 
 # Elevator - shay
-there is two TalonFX, one needs to follow the other there is a func for that.
+there is two TalonFX, one needs to follow the other there is a func for that, and a digital switch
 
 *control system* - figure it out https://v6.docs.ctr-electronics.com/en/2024/docs/api-reference/device-specific/talonfx/basic-pid-control.html + the next page 
 
  the command are as following.
 -setHome- reset the incoders
 
--homeCommand- straightforward
+-homeCommand- use a switch add activate setHome()
 
 -relocateCommand- takes a given position and moves to that position
 

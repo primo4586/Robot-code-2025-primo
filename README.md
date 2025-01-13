@@ -27,8 +27,36 @@ remember that you can always check the codes before, and the the PowerPoint pres
 # SOLID 
   this part is a suggestion, i do think for you to understand why the code is like it is you must understand this. 
   https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design
-חו
 
+#Canon - uri
+The canon is base on one TalonFX and one Digital switch. 
+*control System* - a normal set func and a position control to adjust the positon of the coral relativ to the canon.
+what you'll need to figure out is... "do i need to use a profile? and if i do which one"
+https://v6.docs.ctr-electronics.com/en/2024/docs/api-reference/device-specific/talonfx/basic-pid-control.html + the next page 
+the command are as following.
+-collectUntilCoralCommand- straightforward
+-collectWhilePressdCommand- straightforward
+-adjustCoralCommand- adjust the positon of the coral relativ to the canon using a position control methood.
+-lossenCoralCommand- straightforward
+
+#Gripper - noga
+there is one TalonFX 
+*control system* - a normal set() func
+ the command are as following.
+-collectWhilePressCommand- straightforward
+-lossenGripCommand- straightforward
+-tossCommand- straightforward
+
+#Elevator - shay 
+there is two TalonFX, one needs to follow the other there is a func for that.
+*control system* - figure it out https://v6.docs.ctr-electronics.com/en/2024/docs/api-reference/device-specific/talonfx/basic-pid-control.html + the next page 
+ the command are as following.
+-setHome- reset the incoders
+-homeCommand-
+-relocateCommand- takes a given position and moves to that position
+
+#Climb - ziv
+![to be continued](https://github.com/user-attachments/assets/7db5fb63-70b3-4646-9a80-58158f3e28ee)
 
 
 

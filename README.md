@@ -60,6 +60,7 @@ there is one TalonFX
 
 # Elevator - shay
 there is two TalonFX, one needs to follow the other there is a func for that.
+
 *control system* - figure it out https://v6.docs.ctr-electronics.com/en/2024/docs/api-reference/device-specific/talonfx/basic-pid-control.html + the next page 
 
  the command are as following.

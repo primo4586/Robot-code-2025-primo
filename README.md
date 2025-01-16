@@ -31,9 +31,7 @@ remember that you can always check the codes before, and the the PowerPoint pres
 # Canon - uri
 The canon is base on one TalonFX and one Digital switch.
  
-*control System* - a normal set func and a position control to adjust the positon of the coral relativ to the canon.
-what you'll need to figure out is... "do i need to use a profile? and if i do which one"
-https://v6.docs.ctr-electronics.com/en/2024/docs/api-reference/device-specific/talonfx/basic-pid-control.html + the next page 
+*control System* - a normal set func
 
 The command are as following.
 
@@ -41,7 +39,7 @@ The command are as following.
 
 -collectWhilePressdCommand- straightforward
 
--adjustCoralCommand- adjust the positon of the coral relativ to the canon using a position control methood.
+-adjustCoralCommand- go slowly till the digital switch shows false.
 
 -lossenCoralCommand- straightforward
 

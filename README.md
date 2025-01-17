@@ -17,7 +17,9 @@ remember that you can always check the codes before, and the the PowerPoint pres
   command docs - https://docs.wpilib.org/he/stable/docs/software/commandbased/commands.html
   i will add for each subsystem wich control system and profile (motion magic) you'll need to use. 
 ![image](https://github.com/user-attachments/assets/842af8af-1284-487f-85de-1c9b4be87084)
-  5. configs - at the moment just write at the end of the code a void func name config. 
+  5. configs - now think what you need and what you dont need. 
+![image](https://github.com/user-attachments/assets/52a50d33-4f08-4a90-b133-cc5fd1484116)
+
   6. constance - this need to be written in constance.java and creat a class in there for you're subsystem.
 ![image](https://github.com/user-attachments/assets/5f019f1a-9da0-48de-9990-91d03c8ea541)
 
@@ -64,11 +66,26 @@ there is two TalonFX, one needs to follow the other there is a func for that, an
  the command are as following.
 -setHome- reset the incoders
 
--homeCommand- use a switch add activate setHome()
+-homeCommand- use a switch and activate setHome()
 
 -relocateCommand- takes a given position and moves to that position
 
-# Climb - ziv
+# Gripper Arm - Ziv
+one TalonFx and one digital switch.
+
+*control system* - you need to control the position. figure it out 
+https://v6.docs.ctr-electronics.com/en/2024/docs/api-reference/device-specific/talonfx/basic-pid-control.html + the next page 
+
+the command are as following.
+-setHome- reset the incoders
+
+-homeCommand- use a switch and activate setHome()
+
+-relocateCommand- takes a given position and moves to that position
+
+maybe i'll add more in the near future  
+
+# Climb - 
 ![to be continued](https://github.com/user-attachments/assets/7db5fb63-70b3-4646-9a80-58158f3e28ee)
 
 

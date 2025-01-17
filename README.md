@@ -69,7 +69,7 @@ there is two TalonFX, one needs to follow the other there is a func for that, an
 
 -homeCommand- use a switch and activate resetPostion()
 
--relocateCommand- takes a given position and moves to that position
+-relocatePositionCommand- takes a given position and moves to that position
 
 # Gripper Arm - Ziv
 one TalonFx and one digital switch.
@@ -83,7 +83,7 @@ the command are as following.
 
 -homeCommand- use a switch and activate resetPostion()
 
--relocateCommand- takes a given position and moves to that position
+-relocateAngelCommand- takes a given position and moves to that position
 
 maybe i'll add more in the near future  
 

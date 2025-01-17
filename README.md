@@ -64,9 +64,10 @@ there is two TalonFX, one needs to follow the other there is a func for that, an
 *control system* - figure it out https://v6.docs.ctr-electronics.com/en/2024/docs/api-reference/device-specific/talonfx/basic-pid-control.html + the next page 
 
  the command are as following.
--setHome- reset the incoders
 
--homeCommand- use a switch and activate setHome()
+-resetPosition- reset the incoders
+
+-homeCommand- use a switch and activate resetPostion()
 
 -relocateCommand- takes a given position and moves to that position
 
@@ -77,9 +78,10 @@ one TalonFx and one digital switch.
 https://v6.docs.ctr-electronics.com/en/2024/docs/api-reference/device-specific/talonfx/basic-pid-control.html + the next page 
 
 the command are as following.
--setHome- reset the incoders
 
--homeCommand- use a switch and activate setHome()
+-resetPosition- reset the incoders
+
+-homeCommand- use a switch and activate resetPostion()
 
 -relocateCommand- takes a given position and moves to that position
 

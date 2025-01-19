@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -61,7 +62,7 @@ public class GripperSubsystem extends SubsystemBase {
   }
 
 
-  private static void configs(){
+  private void configs(){
      TalonFXConfiguration configuration = new TalonFXConfiguration();
    
     //Peaks:
@@ -72,6 +73,16 @@ public class GripperSubsystem extends SubsystemBase {
     //settings
     configuration.MotorOutput.NeutralMode = GripperConstants.NEUTRAL_MODE;
     configuration.MotorOutput.Inverted = GripperConstants.INVERTED;
+
+    //upload configs motor
+    StatusCode statusCode = StatusCode.StatusCodeNotInitialized;
+    for (int i = 0; i < 5; i++){
+      statusCode = m_motor.getConfigurator().apply(configuration);
+      if(statusCode.isOK())
+      break;
+    }
+    if (!statusCode.isOK())
+    System.out.println("Gripper could not apply config, error code:" + statusCode.toString());
   }
 
 }

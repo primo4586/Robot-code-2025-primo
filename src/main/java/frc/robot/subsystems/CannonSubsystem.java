@@ -40,7 +40,7 @@ public class CannonSubsystem extends SubsystemBase {
 
 
   private CannonSubsystem(){
-    m_motor = new TalonFX(CannonConstants.MOTOR_ID, RobotConstants.Canivore);
+    m_motor = new TalonFX(CannonConstants.MOTOR_ID, RobotConstants.CANIVORE_NAME);
     m_sensor = new DigitalInput(CannonConstants.SENSOR_ID);
     configs();
   }

@@ -36,7 +36,7 @@ public class Constants {
 
 
     public class RobotConstants{
-        public static final String Canivore = "canBus";
+        public static final String CANIVORE_NAME = "canBus";
     }
 }
 

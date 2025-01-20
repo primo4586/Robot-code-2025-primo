@@ -63,7 +63,7 @@ public class CannonSubsystem extends SubsystemBase {
 
 
   /**
-   * sets the speed and stops when the sensor is false
+   * moves the coral to the edge of the cannon
    */
   public Command adjustCoralCommand(){
     return startEnd(() -> m_motor.set(CannonConstants.ADJUST_SPEED),() -> m_motor.stopMotor()).until(() -> !m_sensor.get());
@@ -71,7 +71,7 @@ public class CannonSubsystem extends SubsystemBase {
 
 
   /**
-   * sets the speed for a short time
+   * releases the coral
    */
   public Command loosenCoralCommand(){
     return startEnd(() -> m_motor.set(CannonConstants.MOTOR_SPEED),() -> m_motor.stopMotor()).withTimeout(CannonConstants.LOOSEN_TIME);
@@ -82,19 +82,10 @@ public class CannonSubsystem extends SubsystemBase {
     TalonFXConfiguration configuration = new TalonFXConfiguration();
    
     //Peaks:
-    configuration.CurrentLimits.SupplyCurrentLimitEnable = true;
-    configuration.CurrentLimits.SupplyCurrentLimit = CannonConstants.PEAK_CURRENT;
-
-
-    // forward and backward limits
-    configuration.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-    configuration.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-    configuration.SoftwareLimitSwitch.ForwardSoftLimitThreshold = CannonConstants.FORWARD_LIMIT;
-    configuration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = CannonConstants.REVERSE_LIMIT;
-
+    configuration.Voltage.PeakForwardVoltage = CannonConstants.PEAK_FORWARD_VOLTAGE;
+    configuration.Voltage.PeakReverseVoltage = CannonConstants.PEAK_REVERSE_VOLTAGE;
 
     //settings
-    configuration.Feedback.SensorToMechanismRatio = CannonConstants.TICKS_PER_DEGREE;
     configuration.MotorOutput.NeutralMode = CannonConstants.NEUTRAL_MODE;
     configuration.MotorOutput.Inverted = CannonConstants.INVERTED;
   }

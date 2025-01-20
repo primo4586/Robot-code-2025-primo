@@ -21,11 +21,9 @@ public class Constants {
 
 
         //configs
-        public static final double PEAK_CURRENT = 0;
-        public static final double FORWARD_LIMIT = 0;
-        public static final double REVERSE_LIMIT = 0;
+        public static final double PEAK_FORWARD_VOLTAGE = 0;
+        public static final double PEAK_REVERSE_VOLTAGE = 0;
        
-        public static final double TICKS_PER_DEGREE = 0;
         public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
         public static final InvertedValue INVERTED = InvertedValue.Clockwise_Positive;
 

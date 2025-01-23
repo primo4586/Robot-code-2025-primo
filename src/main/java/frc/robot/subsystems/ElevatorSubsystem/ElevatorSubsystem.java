@@ -3,17 +3,21 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems.ElevatorSubsystem;
-import frc.robot.subsystems.ElevatorSubsystem.ElevatorConstants;
+import com.ctre.phoenix6.hardware.TalonFX;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.Elevator.*;
 
 
-public class ElevatorSubsystem extends SubsystemBase implements ElevatorConstants {
-  private TalonFX m_primaryTalonFX;
+
+public class ElevatorSubsystem extends SubsystemBase {
+  private TalonFX m_masterTalonFX;
   private TalonFX m_followTalonFX;
   private DigitalInput digitalSwitch;
   private static ElevatorSubsystem instance;
@@ -31,11 +35,14 @@ public class ElevatorSubsystem extends SubsystemBase implements ElevatorConstant
 
   private ElevatorSubsystem()
    {
-    configs();
+    //configs();
     //initing:
-    m_primaryTalonFX = new TalonFX(PRIMARY_TALONFX_ID, CAN_BUS_NAME);
-    m_primaryTalonFX = new TalonFX(FOLLOW_TALONFX_ID, CAN_BUS_NAME);
-    digitalSwitch = new DigitalInput(DIGITAL_SWITCH_ID);
+    m_masterTalonFX = new TalonFX(Constants.Elevator.PRIMARY_TALONFX_ID, Constants.Elevator.CAN_BUS_NAME);
+    m_followTalonFX = new TalonFX(Constants.Elevator.FOLLOW_TALONFX_ID, Constants.Elevator.CAN_BUS_NAME);
+    digitalSwitch = new DigitalInput(Constants.Elevator.DIGITAL_SWITCH_ID);
+
+    m_followTalonFX.follow(m_masterTalonFX);  
+
   }
 
   
@@ -43,7 +50,7 @@ public class ElevatorSubsystem extends SubsystemBase implements ElevatorConstant
   //reseting pos
   public Command resetPosition(){
     return run(()-> {
-    m_primaryTalonFX.setPosition(0);
+      m_masterTalonFX.setPosition(0);
     m_followTalonFX.setPosition(0);
   });
   }
@@ -53,7 +60,7 @@ public class ElevatorSubsystem extends SubsystemBase implements ElevatorConstant
   public Command hCommand(double targetPos){
     return run(()-> {
       if(digitalSwitch.get()){ //if difital switch is being pressed
-        m_primaryTalonFX.setPosition(0);  
+        m_masterTalonFX.setPosition(0);  
 
         //TODO: add follow and then u dont need this shit because it follows
         m_followTalonFX.setPosition(targetPos); 
@@ -68,6 +75,6 @@ public class ElevatorSubsystem extends SubsystemBase implements ElevatorConstant
     // This method will be called once per scheduler run
   }
   private void configs(){
-
+    
   }
 }

@@ -125,7 +125,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     g - gravity - output to overcome gravity
    */
 
-    configuration.Slot0.kP = Constants.Elevator.kp;
+    configuration.Slot0.kP = Constants.Elevator.kP;
     configuration.Slot0.kI = Constants.Elevator.kI;
     configuration.Slot0.kD = Constants.Elevator.kD;
     configuration.Slot0.kS = Constants.Elevator.kS;

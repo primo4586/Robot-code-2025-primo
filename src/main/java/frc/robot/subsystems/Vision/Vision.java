@@ -22,9 +22,7 @@
  * SOFTWARE.
  */
 
- package frc.robot;
-
- import static frc.robot.Constants.VisionConstants.*;
+ package frc.robot.subsystems.Vision;
  
  import edu.wpi.first.math.Matrix;
  import edu.wpi.first.math.VecBuilder;
@@ -34,7 +32,9 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
  import edu.wpi.first.math.numbers.N3;
  import edu.wpi.first.wpilibj.smartdashboard.Field2d;
- import java.util.List;
+import frc.robot.Robot;
+
+import java.util.List;
  import java.util.Optional;
  import org.photonvision.EstimatedRobotPose;
  import org.photonvision.PhotonCamera;
@@ -44,6 +44,7 @@ import edu.wpi.first.math.numbers.N1;
  import org.photonvision.simulation.SimCameraProperties;
  import org.photonvision.simulation.VisionSystemSim;
  import org.photonvision.targeting.PhotonTrackedTarget;
+ import static frc.robot.subsystems.Vision.VisionConstants.*;
  
  public class Vision {
      private final PhotonCamera camera;
@@ -54,8 +55,9 @@ import edu.wpi.first.math.numbers.N1;
      private PhotonCameraSim cameraSim;
      private VisionSystemSim visionSim;
 
-     private static Vision _camera1;
-     private static Vision _camera2;
+     private static Vision _rightCamera;
+     private static Vision _leftCamera;
+     private static Vision _frontCamera;
  
      /**
       * Returns the first camera's Vision instance.
@@ -64,11 +66,11 @@ import edu.wpi.first.math.numbers.N1;
       *
       * @return the first camera's Vision instance
       */
-     public static Vision getCamera1() {
-         if (_camera1 == null) {
-             _camera1 = new Vision(RIGHT_CAMERA_NAME, RIGHT_CAMERA_TO_ROBOT);
+     public static Vision getRightCamera() {
+         if (_rightCamera == null) {
+             _rightCamera = new Vision(RIGHT_CAMERA_NAME, RIGHT_CAMERA_TO_ROBOT);
          }
-         return _camera1;
+         return _rightCamera;
      }
  
 
@@ -79,21 +81,36 @@ import edu.wpi.first.math.numbers.N1;
       *
       * @return the second camera's Vision instance
       */
-     public static Vision getCamera2() {
-         if (_camera2 == null) {
-             _camera2 = new Vision(LEFT_CAMERA_NAME, LEFT_CAMERA_TO_ROBOT);
+     public static Vision getLeftCamera() {
+         if (_leftCamera == null) {
+             _leftCamera = new Vision(LEFT_CAMERA_NAME, LEFT_CAMERA_TO_ROBOT);
          }
-         return _camera2;
+         return _leftCamera;
      }
+
+     /**
+      * Returns the second camera's Vision instance.
+      *
+      * This is a singleton instance, so the same instance is returned every time.
+      *
+      * @return the second camera's Vision instance
+      */
+      public static Vision getFrontCamera() {
+        if (_frontCamera == null) {
+            _frontCamera = new Vision(LEFT_CAMERA_NAME, LEFT_CAMERA_TO_ROBOT);
+        }
+        return _frontCamera;
+    }
  
-     private Vision(String kCameraName,Transform3d kRobotToCam) {
+    private Vision(String kCameraName,Transform3d kRobotToCam) {
          camera = new PhotonCamera(kCameraName);
  
          photonEstimator =
                  new PhotonPoseEstimator(kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, kRobotToCam);
          photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
  
-         // ----- Simulation
+         // ----- Simulation 
+         //^this is uslles for us
          if (Robot.isSimulation()) {
              // Create the vision system simulation which handles cameras and targets on the field.
              visionSim = new VisionSystemSim("main");

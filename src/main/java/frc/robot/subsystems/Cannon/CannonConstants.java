@@ -1,21 +1,10 @@
-package frc.robot;
-
-
-import java.util.Dictionary;
-
+package frc.robot.subsystems.Cannon;
 
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-
-public class Constants {
-   
-
-
-
-
-    public class CannonConstants{ // TODO: find values
-        //id
+public class CannonConstants {
+    //id
         public static final int MOTOR_ID = 0;
         public static final int SENSOR_ID = 0;
 
@@ -32,12 +21,4 @@ public class Constants {
         public static final double MOTOR_SPEED = 0;
         public static final double ADJUST_SPEED = 0;
         public static final double LOOSEN_TIME = 0.3;
-    }
-
-
-    public class RobotConstants{
-        public static final String CANIVORE_NAME = "canBus";
-    }
 }
-
-

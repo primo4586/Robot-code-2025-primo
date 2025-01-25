@@ -5,13 +5,20 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Vision.Vision;
+import frc.robot.PrimoLib.Elastic;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+
+  private String m_autoSelectedReef;
+  
+  private String m_autoSelectedLevel;
   private final RobotContainer m_robotContainer;
   private final Vision _frontCamera = Vision.getFrontCamera();
   private final Vision _leftCamera = Vision.getLeftCamera();
@@ -21,6 +28,7 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    Elastic.autoSelector();
   }
 
   @Override
@@ -84,14 +92,26 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    //see which auto was selected
+
+    // m_autoSelectedLevel = m_chooserReef.getSelected();
+    // System.out.println("Level selected: " + m_autoSelectedLevel);
+
+    // m_autoSelectedReef = m_chooserReef.getSelected();
+    // System.out.println("Reef selected: " + m_autoSelectedReef);
+
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+    
+  }
 
   @Override
   public void autonomousExit() {}

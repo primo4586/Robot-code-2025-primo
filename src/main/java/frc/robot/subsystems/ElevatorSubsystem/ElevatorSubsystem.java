@@ -21,6 +21,8 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.signals.ControlModeValue;
 
 import com.ctre.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
@@ -28,6 +30,9 @@ import frc.robot.Constants.Elevator;
 
 import java.lang.module.Configuration;
 import java.time.Duration;
+
+import org.ejml.dense.block.MatrixOps_DDRB;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 
@@ -54,9 +59,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
 
-  private ElevatorSubsystem()
+    private ElevatorSubsystem()
    {
-    //configs();
     //initing:
     m_masterTalonFX = new TalonFX(Elevator.MASTER_TALONFX_ID);
     m_followTalonFX = new TalonFX(Elevator.FOLLOW_TALONFX_ID);
@@ -65,29 +69,38 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_followTalonFX.setInverted(false);
     m_masterTalonFX.setInverted(false);
     resetPosition();
-    
+    configs();
 
   }
 
-  
 
   //reseting pos
   public Command resetPosition(){
     return run(()-> {
-      resetPosition();
+      m_masterTalonFX.setPosition(0);
+      m_followTalonFX.setPosition(0);
+
   });
   }
 
-
-  //hCommand - home command, takes target position and moves to that position
-     // Relocate to a given position using Motion Magic
-  public Command relocatePositionCommand(double targetPos) {
-    return run(() -> {
-          m_masterTalonFX.set(targetPos); 
-          m_followTalonFX.set(targetPos); 
-      });
+  
+  //hCommand -  home command, takes target position and moves to that position
+  public Command hCommand(double targetPos){
+    return run(()-> {
+      if(digitalSwitch.get()){ //if difital switch is being pressed
+        resetPosition();
+    }
+    });
   }
 
+  //relocate to a given position using Motion Magic
+  public Command relocatePositionCommand(double targetPos) {
+      return run(() -> {
+        // Follower mode, with the master TalonFX as the leader
+        m_masterTalonFX.set(targetPos);
+        m_followTalonFX.set(targetPos);
+      });
+  }
 
 
   @Override

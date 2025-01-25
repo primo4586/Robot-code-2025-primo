@@ -11,13 +11,10 @@ import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.sim.TalonFXSimState;
-import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.signals.ControlModeValue;
 
 import com.ctre.*;
@@ -76,7 +73,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   //reseting pos
   public Command resetPosition(){
-    return run(()-> {
+    return runOnce(()-> {
       m_masterTalonFX.setPosition(0);
       m_followTalonFX.setPosition(0);
 
@@ -86,7 +83,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   
   //hCommand -  home command, takes target position and moves to that position
   public Command hCommand(double targetPos){
-    return run(()-> {
+    return runOnce(()-> {
       if(digitalSwitch.get()){ //if difital switch is being pressed
         resetPosition();
     }
@@ -95,11 +92,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   //relocate to a given position using Motion Magic
   public Command relocatePositionCommand(double targetPos) {
-      return run(() -> {
-        // Follower mode, with the master TalonFX as the leader
-        m_masterTalonFX.set(targetPos);
-        m_followTalonFX.set(targetPos);
-      });
+      return runOnce(() -> {
+        PositionVoltage m_request = new PositionVoltage(targetPos).withSlot(0);
+        m_masterTalonFX.setControl(m_request); // Engage Motion Magic control mode
+        m_masterTalonFX.set(targetPos);  // Set the target position for the Motion Magic
+        m_followTalonFX.set(Constants.Elevator.MASTER_TALONFX_ID);    
+        });
   }
 
 
@@ -144,6 +142,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
     if(!statusCode.isOK())
       System.out.println("master motor cant apply config, error code: " + statusCode.toString());
+
+    for(int i = 0; i < 5; i++){
+      statusCode = m_followTalonFX.getConfigurator().apply(configuration);
+      if(statusCode.isOK())
+        break;
+    }
+    if(!statusCode.isOK())
+      System.out.println("follow motor cant apply config, error code: " + statusCode.toString());
+    
 
 
 

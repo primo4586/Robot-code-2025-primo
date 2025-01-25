@@ -75,6 +75,8 @@ public class CannonSubsystem extends SubsystemBase {
     //Peaks:
     configuration.Voltage.PeakForwardVoltage = PEAK_FORWARD_VOLTAGE;
     configuration.Voltage.PeakReverseVoltage = PEAK_REVERSE_VOLTAGE;
+    configuration.CurrentLimits.SupplyCurrentLimitEnable = true;
+    configuration.CurrentLimits.SupplyCurrentLimit = CURRENT_PEAK;
 
     //settings
     configuration.MotorOutput.NeutralMode = NEUTRAL_MODE;

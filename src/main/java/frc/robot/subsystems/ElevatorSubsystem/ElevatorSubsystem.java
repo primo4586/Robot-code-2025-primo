@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -36,6 +37,8 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.*;
 import frc.robot.Constants.Elevator.*;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.units.measure.Angle;
+
 import com.ctre.phoenix6.controls.*;
 
 
@@ -59,6 +62,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private ElevatorSubsystem()
    {
     //initing:
+    configs();
     m_masterTalonFX = new TalonFX(Elevator.MASTER_TALONFX_ID);
     m_followTalonFX = new TalonFX(Elevator.FOLLOW_TALONFX_ID);
     digitalSwitch = new DigitalInput(Elevator.DIGITAL_SWITCH_ID);
@@ -66,7 +70,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_followTalonFX.setInverted(false);
     m_masterTalonFX.setInverted(false);
     resetPosition();
-    configs();
+    
 
   }
 
@@ -81,14 +85,27 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   
-  //hCommand -  home command, takes target position and moves to that position
-  public Command hCommand(double targetPos){
-    return runOnce(()-> {
-      if(digitalSwitch.get()){ //if difital switch is being pressed
-        resetPosition();
-    }
-    });
-  }
+  
+  /**
+   * @param targetPos
+   *  takes target position and moves to that position
+   */
+  public Command homeCommand(double targetPos) {
+    return runEnd(
+        () -> {
+            if (digitalSwitch.get()) { //if the digital switch is pressed
+                resetPosition(); 
+            }
+        },
+        () -> {
+          //stop both motors
+            m_followTalonFX.stopMotor(); 
+            m_masterTalonFX.stopMotor();  
+        }
+    );
+}
+
+
 
   //relocate to a given position using Motion Magic
   public Command relocatePositionCommand(double targetPos) {
@@ -103,8 +120,19 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    double currentPosition = m_masterTalonFX.getPosition().getValueAsDouble();
+          
+    //TODO: put target pos
+      double targetPosition = 0;
+      if (Math.abs(currentPosition - targetPosition) < 10) {
+          System.out.println("Elevator is near target position!");
+      }
+  
+      if (Math.abs(currentPosition - targetPosition) < 10) {
+          System.out.println("reached target!");
+      }
   }
+  
   private void configs(){
     TalonFXConfiguration  configuration = new TalonFXConfiguration();
     MotionMagicConfigs mm = new MotionMagicConfigs();
@@ -141,7 +169,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         break;
     }
     if(!statusCode.isOK())
-      System.out.println("master motor cant apply config, error code: " + statusCode.toString());
+      System.out.println("master elevator motor cant apply config, error code: " + statusCode.toString());
 
     for(int i = 0; i < 5; i++){
       statusCode = m_followTalonFX.getConfigurator().apply(configuration);
@@ -149,7 +177,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         break;
     }
     if(!statusCode.isOK())
-      System.out.println("follow motor cant apply config, error code: " + statusCode.toString());
+      System.out.println("follow elevator motor cant apply config, error code: " + statusCode.toString());
     
 
 

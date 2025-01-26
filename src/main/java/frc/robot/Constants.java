@@ -21,6 +21,7 @@ public final class Constants {
         public static final int kA = 0;
         public static final int kG = 0;
 
+        //TODO: fix value
         public static final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
 
 

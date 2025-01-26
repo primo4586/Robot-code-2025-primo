@@ -116,7 +116,7 @@ public Command relocatePositionCommand(double targetPos) {
       () -> {
         m_followTalonFX.setControl(Elevator.m_request.withPosition(targetPos));
         m_masterTalonFX.setControl(Elevator.m_request.withPosition(targetPos));
-
+      
       },
       () -> {
           //stop both motors when the command ends
@@ -126,8 +126,6 @@ public Command relocatePositionCommand(double targetPos) {
   );
 }
 
-
-
   @Override
   public void periodic() {
     double currentPosition = m_masterTalonFX.getPosition().getValueAsDouble();
@@ -135,10 +133,11 @@ public Command relocatePositionCommand(double targetPos) {
     //TODO: put target pos
       double targetPosition = 0;
       if (Math.abs(currentPosition - targetPosition) < 10) {
+          relocatePositionCommand(targetPosition);
           System.out.println("Elevator is near target position!");
       }
   
-      if (Math.abs(currentPosition - targetPosition) < 10) {
+      if (Math.abs(currentPosition - targetPosition) < 1) {
           System.out.println("reached target!");
       }
   }

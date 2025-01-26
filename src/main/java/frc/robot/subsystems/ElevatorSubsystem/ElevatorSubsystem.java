@@ -62,7 +62,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private ElevatorSubsystem()
    {
     //initing:
-    configs();
+    
     m_masterTalonFX = new TalonFX(Elevator.MASTER_TALONFX_ID);
     m_followTalonFX = new TalonFX(Elevator.FOLLOW_TALONFX_ID);
     digitalSwitch = new DigitalInput(Elevator.DIGITAL_SWITCH_ID);
@@ -70,12 +70,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_followTalonFX.setInverted(false);
     m_masterTalonFX.setInverted(false);
     resetPosition();
-    
+  
 
   }
 
 
-  //reseting pos
+   /**
+   *  reseting position
+   */
   public Command resetPosition(){
     return runOnce(()-> {
       m_masterTalonFX.setPosition(0);
@@ -84,7 +86,6 @@ public class ElevatorSubsystem extends SubsystemBase {
   });
   }
 
-  
   
   /**
    * @param targetPos
@@ -98,24 +99,33 @@ public class ElevatorSubsystem extends SubsystemBase {
             }
         },
         () -> {
-          //stop both motors
+          //stop both motors at the end of the command
             m_followTalonFX.stopMotor(); 
             m_masterTalonFX.stopMotor();  
         }
     );
 }
 
+  /**
+   * @param targetPos
+   *  relocating position to new pos, stop motors at the end
+   */
+public Command relocatePositionCommand(double targetPos) {
+  return runEnd(
+    //using motion magic and with position to set new position
+      () -> {
+        m_followTalonFX.setControl(Elevator.m_request.withPosition(targetPos));
+        m_masterTalonFX.setControl(Elevator.m_request.withPosition(targetPos));
 
+      },
+      () -> {
+          //stop both motors when the command ends
+          m_followTalonFX.stopMotor();
+          m_masterTalonFX.stopMotor();
+      }
+  );
+}
 
-  //relocate to a given position using Motion Magic
-  public Command relocatePositionCommand(double targetPos) {
-      return runOnce(() -> {
-        PositionVoltage m_request = new PositionVoltage(targetPos).withSlot(0);
-        m_masterTalonFX.setControl(m_request); // Engage Motion Magic control mode
-        m_masterTalonFX.set(targetPos);  // Set the target position for the Motion Magic
-        m_followTalonFX.set(Constants.Elevator.MASTER_TALONFX_ID);    
-        });
-  }
 
 
   @Override

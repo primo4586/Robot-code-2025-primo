@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+
 public final class Constants {
     public static class Elevator{
         public static final int MASTER_TALONFX_ID = 0;
@@ -18,6 +20,8 @@ public final class Constants {
         public static final int kS = 0;
         public static final int kA = 0;
         public static final int kG = 0;
+
+        public static final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
 
 
 

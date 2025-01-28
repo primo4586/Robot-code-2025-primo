@@ -3,194 +3,101 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems.ElevatorSubsystem;
+
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.sim.TalonFXSimState;
-import com.ctre.phoenix6.signals.ControlModeValue;
+import static frc.robot.subsystems.ElevatorSubsystem.ElevatorConstanst.*;
 
-import com.ctre.*;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import frc.robot.Constants;
-import frc.robot.Constants.Elevator;
-
-import java.lang.module.Configuration;
-import java.time.Duration;
-
-import org.ejml.dense.block.MatrixOps_DDRB;
-
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-
-
-import com.ctre.phoenix6.controls.*;
-import frc.robot.Constants.Elevator.*;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.units.measure.Angle;
-
-import com.ctre.phoenix6.controls.*;
-
-
+import java.util.function.DoubleSupplier;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  private TalonFX m_masterTalonFX;
-  private TalonFX m_followTalonFX;
-  private DigitalInput digitalSwitch;
+  private TalonFX m_masterMotor; // falcon 500
+  private TalonFX m_followMotor; // falcon 500
+
+  private static MotionMagicVoltage _systemControl = new MotionMagicVoltage(0);
+
+  private static DoubleSupplier targetPosition = () -> 0.0;
+
   private static ElevatorSubsystem instance;
-  /** Creates a new ElevatorSubsystem. */
-
-
-  //instance:
-  public static ElevatorSubsystem getInstance(){
-    if (instance == null)
+  /**
+   * Gets the instance of ElevatorSubsystem. This is the only way to get an
+   * instance of the class, as the constructor is private.
+   *
+   * @return the instance of ElevatorSubsystem
+   */
+  public static ElevatorSubsystem getInstance() {
+    if (instance == null) {
       instance = new ElevatorSubsystem();
+    }
     return instance;
   }
-
-
-    private ElevatorSubsystem()
-   {
-    //initing:
-    
-    m_masterTalonFX = new TalonFX(Elevator.MASTER_TALONFX_ID);
-    m_followTalonFX = new TalonFX(Elevator.FOLLOW_TALONFX_ID);
-    digitalSwitch = new DigitalInput(Elevator.DIGITAL_SWITCH_ID);
-
-    m_followTalonFX.setInverted(false);
-    m_masterTalonFX.setInverted(false);
-    resetPosition();
-  
-
+  private ElevatorSubsystem() {
+    m_masterMotor = new TalonFX(MASTER_TALONFX_ID);
+    m_followMotor = new TalonFX(FOLLOW_TALONFX_ID);
+    configs();
   }
 
-
-   /**
-   *  reseting position
+  /**
+   * Reset the elevator to its default position at the ground.
+   *
+   * <p>This is useful for making sure the elevator is in a safe position
+   * and for knowing where the elevator is when the program starts.
    */
-  public Command resetPosition(){
-    return runOnce(()-> {
-      m_masterTalonFX.setPosition(0);
-      m_followTalonFX.setPosition(0);
-
-  });
+  public void resetElevator(){
+    m_masterMotor.setPosition(HIGHT_OF_THE_GROUND);
+  }
+  /**
+   * Sets the target position for the elevator.
+   *
+   * @param position the desired target position in metters.
+   */
+  public void setTargetPosition(double position) {
+    targetPosition = () -> position;
+  }
+  /**
+   * A command that moves the elevator to its target position.
+   * You can set the target position using the {@link #setTargetPosition(double)} method.
+   * and you should call this Command once per match
+   */
+  public Command relocatePositionCommand() {
+    return run(() -> 
+    {
+      m_masterMotor.setControl(_systemControl.withPosition(targetPosition.getAsDouble()).withEnableFOC(true));
+      m_followMotor.setControl(new Follower(MASTER_TALONFX_ID, true));
+    });
   }
 
-  
   /**
-   * @param targetPos
-   *  takes target position and moves to that position
+   * Check if the elevator is at its target position.
+   *
+   * <p>This method returns true if the elevator is close enough to its target
+   * position and not moving quickly enough to be considered at its target
+   * position. The threshold for "close enough" is defined in {@link #MINIMUN_POSITION_ERROR}
+   * and the threshold for "not moving quickly enough" is defined in
+   * {@link #MINIMUN_VELOCITY_ERROR}.
+   *
+   * @return true if the elevator is at its target position, false otherwise.
    */
-  public Command homeCommand(double targetPos) {
-    return runEnd(
-        () -> {
-            if (digitalSwitch.get()) { //if the digital switch is pressed
-                resetPosition(); 
-            }
-        },
-        () -> {
-          //stop both motors at the end of the command
-            m_followTalonFX.stopMotor(); 
-            m_masterTalonFX.stopMotor();  
-        }
-    );
-}
-
-  /**
-   * @param targetPos
-   *  relocating position to new pos, stop motors at the end
-   */
-public Command relocatePositionCommand(double targetPos) {
-  return runEnd(
-    //using motion magic and with position to set new position
-      () -> {
-        m_followTalonFX.setControl(Elevator.m_request.withPosition(targetPos));
-        m_masterTalonFX.setControl(Elevator.m_request.withPosition(targetPos));
-      
-      },
-      () -> {
-          //stop both motors when the command ends
-          m_followTalonFX.stopMotor();
-          m_masterTalonFX.stopMotor();
-      }
-  );
-}
+  public boolean isAtTarget() {
+    return Math.abs(m_masterMotor.getPosition().getValueAsDouble() - targetPosition.getAsDouble()) < MINIMUN_POSITION_ERROR
+            && Math.abs(m_masterMotor.getVelocity().getValueAsDouble() - targetPosition.getAsDouble()) < MINIMUN_VELOCITY_ERROR;
+  }
 
   @Override
   public void periodic() {
-    double currentPosition = m_masterTalonFX.getPosition().getValueAsDouble();
-          
-    //TODO: put target pos
-      double targetPosition = 0;
-      if (Math.abs(currentPosition - targetPosition) < 10) {
-          relocatePositionCommand(targetPosition);
-          System.out.println("Elevator is near target position!");
-      }
-  
-      if (Math.abs(currentPosition - targetPosition) < 1) {
-          System.out.println("reached target!");
-      }
+    SmartDashboard.putBoolean("Elavator/IsAtTarget", isAtTarget());
+    SmartDashboard.putNumber("Elavator/measurePosition", m_masterMotor.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("Elavator/wantedPosition", targetPosition.getAsDouble());
   }
-  
+
   private void configs(){
-    TalonFXConfiguration  configuration = new TalonFXConfiguration();
-    MotionMagicConfigs mm = new MotionMagicConfigs();
-    
-    mm.MotionMagicCruiseVelocity = Elevator.MM_CRUISE; //maximun velocity (peak velocity of the motion)
-    mm.MotionMagicAcceleration = Elevator.MM_ACCELERATION; //controls acceleration + deceleration (beginning and end of motion)
-    mm.MotionMagicJerk = Elevator.MM_JERK; //jerk - derivative of acceleration
-
-    configuration.MotionMagic = mm; 
-
-  /*
-    p - proportional gain, controls the system's response to the current error in position
-    i - integral gain, controls the system's response to collected errors over time
-    d - derivative gain, controls how fast the position is changing
-    s - static friction gain - compensates for static friction (ensures that the motor has enough output to initiate motion)
-    v - velocity gain - controls the motor output based on the velocity of the elevator
-    a - acceleration gain - controls the motor output based on the acceleration
-    g - gravity - output to overcome gravity
-   */
-
-    configuration.Slot0.kP = Constants.Elevator.kP;
-    configuration.Slot0.kI = Constants.Elevator.kI;
-    configuration.Slot0.kD = Constants.Elevator.kD;
-    configuration.Slot0.kS = Constants.Elevator.kS;
-    configuration.Slot0.kA = Constants.Elevator.kA;
-    configuration.Slot0.kV = Constants.Elevator.kV;
-    configuration.Slot0.kG = Constants.Elevator.kG;
-
-
-    StatusCode statusCode = StatusCode.StatusCodeNotInitialized;
-    for(int i = 0; i < 5; i++){
-      statusCode = m_masterTalonFX.getConfigurator().apply(configuration);
-      if(statusCode.isOK())
-        break;
-    }
-    if(!statusCode.isOK())
-      System.out.println("master elevator motor cant apply config, error code: " + statusCode.toString());
-
-    for(int i = 0; i < 5; i++){
-      statusCode = m_followTalonFX.getConfigurator().apply(configuration);
-      if(statusCode.isOK())
-        break;
-    }
-    if(!statusCode.isOK())
-      System.out.println("follow elevator motor cant apply config, error code: " + statusCode.toString());
-    
-
-
-
-    
+    m_masterMotor.getConfigurator().apply(ELEVATOR_CONFIG);
+    m_followMotor.getConfigurator().apply(ELEVATOR_CONFIG);
   }
 }

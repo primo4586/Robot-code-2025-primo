@@ -12,7 +12,7 @@ public class ElevatorConstanst { // todo: tune values
 
     public static final double ROLLER_RADIUS = 0.1; // In meters
     public static final double MAXIMUM_HIGHT = 0; // In meters
-    public static final double GEAR_RATIO = 1 / 150 ; 
+    public static final double GEAR_RATIO = 150 ; 
 
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {

@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.gripperArm;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -28,7 +29,7 @@ import static frc.robot.Misc.*;
 public class GripperArm extends SubsystemBase {
 
   private TalonFX m_motor; // falcon 500 motor
-  private Talon m_encoder; // magCoder
+  private TalonSRX m_encoder; // magCoder
   
   private static DoubleSupplier targetAngel = () -> 0;
   /*
@@ -57,7 +58,7 @@ public class GripperArm extends SubsystemBase {
 
   private GripperArm() {
     m_motor = new TalonFX(MOTOR_ID, CANIVOR_NAME);
-    m_encoder = new Talon(ENCODER_ID);
+    m_encoder = new TalonSRX(ENCODER_ID);
     systemControl = new PositionVoltage(0);
     resetPosition();
     configs();
@@ -69,11 +70,17 @@ public class GripperArm extends SubsystemBase {
    * use this at the start of robotInit.
    */
   public void resetPosition() {
-    m_motor.setPosition(m_encoder.get()*5);
+    m_motor.setPosition(5 * m_encoder.getSelectedSensorPosition() / 4096);
   }
 
+  /**
+   * check if the gripper arm is at the set point.
+   * the method use the absolute difference between the set point and the current position
+   * and the absolute value of the current velocity to determine if the arm is at the set point or not.
+   * @return true if the arm is at the set point. false otherwise.
+   */
   private boolean isAtSetPoint() {
-    return Math.abs(m_motor.getPosition().getValueAsDouble() -  360 / targetAngel.getAsDouble()) < MINIMUN_POSITION_ERROR &&
+    return Math.abs(m_motor.getPosition().getValueAsDouble() -  (targetAngel.getAsDouble() / 360)) < MINIMUN_POSITION_ERROR &&
      m_motor.getVelocity().getValueAsDouble() < MINIMUN_VELOCITY;
   }
 
@@ -124,13 +131,16 @@ public class GripperArm extends SubsystemBase {
 
      configuration.Voltage.PeakForwardVoltage = PEAK_VOLTAGE;
      configuration.Voltage.PeakReverseVoltage = PEAK_VOLTAGE;
- 
+    
+     configuration.Feedback.SensorToMechanismRatio = GEAR_RATIO;
  
      // forward and backward limits 
      configuration.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
      configuration.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
      configuration.SoftwareLimitSwitch.ForwardSoftLimitThreshold = FOWORD_LIMIT;
      configuration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = BACKWARD_LIMIT;
+
+     m_encoder.setSelectedSensorPosition(ABS_SENSOR_POSITION);
  
      configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
      configuration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;

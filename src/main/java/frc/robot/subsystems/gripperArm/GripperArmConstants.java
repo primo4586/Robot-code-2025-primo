@@ -27,5 +27,6 @@ public class GripperArmConstants { // TODO: fIND ALL VALUES
     public static final double LIMIT_SWITCH_POSITION = -180; // in degree
 
     public static final double GEAR_RATIO = 15;
+    public static final double ABS_SENSOR_POSITION = 0;
 
 }

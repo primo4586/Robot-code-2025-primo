@@ -15,22 +15,26 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.subsystems.gripperArm.GripperArmConstants.*;
+
+import java.util.function.DoubleSupplier;
+
 import static frc.robot.Misc.*;
 public class GripperArm extends SubsystemBase {
 
   private TalonFX m_motor; // falcon 500 motor
-  private DigitalInput m_switch; // phisical switch
+  private Talon m_encoder; // magCoder
+  
+  private static DoubleSupplier targetAngel = () -> 0;
   /*
    * we dont use mm beause the movment of the arm is minimall and mm is for large distance movment.
    */
   private PositionVoltage systemControl; // to control a position
-  // TODO: i'm not sure the a profile and Expo is good for this arm so i'll need
-  // to check.
 
   // singelton
   private static GripperArm instance;
@@ -53,9 +57,9 @@ public class GripperArm extends SubsystemBase {
 
   private GripperArm() {
     m_motor = new TalonFX(MOTOR_ID, CANIVOR_NAME);
-    m_switch = new DigitalInput(SWITCH_ID);
+    m_encoder = new Talon(ENCODER_ID);
+    systemControl = new PositionVoltage(0);
     resetPosition();
-    systemControl = new PositionVoltage(m_motor.get());
     configs();
 
   }
@@ -65,7 +69,12 @@ public class GripperArm extends SubsystemBase {
    * use this at the start of robotInit.
    */
   public void resetPosition() {
-    m_motor.setPosition(0);
+    m_motor.setPosition(m_encoder.get()*5);
+  }
+
+  private boolean isAtSetPoint() {
+    return Math.abs(m_motor.getPosition().getValueAsDouble() -  360 / targetAngel.getAsDouble()) < MINIMUN_POSITION_ERROR &&
+     m_motor.getVelocity().getValueAsDouble() < MINIMUN_VELOCITY;
   }
 
   /**
@@ -73,31 +82,31 @@ public class GripperArm extends SubsystemBase {
    * the command will run until the switch is pressed.
    * @return a command that will bring the gripper arm to the home position.
    */ 
-  public Command setHomeCommand() {
-    return startEnd(() -> m_motor.set(RESET_POWER),
-        () -> {
-          m_motor.stopMotor();
-          resetPosition();
-        }).until(() -> m_switch.get());
+  public void setHomeCommand() {
+    this.targetAngel = () -> 0;
   }
 
   /**
-   * a command that will bring the gripper arm to the given angle position.
-   * the command will run until the angle is reached.
-   * @param angle the angle the gripper arm should be moved to.
-   * @return a command that will bring the gripper arm to the given angle position.
+   * set the target angle
+   * @param targetAngel
    */
-  public Command relocateAngelCommand(Rotation2d angle) {
-    return startEnd(() -> m_motor.setControl(systemControl.withPosition(360 / angle.getDegrees() * GEAR_RATIO)),
-        () -> m_motor.stopMotor())
-        .until(() -> Math.abs(
-            m_motor.getPosition().getValueAsDouble() - (360 / angle.getDegrees())) < MINIMUN_ERROR);
+  public void setTargetAngel(double targetAngel){ 
+    this.targetAngel = () -> targetAngel;
+
+  }
+  /**
+   * a command that will move the gripper arm to the target angle
+   * you need to call it once per game. and use setTargetAngel to Change the target angle
+   * @return
+   */
+  public Command relocateAngelCommand() {
+      return run(() -> m_motor.setControl(systemControl.withPosition(targetAngel.getAsDouble())));
   }
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("gripper switch", m_switch.get());
     SmartDashboard.putNumber("gripper position", m_motor.getPosition().getValueAsDouble());
+    SmartDashboard.putBoolean("is at targer", isAtSetPoint());
   }
 
   private void configs() {
@@ -118,12 +127,10 @@ public class GripperArm extends SubsystemBase {
  
  
      // forward and backward limits 
-     configuration.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
-     configuration.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
+     configuration.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+     configuration.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
      configuration.SoftwareLimitSwitch.ForwardSoftLimitThreshold = FOWORD_LIMIT;
      configuration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = BACKWARD_LIMIT;
-     configuration.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
-     configuration.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = LIMIT_SWITCH_POSITION;
  
      configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
      configuration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;

@@ -4,11 +4,12 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 
 public class GripperArmConstants { // TODO: fIND ALL VALUES
     public static final int MOTOR_ID = 0; 
-    public static final int SWITCH_ID = 0; 
+    public static final int ENCODER_ID = 0; 
 
     // control values 
     public static final double RESET_POWER = 0.5;
-    public static final double MINIMUN_ERROR = 1;
+    public static final double MINIMUN_POSITION_ERROR = 1;
+    public static final double MINIMUN_VELOCITY = 1;
 
         // MotionMagic Constants
     //TODO find values

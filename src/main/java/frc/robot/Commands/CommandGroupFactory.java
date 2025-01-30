@@ -91,6 +91,7 @@ public class CommandGroupFactory {
         //         return new Rotation2d(angleToTargetRadians + Units.degreesToRadians(180));
         // }
 
+        //TODO: make this work for red alliance too
         public static Pose2d ChooseReef(boolean isRight){ 
 
                 Pose2d currentPosition = swerve.getState().Pose;

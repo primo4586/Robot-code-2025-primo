@@ -98,42 +98,56 @@ public class CommandGroupFactory {
                  * caculate the angel between the robot and the reef 
                  * from here we can know to wich side of the reef the robot needs to go.
                 */
-                double reefAngle = Math.toDegrees(Math.atan(currentPosition.getY() - REEF_CENTER_POSITION.getY() /
-                        currentPosition.getX() - REEF_CENTER_POSITION.getX()));
-                reefAngle /= 60; 
-                switch((int)reefAngle){
-                        case 0: return new Pose2d(
-                                isRight ? REEF_A_POSITION.getX() : REEF_B_POSITION.getX(),
-                                isRight ? REEF_A_POSITION.getY() : REEF_B_POSITION.getY(),
-                                new Rotation2d(REEF_1_ANGEL)
-                        );
-                        case 1: return new Pose2d(
-                                isRight ? REEF_C_POSITION.getX() : REEF_D_POSITION.getX(),
-                                isRight ? REEF_C_POSITION.getY() : REEF_D_POSITION.getY(),
-                                new Rotation2d(REEF_2_ANGEL)
-                        );
-                        case 2: return new Pose2d(
-                                isRight ? REEF_E_POSITION.getX() : REEF_F_POSITION.getX(),
-                                isRight ? REEF_E_POSITION.getY() : REEF_F_POSITION.getY(),
-                                new Rotation2d(REEF_3_ANGEL)
-                        );
-                        case 3: return new Pose2d(
-                                isRight ? REEF_G_POSITION.getX() : REEF_H_POSITION.getX(),
-                                isRight ? REEF_G_POSITION.getY() : REEF_H_POSITION.getY(),
-                                new Rotation2d(REEF_4_ANGEL)
-                        );
-                        case 4: return new Pose2d(
-                                isRight ? REEF_I_POSITION.getX() : REEF_J_POSITION.getX(),
-                                isRight ? REEF_I_POSITION.getY() : REEF_J_POSITION.getY(),
-                                new Rotation2d(REEF_5_ANGEL)
-                        );
-                        case 5: return new Pose2d(
+                double reefAngle = Math.toDegrees(Math.atan(
+                        (REEF_CENTER_POSITION.getY() - currentPosition.getY()) /
+                        (REEF_CENTER_POSITION.getX() - currentPosition.getX())));
+                if (-90 < reefAngle && reefAngle <= -30){
+                        if (currentPosition.getX() > 4.5){
+                                return new Pose2d(
+                                        isRight ? REEF_E_POSITION.getX() : REEF_F_POSITION.getX(),
+                                        isRight ? REEF_E_POSITION.getY() : REEF_F_POSITION.getY(),
+                                        new Rotation2d(REEF_3_ANGEL));
+                        }
+                        else
+                        {
+                                return new Pose2d(
                                 isRight ? REEF_K_POSITION.getX() : REEF_L_POSITION.getX(),
                                 isRight ? REEF_K_POSITION.getY() : REEF_L_POSITION.getY(),
-                                new Rotation2d(REEF_6_ANGEL)
-                        );
-                        default: return new Pose2d();
+                                new Rotation2d(REEF_6_ANGEL));
+                        }
                 }
-        
+                else if (reefAngle <= 30){
+                if (currentPosition.getX() > 4.5)
+                        {
+                                return new Pose2d(
+                                isRight ? REEF_G_POSITION.getX() : REEF_H_POSITION.getX(),
+                                isRight ? REEF_G_POSITION.getY() : REEF_H_POSITION.getY(),
+                                new Rotation2d(REEF_4_ANGEL));
+                        }
+                        else
+                        {
+                                return new Pose2d(
+                                isRight ? REEF_A_POSITION.getX() : REEF_B_POSITION.getX(),
+                                isRight ? REEF_A_POSITION.getY() : REEF_B_POSITION.getY(),
+                                new Rotation2d(REEF_1_ANGEL));
+                        }
+                }
+                else{
+                        if (currentPosition.getX() > 4.5)
+                        {
+                                return new Pose2d(
+                                isRight ? REEF_G_POSITION.getX() : REEF_H_POSITION.getX(),
+                                isRight ? REEF_G_POSITION.getY() : REEF_H_POSITION.getY(),
+                                new Rotation2d(REEF_5_ANGEL));
+                        }
+                        else
+                        {
+                                return new Pose2d(
+                                isRight ? REEF_C_POSITION.getX() : REEF_D_POSITION.getX(),
+                                isRight ? REEF_C_POSITION.getY() : REEF_D_POSITION.getY(),
+                                new Rotation2d(REEF_2_ANGEL));
+                        }        
+                }
+
         }
 }

@@ -42,6 +42,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_masterMotor = new TalonFX(MASTER_TALONFX_ID);
     m_followMotor = new TalonFX(FOLLOW_TALONFX_ID);
     follower = new Follower(MASTER_TALONFX_ID, true);
+    resetElevator();
     configs();
   }
 
@@ -105,7 +106,7 @@ public class ElevatorSubsystem extends SubsystemBase {
    */
   public boolean isAtTarget() {
     return Math.abs(m_masterMotor.getPosition().getValueAsDouble() - targetPosition.getAsDouble()) < MINIMUN_POSITION_ERROR
-            && Math.abs(m_masterMotor.getVelocity().getValueAsDouble() - targetPosition.getAsDouble()) < MINIMUN_VELOCITY_ERROR;
+            && Math.abs(m_masterMotor.getVelocity().getValueAsDouble()) < MINIMUN_VELOCITY_ERROR;
   }
 
   @Override

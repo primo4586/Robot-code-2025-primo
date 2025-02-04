@@ -16,6 +16,13 @@ public class ElevatorConstanst { // todo: tune values
 
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {
+
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
+      ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimit = 60; //^ i'm not sure if it true
+      ELEVATOR_CONFIG.Voltage.PeakForwardVoltage = 11.5;
+      ELEVATOR_CONFIG.Voltage.PeakReverseVoltage = -11.5;
+
+
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
@@ -25,7 +32,7 @@ public class ElevatorConstanst { // todo: tune values
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
 
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
-      ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO / ROLLER_RADIUS / 2 / Math.PI; 
+      ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO / (ROLLER_RADIUS * 2 * Math.PI); 
 
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction

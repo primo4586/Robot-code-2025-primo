@@ -3,7 +3,12 @@ package frc.robot.subsystems.Cannon;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.servohub.ServoHub.ResetMode;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,7 +20,7 @@ import static frc.robot.subsystems.Cannon.CannonConstants.*;
 
 public class CannonSubsystem extends SubsystemBase {
 
-  private TalonFX m_motor;
+  private SparkMax m_motor;
   private DigitalInput m_sensor;
 
   //singlton
@@ -31,7 +36,7 @@ public class CannonSubsystem extends SubsystemBase {
 
 
   private CannonSubsystem(){
-    m_motor = new TalonFX(MOTOR_ID, CANIVOR_NAME);
+    m_motor = new SparkMax(MOTOR_ID, MotorType.kBrushless);
     m_sensor = new DigitalInput(SENSOR_ID);
     configs();
   }
@@ -70,26 +75,11 @@ public class CannonSubsystem extends SubsystemBase {
 
 
   private void configs(){
-    TalonFXConfiguration configuration = new TalonFXConfiguration();
-   
-    //Peaks:
-    configuration.Voltage.PeakForwardVoltage = PEAK_FORWARD_VOLTAGE;
-    configuration.Voltage.PeakReverseVoltage = PEAK_REVERSE_VOLTAGE;
-    configuration.CurrentLimits.SupplyCurrentLimitEnable = true;
-    configuration.CurrentLimits.SupplyCurrentLimit = CURRENT_PEAK;
+    SparkMaxConfig config = new SparkMaxConfig();
+    config.smartCurrentLimit(CURRENT_PEAK).
+    idleMode(NEUTRAL_MODE).inverted(INVERTED);
+    m_motor.configure(config, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-    //settings
-    configuration.MotorOutput.NeutralMode = NEUTRAL_MODE;
-    configuration.MotorOutput.Inverted = INVERTED;
-
-    StatusCode statusCode = StatusCode.StatusCodeNotInitialized;
-    for (int i = 0; i < 3; i++){
-      m_motor.getConfigurator().apply(configuration);
-      if (statusCode.isOK())
-        break;
-    }
-    if (!statusCode.isOK())
-      System.out.println("canon config failed");
   }
 
 

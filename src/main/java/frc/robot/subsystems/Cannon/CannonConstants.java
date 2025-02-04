@@ -2,6 +2,7 @@ package frc.robot.subsystems.Cannon;
 
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class CannonConstants {
     //id
@@ -12,10 +13,10 @@ public class CannonConstants {
         //peaks
         public static final double PEAK_FORWARD_VOLTAGE = 11.5;
         public static final double PEAK_REVERSE_VOLTAGE = 11.5;
-        public static final double CURRENT_PEAK = 60;
+        public static final int CURRENT_PEAK = 60;
        
-        public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Coast;
-        public static final InvertedValue INVERTED = InvertedValue.Clockwise_Positive;
+        public static final IdleMode NEUTRAL_MODE = IdleMode.kCoast;
+        public static final Boolean INVERTED = true;
 
 
         //other

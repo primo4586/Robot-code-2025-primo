@@ -19,6 +19,7 @@ import java.util.function.DoubleSupplier;
 public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX m_masterMotor; // falcon 500
   private TalonFX m_followMotor; // falcon 500
+  private Follower follower;
 
   private static MotionMagicVoltage _systemControl = new MotionMagicVoltage(0);
 
@@ -40,6 +41,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private ElevatorSubsystem() {
     m_masterMotor = new TalonFX(MASTER_TALONFX_ID);
     m_followMotor = new TalonFX(FOLLOW_TALONFX_ID);
+    follower = new Follower(MASTER_TALONFX_ID, true);
     configs();
   }
 
@@ -69,8 +71,25 @@ public class ElevatorSubsystem extends SubsystemBase {
     return run(() -> 
     {
       m_masterMotor.setControl(_systemControl.withPosition(targetPosition.getAsDouble()).withEnableFOC(true));
-      m_followMotor.setControl(new Follower(MASTER_TALONFX_ID, true));
+      m_followMotor.setControl(follower);
     });
+  }
+  /**
+   * a Command that moves the Elavator at a constant power {@link #MOVE_POWER}
+   * with direction of the parameter and stop the elevator
+   * when butten is relesd, then set the motor to overcome gravity and stay in place. 
+   * @param vec a value that is 1 or -1 depending on the direction
+   * @return
+   */
+  public Command moveCommand(int vec){
+    return runEnd(() -> 
+    {
+      m_masterMotor.set(MOVE_POWER * vec);
+      m_followMotor.setControl(follower);
+    }, 
+    () -> 
+      m_masterMotor.set(0.3) // kg
+    );
   }
 
   /**

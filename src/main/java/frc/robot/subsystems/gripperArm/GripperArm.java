@@ -29,6 +29,7 @@ import static frc.robot.Misc.*;
 public class GripperArm extends SubsystemBase {
 
   private TalonFX m_motor; // falcon 500 motor
+  private DigitalInput m_limitSwitch; // limit switch idk ISR really wanted it
   private TalonSRX m_encoder; // magCoder
   
   private static DoubleSupplier targetAngel = () -> 0;
@@ -70,7 +71,7 @@ public class GripperArm extends SubsystemBase {
    * use this at the start of robotInit.
    */
   public void resetPosition() {
-    m_motor.setPosition(5 * m_encoder.getSelectedSensorPosition() / 4096);
+    m_motor.setPosition(5 * m_encoder.getSelectedSensorPosition() / 4096); // 5 is the gear ratio 
   }
 
   /**
@@ -130,7 +131,7 @@ public class GripperArm extends SubsystemBase {
      configuration.CurrentLimits.SupplyCurrentLimit = PEAK_CURRENT;
 
      configuration.Voltage.PeakForwardVoltage = PEAK_VOLTAGE;
-     configuration.Voltage.PeakReverseVoltage = PEAK_VOLTAGE;
+     configuration.Voltage.PeakReverseVoltage = PEAK_VOLTAGE * -1;
     
      configuration.Feedback.SensorToMechanismRatio = GEAR_RATIO;
  
@@ -139,6 +140,10 @@ public class GripperArm extends SubsystemBase {
      configuration.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
      configuration.SoftwareLimitSwitch.ForwardSoftLimitThreshold = FOWORD_LIMIT;
      configuration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = BACKWARD_LIMIT;
+
+     configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+     configuration.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
+     configuration.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = LIMIT_SWITCH_POSITION;
 
      m_encoder.setSelectedSensorPosition(ABS_SENSOR_POSITION);
  

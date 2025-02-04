@@ -25,10 +25,6 @@ public class CommandGroupFactory {
         private static final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-
-        // public static Command driveToReefCommand(boolean isRight){
-        //         return RunCommand(() -> swerve.setControl)
-        // }
 /**
  * Creates a command to align the robot's orientation towards a specified target point.
  * This command uses a PID controller to adjust the robot's rotational rate

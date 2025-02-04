@@ -15,6 +15,7 @@ import static frc.robot.Misc.*;
 
 public class GripperSubsystem extends SubsystemBase {
   private TalonFX m_motor;
+  private boolean velocityCheck = false;
 
   // singelton
   private static GripperSubsystem instance;
@@ -30,12 +31,29 @@ public class GripperSubsystem extends SubsystemBase {
       configs();
   }
 
+  private boolean checkVelocity(){
+    if (m_motor.getVelocity().getValueAsDouble() > VELOCITY_MIN_ERROR)
+      velocityCheck = true;
+    return velocityCheck;
+  }
+
   /**
    * collects the algea while pressing the joysticks, and when release stops the motor. 
    */
   public Command collectWhilePressCommand(){
       return startEnd(() -> m_motor.set(COLLECT_POWER),
       () -> m_motor.set(HOLED_POWER));
+  }
+
+  public Command collectUntilCollectedCommand(){ //^ vert high chance this will not work
+    return startEnd(() -> m_motor.set(COLLECT_POWER),
+     () -> 
+     {
+      m_motor.set(HOLED_POWER);
+      velocityCheck = false;
+     }
+    ).until(() -> checkVelocity() && m_motor.getVelocity().getValueAsDouble() < VELOCITY_MIN_ERROR); 
+    // this checks if once the motor was at high speed now the motor is slow.
   }
 
   /**

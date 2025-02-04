@@ -19,4 +19,6 @@ public class GripperConstants {
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
     public static final InvertedValue INVERTED = InvertedValue.Clockwise_Positive;
 
+    public static final double VELOCITY_MIN_ERROR = 0.1;
+
 }

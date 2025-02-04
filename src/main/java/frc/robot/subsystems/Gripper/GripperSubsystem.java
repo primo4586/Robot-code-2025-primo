@@ -64,7 +64,7 @@ public class GripperSubsystem extends SubsystemBase {
    
     //Peaks:
     configuration.Voltage.PeakForwardVoltage = VOLTAGE_PEAK;
-    configuration.Voltage.PeakReverseVoltage = VOLTAGE_PEAK;
+    configuration.Voltage.PeakReverseVoltage = VOLTAGE_PEAK * -1; //^ this may not be prety but it works
 
     configuration.CurrentLimits.SupplyCurrentLimitEnable = true;
     configuration.CurrentLimits.SupplyCurrentLimit = CURRENT_PEAK;

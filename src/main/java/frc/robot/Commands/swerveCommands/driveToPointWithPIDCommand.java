@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
+import frc.robot.PrimoLib.PrimoCalc;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
@@ -28,7 +29,8 @@ public class driveToPointWithPIDCommand extends Command {
   PIDController rotionPidController = new PIDController(0, 0, 0);
 
   /** Creates a new driveToPointWithPIDCommand. */
-  public driveToPointWithPIDCommand(Pose2d target) {
+  public driveToPointWithPIDCommand(boolean isRight) {
+    Pose2d target = PrimoCalc.ChooseReef(isRight);
     rotionPidController.enableContinuousInput(180, -180);
     rotionPidController.setSetpoint(target.getRotation().getDegrees());
     rotionPidController.setTolerance(1);

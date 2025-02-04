@@ -1,29 +1,21 @@
-package frc.robot.Commands;
+package frc.robot.PrimoLib;
 
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
+import static frc.robot.Misc.*;
 
-import edu.wpi.first.math.controller.PIDController;
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-import static frc.robot.Misc.*;
-
-import java.util.function.BooleanSupplier;
-
-public class CommandGroupFactory {
-
-    private static final CommandSwerveDrivetrain swerve = RobotContainer.drivetrain;
-
-        /**
+public class PrimoCalc {
+     private static final CommandSwerveDrivetrain swerve = RobotContainer.drivetrain;
+             /**
          * Calculates the angle between the robot's current position and a target point.
          * 
          * The angle is calculated using the current pose of the robot and the target point.
@@ -48,22 +40,6 @@ public class CommandGroupFactory {
                 // Return the angle as a Rotation2d
                 return new Rotation2d(angleToTargetRadians + Units.degreesToRadians(180));
         }
-
-        //         public static Rotation2d calculateAngleToPass() {
-
-        //         Pose2d currentPose = swerve.getState().Pose;
-        //         Translation2d targetPose = Misc.passPosePoint;
-
-        //         // Get the difference in x and y positions
-        //         double dx = targetPose.getX() - currentPose.getX();
-        //         double dy = targetPose.getY() - currentPose.getY();
-
-        //         // Use atan2 to calculate the angle between the two points
-        //         double angleToTargetRadians = Math.atan2(dy, dx);
-
-        //         // Return the angle as a Rotation2d
-        //         return new Rotation2d(angleToTargetRadians + Units.degreesToRadians(180));
-        // }
 
         //TODO: make this work for red alliance too
         public static Pose2d ChooseReef(boolean isRight){ 
@@ -188,4 +164,3 @@ public class CommandGroupFactory {
                 
         }
 }
-

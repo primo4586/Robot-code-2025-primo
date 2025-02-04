@@ -11,6 +11,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Vision.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class alignPointCommand extends Command {
@@ -35,7 +36,7 @@ public class alignPointCommand extends Command {
   public void execute() {
     swerve.setControl(
       forwardStraight.withRotationalRate(
-        0 // TODO: add vision angel
+        pidController.calculate(Vision.getFrontCamera().getAngleFromTarget())
       )
     );
   }

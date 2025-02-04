@@ -238,4 +238,22 @@ import java.util.List;
          if (!Robot.isSimulation()) return null;
          return visionSim.getDebugField();
      }
+
+     //^this is the buty of my code.
+    /**
+     * Get if the camera is detecting an object
+     * @return true if the camera is detecting an object
+     */
+    public boolean getDetectingObject() {
+        return camera.getLatestResult().hasTargets();
+    }
+
+     /**
+     * Get the angle from the target
+     * @return the angle from the target or 0 if no target
+     */
+
+    public double getAngleFromTarget() {
+        return getDetectingObject() ? camera.getLatestResult().getBestTarget().getYaw() : 0;
+    }
  }

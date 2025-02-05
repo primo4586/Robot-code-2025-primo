@@ -6,7 +6,6 @@ import edu.wpi.first.units.measure.Distance;
 public class Misc {
     public static final String CANIVOR_NAME = "canBus";
 
-
     //swerve Commands
     //^the Rotation2d is false bit it is uslless
     public static final Pose2d BLUE_REEF_CENTER_POSITION = new Pose2d (4.5,4,new Rotation2d()); 

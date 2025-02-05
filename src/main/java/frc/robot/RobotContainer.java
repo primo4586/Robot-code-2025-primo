@@ -20,6 +20,10 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Cannon.CannonSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem.ElevatorConstanst;
+import frc.robot.subsystems.ElevatorSubsystem.ElevatorSubsystem;
+import frc.robot.subsystems.gripperArm.GripperArm;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -35,6 +39,11 @@ public class RobotContainer {
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
+
+    private final CannonSubsystem cannon = CannonSubsystem.getInstance();
+    private final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
+    private final GripperArm gripper = GripperArm.getInstance();
+
 
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -63,17 +72,28 @@ public class RobotContainer {
             )
         );
 
-        _driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        _driverController.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-_driverController.getLeftY(), -_driverController.getLeftX()))
-        ));
+        //Operator Controller
+        _operatorController.a().onTrue(cannon.adjustCoralCommand());
+        _operatorController.y().onTrue(cannon.loosenCoralCommand());
 
-        _driverController.pov(0).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.5).withVelocityY(0))
-        );
-        _driverController.pov(180).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
-        );
+        _operatorController.povUp().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT));
+        _operatorController.povRight().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L2_HEIGHT));
+        _operatorController.povDown().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));
+        _operatorController.povLeft().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L4_HEIGHT));
+
+        
+
+        // _driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        // _driverController.b().whileTrue(drivetrain.applyRequest(() ->
+        //     point.withModuleDirection(new Rotation2d(-_driverController.getLeftY(), -_driverController.getLeftX()))
+        // ));
+
+        // _driverController.pov(0).whileTrue(drivetrain.applyRequest(() ->
+        //     forwardStraight.withVelocityX(0.5).withVelocityY(0))
+        // );
+        // _driverController.pov(180).whileTrue(drivetrain.applyRequest(() ->
+        //     forwardStraight.withVelocityX(-0.5).withVelocityY(0))
+        // );
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.

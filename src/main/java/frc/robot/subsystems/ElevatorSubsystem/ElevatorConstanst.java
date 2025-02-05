@@ -52,9 +52,9 @@ public class ElevatorConstanst { // todo: tune values
 
     public static final double MOVE_POWER = 0.3;
 
-    public static final double L1_Hight = 0;
-    public static final double L2_Hight = 0;
-    public static final double L3_Hight = 0;
-    public static final double L4_Hight = 0; // todo tune values
+    public static final double L1_HEIGHT = 0;
+    public static final double L2_HEIGHT = 0;
+    public static final double L3_HEIGHT = 0;
+    public static final double L4_HEIGHT = 0; // todo tune values
 
 }

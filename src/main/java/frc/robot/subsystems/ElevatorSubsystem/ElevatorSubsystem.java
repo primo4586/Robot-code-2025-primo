@@ -86,6 +86,10 @@ private final SysIdRoutine m_sysIdRoutine =
   public void setTargetPosition(double position) {
     targetPosition = () -> position;
   }
+
+  public Command setTargetPositionCommand(double position) {
+    return runOnce(() -> setTargetPosition(position));
+  }
   /**
    * A command that moves the elevator to its target position.
    * You can set the target position using the {@link #setTargetPosition(double)} method.

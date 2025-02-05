@@ -50,7 +50,7 @@ public class GripperArm extends SubsystemBase {
    *
    * @return the single instance of the GripperArm
    */
-  public static GripperArm getInctance() {
+  public static GripperArm getInstance() {
     if (instance == null) {
       instance = new GripperArm();
     }

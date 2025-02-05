@@ -4,14 +4,18 @@
 
 package frc.robot.subsystems.ElevatorSubsystem;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
+import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.ElevatorSubsystem.ElevatorConstanst.*;
 
 import java.util.function.DoubleSupplier;
@@ -33,7 +37,7 @@ private final SysIdRoutine m_sysIdRoutine =
          (state) -> SignalLogger.writeString("state", state.toString())
       ),
       new SysIdRoutine.Mechanism(
-         (volts) -> m_motor.setControl(m_voltReq.withOutput(volts.in(Volts))),
+         (volts) -> m_masterMotor.setControl(m_voltReq.withOutput(volts.in(Volts))),
          null,
          this
       )

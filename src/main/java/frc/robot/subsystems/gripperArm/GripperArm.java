@@ -114,7 +114,7 @@ public class GripperArm extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("gripper position", m_motor.getPosition().getValueAsDouble());
-    SmartDashboard.putBoolean("is at targer", isAtSetPoint());
+    SmartDashboard.putBoolean("is at targer", isAtSetPoint()); // todo: put this in a folder. 
   }
 
   private void configs() {

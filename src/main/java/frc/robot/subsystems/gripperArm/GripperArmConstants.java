@@ -29,4 +29,9 @@ public class GripperArmConstants { // TODO: fIND ALL VALUES
     public static final double GEAR_RATIO = 15;
     public static final double ABS_SENSOR_POSITION = 0;
 
+    //Angles
+    public static final double REEF_ANGLE = 0;
+    public static final double FLOOR_ANGLE = 0;
+    public static final double PROCESSOR_ANGLE = 0; //TODO: Find values
+
 }

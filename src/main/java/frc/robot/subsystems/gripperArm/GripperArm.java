@@ -102,6 +102,16 @@ public class GripperArm extends SubsystemBase {
     this.targetAngel = () -> targetAngel;
 
   }
+
+    /**
+   * set the target angle (as a command)
+   * @param targetAngel
+   */
+  public Command setTargetAngelCommand(double targetAngel){ 
+    return runOnce(() -> setTargetAngel(targetAngel));
+  }
+
+
   /**
    * a command that will move the gripper arm to the target angle
    * you need to call it once per game. and use setTargetAngel to Change the target angle

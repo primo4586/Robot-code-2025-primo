@@ -2,9 +2,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
+//imports things
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
+
+import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -23,7 +27,11 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem.ElevatorConstanst;
 import frc.robot.subsystems.ElevatorSubsystem.ElevatorSubsystem;
+import frc.robot.subsystems.Gripper.GripperSubsystem;
 import frc.robot.subsystems.gripperArm.GripperArm;
+import frc.robot.subsystems.gripperArm.GripperArmConstants;
+
+
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -42,13 +50,22 @@ public class RobotContainer {
 
     private final CannonSubsystem cannon = CannonSubsystem.getInstance();
     private final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
-    private final GripperArm gripper = GripperArm.getInstance();
+    private final GripperSubsystem gripper = GripperSubsystem.getInstance();
+    private final GripperArm gripperArm = GripperArm.getInstance();
 
 
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public static final CommandXboxController _driverController = new CommandXboxController(0);
     public static final CommandXboxController _operatorController = new CommandXboxController(1);
+
+    // get the right joystick position and sets it to according position
+    private static DoubleSupplier gripperArmPosition = _operatorController.getRightX() == 1 ?
+                                                            () ->GripperArmConstants.PROCESSOR_ANGLE :
+                                                            _operatorController.getRightY() == -1 ? 
+                                                            () -> GripperArmConstants.REEF_ANGLE :
+                                                                _operatorController.getRightY() == 1 ? 
+                                                                () -> GripperArmConstants.FLOOR_ANGLE : () -> 0;
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -73,13 +90,24 @@ public class RobotContainer {
         );
 
         //Operator Controller
+
+        //cannon
         _operatorController.a().onTrue(cannon.adjustCoralCommand());
         _operatorController.y().onTrue(cannon.loosenCoralCommand());
 
+        //elevator buttons
         _operatorController.povUp().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT));
         _operatorController.povRight().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L2_HEIGHT));
         _operatorController.povDown().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));
-        _operatorController.povLeft().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L4_HEIGHT));
+        _operatorController.povLeft().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L4_HEIGHT)); 
+
+        //gripper (right/left joysticks)
+        _operatorController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
+        _operatorController.rightBumper().onTrue(gripper.tossCommand());
+        _operatorController.rightStick().whileTrue(gripperArm.setTargetAngelCommand(gripperArmPosition.getAsDouble()));
+
+
+
 
         
 

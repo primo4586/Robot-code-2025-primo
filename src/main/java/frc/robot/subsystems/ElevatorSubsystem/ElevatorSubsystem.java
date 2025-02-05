@@ -16,10 +16,29 @@ import static frc.robot.subsystems.ElevatorSubsystem.ElevatorConstanst.*;
 
 import java.util.function.DoubleSupplier;
 
-public class ElevatorSubsystem extends SubsystemBase {
+public class ElevatorSubsystem extends SubsystemBase { //todo: add sysid for the elevator
   private TalonFX m_masterMotor; // falcon 500
   private TalonFX m_followMotor; // falcon 500
   private Follower follower;
+  //sysid
+  private final VoltageOut m_voltReq = new VoltageOut(0.0);
+
+private final SysIdRoutine m_sysIdRoutine =
+   new SysIdRoutine(
+      new SysIdRoutine.Config(
+         null,        // Use default ramp rate (1 V/s)
+         Volts.of(4), // Reduce dynamic step voltage to 4 to prevent brownout
+         null,        // Use default timeout (10 s)
+                      // Log state with Phoenix SignalLogger class
+         (state) -> SignalLogger.writeString("state", state.toString())
+      ),
+      new SysIdRoutine.Mechanism(
+         (volts) -> m_motor.setControl(m_voltReq.withOutput(volts.in(Volts))),
+         null,
+         this
+      )
+   );
+
 
   private static MotionMagicVoltage _systemControl = new MotionMagicVoltage(0);
 
@@ -92,6 +111,14 @@ public class ElevatorSubsystem extends SubsystemBase {
       m_masterMotor.set(0.3) // kg
     );
   }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutine.quasistatic(direction);
+ }
+ 
+ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutine.dynamic(direction);
+ }
 
   /**
    * Check if the elevator is at its target position.

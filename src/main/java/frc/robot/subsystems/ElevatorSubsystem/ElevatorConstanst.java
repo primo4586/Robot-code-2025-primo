@@ -7,8 +7,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 
 public class ElevatorConstanst { // todo: tune values 
-    public static final int MASTER_TALONFX_ID = 0;
-    public static final int FOLLOW_TALONFX_ID = 1;
+    public static final int MASTER_TALONFX_ID = 30;
+    public static final int FOLLOW_TALONFX_ID = 31;
 
     public static final double ROLLER_RADIUS = 0.1; // In meters
     public static final double MAXIMUM_HIGHT = 0; // In meters

@@ -4,7 +4,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class GripperConstants {
-    public static final int MOTOR_ID = 0;
+    public static final int MOTOR_ID = 22;
 
     public static final double COLLECT_POWER = 0.5;
     public static final double HOLED_POWER = 0.15; 

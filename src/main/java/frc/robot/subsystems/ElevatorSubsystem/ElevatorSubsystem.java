@@ -78,6 +78,17 @@ private final SysIdRoutine m_sysIdRoutine =
   public void resetElevator(){
     m_masterMotor.setPosition(HIGHT_OF_THE_GROUND);
   }
+
+    /**
+   * Reset the elevator to its default position at the ground (as a command);
+   *
+   * <p>This is useful for making sure the elevator is in a safe position
+   * and for knowing where the elevator is when the program starts.
+   */
+  public Command resetElevatorCommand(){
+    return runOnce(() -> resetElevator());
+  }
+
   /**
    * Sets the target position for the elevator.
    *

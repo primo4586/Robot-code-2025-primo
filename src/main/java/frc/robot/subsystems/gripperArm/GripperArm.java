@@ -66,12 +66,9 @@ public class GripperArm extends SubsystemBase {
 
   }
 
-  /**
-   * reset the encode position value.
-   * use this at the start of robotInit.
-   */
+
   public void resetPosition() {
-    m_motor.setPosition(5 * m_encoder.getSelectedSensorPosition() / 4096); // 5 is the gear ratio 
+    m_motor.setPosition(0);
   }
 
   /**
@@ -90,8 +87,12 @@ public class GripperArm extends SubsystemBase {
    * the command will run until the switch is pressed.
    * @return a command that will bring the gripper arm to the home position.
    */ 
-  public void setHomeCommand() {
-    this.targetAngel = () -> 0;
+  public Command setHomeCommand() {
+    return startEnd(() -> m_motor.set(RESET_POWER),
+     () -> {
+      resetPosition();
+      m_motor.stopMotor();
+     }).until(() -> m_limitSwitch.get());
   }
 
   /**

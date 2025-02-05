@@ -106,10 +106,9 @@ public class RobotContainer {
         _operatorController.rightBumper().onTrue(gripper.tossCommand());
         _operatorController.rightStick().whileTrue(gripperArm.setTargetAngelCommand(gripperArmPosition.getAsDouble()));
 
-
-
-
-        
+        //resets
+        _operatorController.back().onTrue(gripperArm.setHomeCommand());
+        _operatorController.back().onTrue(elevator.resetElevatorCommand());
 
         // _driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // _driverController.b().whileTrue(drivetrain.applyRequest(() ->

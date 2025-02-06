@@ -4,7 +4,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 
 public class GripperArmConstants { // TODO: fIND ALL VALUES
     public static final int MOTOR_ID = 20; 
-    public static final int ENCODER_ID = 21; 
+    public static final int LIMIT_SWITCH_ID = 9; 
 
     // control values 
     public static final double RESET_POWER = 0.5;

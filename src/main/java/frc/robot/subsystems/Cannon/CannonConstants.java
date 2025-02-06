@@ -7,7 +7,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 public class CannonConstants {
     //id
         public static final int MOTOR_ID = 23;
-        public static final int SENSOR_ID = 1;
+        public static final int SENSOR_ID = 8;
 
 
         //peaks

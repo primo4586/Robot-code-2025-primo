@@ -30,7 +30,6 @@ public class GripperArm extends SubsystemBase {
 
   private TalonFX m_motor; // falcon 500 motor
   private DigitalInput m_limitSwitch; // limit switch idk ISR really wanted it
-  private TalonSRX m_encoder; // magCoder
   
   private static DoubleSupplier targetAngel = () -> 0;
   /*
@@ -59,7 +58,7 @@ public class GripperArm extends SubsystemBase {
 
   private GripperArm() {
     m_motor = new TalonFX(MOTOR_ID, CANIVOR_NAME);
-    m_encoder = new TalonSRX(ENCODER_ID);
+    m_limitSwitch = new DigitalInput(LIMIT_SWITCH_ID);
     systemControl = new PositionVoltage(0);
     resetPosition();
     configs();
@@ -154,9 +153,8 @@ public class GripperArm extends SubsystemBase {
 
      configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
      configuration.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
+     configuration.HardwareLimitSwitch.ReverseLimitRemoteSensorID = LIMIT_SWITCH_ID;
      configuration.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = LIMIT_SWITCH_POSITION;
-
-     m_encoder.setSelectedSensorPosition(ABS_SENSOR_POSITION);
  
      configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
      configuration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.ElevatorSubsystem;
+package frc.robot.subsystems.Elevator;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -12,7 +12,7 @@ public class ElevatorConstanst { // todo: tune values
 
     public static final double ROLLER_RADIUS = 0.1; // In meters
     public static final double MAXIMUM_HIGHT = 0; // In meters
-    public static final double GEAR_RATIO = 27 ;  // todo: i'm not sure if it true 
+    public static final double GEAR_RATIO = 15 ;  // todo: i'm not sure if it true 
 
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {

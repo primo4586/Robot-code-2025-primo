@@ -57,7 +57,8 @@ public class RobotContainer {
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public static final CommandXboxController _driverController = new CommandXboxController(0);
-    public static final CommandXboxController _operatorController = new CommandXboxController(1);
+    public static final CommandXboxController _operatorController = new CommandXboxController(2);
+    public static final CommandXboxController _testerController = new CommandXboxController(1);
 
     // get the right joystick position and sets it to according position
     private static DoubleSupplier gripperArmPosition = _operatorController.getRightX() == 1 ?
@@ -109,6 +110,13 @@ public class RobotContainer {
         //resets
         _operatorController.back().onTrue(gripperArm.setHomeCommand());
         _operatorController.back().onTrue(elevator.resetElevatorCommand());
+
+
+        //Tester
+        _testerController.a().onTrue(cannon.adjustCoralCommand());
+        _testerController.y().onTrue(cannon.loosenCoralCommand());
+        _testerController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
+        _testerController.rightBumper().onTrue(gripper.tossCommand());
 
         // _driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // _driverController.b().whileTrue(drivetrain.applyRequest(() ->

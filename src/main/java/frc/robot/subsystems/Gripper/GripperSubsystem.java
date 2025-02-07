@@ -8,7 +8,9 @@ import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.subsystems.Gripper.GripperConstants.*;
 import static frc.robot.Misc.*;
@@ -30,11 +32,14 @@ public class GripperSubsystem extends SubsystemBase {
       m_motor = new TalonFX(MOTOR_ID,CANIVOR_NAME);
       configs();
   }
-
-  private boolean checkVelocity(){
-    if (m_motor.getVelocity().getValueAsDouble() > VELOCITY_MIN_ERROR)
+  /**
+   * checks if the algea is collected
+   * @return true if the algea is collected
+   */
+  private boolean hasAlgea(){
+    if (m_motor.getVelocity().getValueAsDouble() > VELOCITY_MIN_ERROR) // if the motor pass the velocity threshold
       velocityCheck = true;
-    return velocityCheck;
+    return velocityCheck && Math.abs(m_motor.getVelocity().getValueAsDouble()) < VELOCITY_MIN_ERROR; // if the motor started slowing down 
   }
 
   /**
@@ -45,15 +50,21 @@ public class GripperSubsystem extends SubsystemBase {
       () -> m_motor.set(HOLED_POWER));
   }
 
-  public Command collectUntilCollectedCommand(){ //^ vert high chance this will not work
+  /**
+   * Collects the algea until it is collected.
+   * It first collect with power {@link #COLLECT_POWER}, and hold the algea with power {@link #HOLED_POWER},
+   * and waits for {@link #HOLED_TIME} seconds to make sure the algea is collected.
+   * @return a command that collects the algea until it is collected
+   */
+  public Command collectUntilCollectedCommand(){ 
     return startEnd(() -> m_motor.set(COLLECT_POWER),
      () -> 
      {
-      m_motor.set(HOLED_POWER);
-      velocityCheck = false;
+     m_motor.set(HOLED_POWER);
+      velocityCheck = false; // reset the velocity check
      }
-    ).until(() -> checkVelocity() && m_motor.getVelocity().getValueAsDouble() < VELOCITY_MIN_ERROR); 
-    // this checks if once the motor was at high speed now the motor is slow.
+    ).until(() -> hasAlgea()) // this checks if once the motor was at high speed now the motor is slow.
+    .andThen(() -> Commands.waitSeconds(HOLED_TIME)); //the motor needs time to grab the algea
   }
 
   /**
@@ -67,13 +78,15 @@ public class GripperSubsystem extends SubsystemBase {
    * tossing the algea and then stops the 
    */
   public Command tossCommand() {
-    return runOnce(() -> m_motor.set(TOSS_POWER)).withTimeout(TOSS_TIME);
+    return runEnd(() -> m_motor.set(TOSS_POWER),
+    ()-> m_motor.stopMotor()).withTimeout(TOSS_TIME);
   }
 
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("Gripper/has algea", hasAlgea());
+
   }
 
 

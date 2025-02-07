@@ -7,9 +7,10 @@ public class GripperConstants {
     public static final int MOTOR_ID = 22;
 
     public static final double COLLECT_POWER = 0.5;
-    public static final double HOLED_POWER = 0.15; 
+    public static final double HOLED_POWER = 0.065; 
     public static final double TOSS_POWER = -0.7;
-    public static final double TOSS_TIME = 0.1;
+    public static final double HOLED_TIME = 1.5;
+    public static final double TOSS_TIME = 0.5;
 
     //Peaks
     public static final double VOLTAGE_PEAK = 11.5;
@@ -17,8 +18,8 @@ public class GripperConstants {
 
     // settings
     public static final NeutralModeValue NEUTRAL_MODE = NeutralModeValue.Brake;
-    public static final InvertedValue INVERTED = InvertedValue.Clockwise_Positive;
+    public static final InvertedValue INVERTED = InvertedValue.CounterClockwise_Positive;
 
-    public static final double VELOCITY_MIN_ERROR = 0.1;
+    public static final double VELOCITY_MIN_ERROR = 40;
 
 }

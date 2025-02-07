@@ -125,6 +125,7 @@ public class GripperArm extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("gripper position", m_motor.getPosition().getValueAsDouble());
     SmartDashboard.putBoolean("is at targer", isAtSetPoint()); // todo: put this in a folder. 
+    SmartDashboard.putBoolean("gripperArm switch", m_limitSwitch.get());
   }
 
   private void configs() {

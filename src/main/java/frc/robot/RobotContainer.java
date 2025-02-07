@@ -84,9 +84,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-_driverController.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-_driverController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-_driverController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-_testerController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
+                    .withVelocityY(-_testerController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
+                    .withRotationalRate(-_testerController.getRightX() * MaxAngularRate * 0.1) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -117,6 +117,13 @@ public class RobotContainer {
         _testerController.y().onTrue(cannon.loosenCoralCommand());
         _testerController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
         _testerController.rightBumper().onTrue(gripper.tossCommand());
+
+        _testerController.povUp().whileTrue(elevator.moveCommand(1));
+        _testerController.povDown().whileTrue(elevator.moveCommand(-1));
+
+        _testerController.povRight().whileTrue(gripperArm.moveArmCommand(1));
+        _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(-1));
+
 
         // _driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // _driverController.b().whileTrue(drivetrain.applyRequest(() ->

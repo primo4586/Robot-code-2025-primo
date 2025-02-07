@@ -5,15 +5,21 @@
 package frc.robot.subsystems.Elevator;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Misc;
 
 import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.Elevator.ElevatorConstanst.*;
@@ -62,8 +68,8 @@ private final SysIdRoutine m_sysIdRoutine =
     return instance;
   }
   private ElevatorSubsystem() {
-    m_masterMotor = new TalonFX(MASTER_TALONFX_ID);
-    m_followMotor = new TalonFX(FOLLOW_TALONFX_ID);
+    m_masterMotor = new TalonFX(MASTER_TALONFX_ID, Misc.CANIVOR_NAME);
+    m_followMotor = new TalonFX(FOLLOW_TALONFX_ID, Misc.CANIVOR_NAME);
     follower = new Follower(MASTER_TALONFX_ID, true);
     resetElevator();
     configs();
@@ -132,7 +138,7 @@ private final SysIdRoutine m_sysIdRoutine =
       m_followMotor.setControl(follower);
     }, 
     () -> 
-      m_masterMotor.set(0.3) // kg
+      m_masterMotor.set(0.02) // kg
     );
   }
 
@@ -168,7 +174,24 @@ private final SysIdRoutine m_sysIdRoutine =
   }
 
   private void configs(){
-    m_masterMotor.getConfigurator().apply(ELEVATOR_CONFIG);
-    m_followMotor.getConfigurator().apply(ELEVATOR_CONFIG);
+
+        //upload configs motor
+    StatusCode statusCode = StatusCode.StatusCodeNotInitialized;
+    for (int i = 0; i < 5; i++){
+      statusCode = m_masterMotor.getConfigurator().apply(ELEVATOR_CONFIG);
+      if(statusCode.isOK())
+      break;
+    }
+    if (!statusCode.isOK())
+    System.out.println("Elevator master motor couldn't apply configs" + statusCode.toString());
+
+    statusCode = StatusCode.StatusCodeNotInitialized;
+    for (int i = 0; i < 5; i++){
+      statusCode = m_followMotor.getConfigurator().apply(ELEVATOR_CONFIG);
+      if(statusCode.isOK())
+      break;
+    }
+    if (!statusCode.isOK())
+    System.out.println("Elevator follow motor couldn't apply configs" + statusCode.toString());
   }
 }

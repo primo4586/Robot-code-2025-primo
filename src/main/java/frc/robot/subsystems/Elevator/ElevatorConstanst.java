@@ -10,8 +10,8 @@ public class ElevatorConstanst { // todo: tune values
     public static final int MASTER_TALONFX_ID = 30;
     public static final int FOLLOW_TALONFX_ID = 31;
 
-    public static final double ROLLER_RADIUS = 0.1; // In meters
-    public static final double MAXIMUM_HIGHT = 0; // In meters
+    public static final double ROLLER_RADIUS = 0.048; // In meters
+    public static final double MAXIMUM_HIGHT = 3; // In meters
     public static final double GEAR_RATIO = 15 ;  // todo: i'm not sure if it true 
 
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
@@ -24,15 +24,16 @@ public class ElevatorConstanst { // todo: tune values
 
 
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+      ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAXIMUM_HIGHT; 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = 0;
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -2;
 
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO / (ROLLER_RADIUS * 2 * Math.PI); 
+
 
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
@@ -50,7 +51,7 @@ public class ElevatorConstanst { // todo: tune values
     public static final double MINIMUN_POSITION_ERROR = 0.5;
     public static final double MINIMUN_VELOCITY_ERROR = 0.5;
 
-    public static final double MOVE_POWER = 0.3;
+    public static final double MOVE_POWER = 0.6;
 
     public static final double L1_HEIGHT = 0;
     public static final double L2_HEIGHT = 0;

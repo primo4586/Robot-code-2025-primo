@@ -121,6 +121,10 @@ public class GripperArm extends SubsystemBase {
       return run(() -> m_motor.setControl(systemControl.withPosition(targetAngel.getAsDouble())));
   }
 
+  public Command moveArmCommand(int vec){
+    return startEnd(() -> m_motor.set(0.3 * vec), () -> m_motor.stopMotor());
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("gripper position", m_motor.getPosition().getValueAsDouble());
@@ -158,7 +162,7 @@ public class GripperArm extends SubsystemBase {
      configuration.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = LIMIT_SWITCH_POSITION;
  
      configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-     configuration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+     configuration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
      StatusCode statusCode = StatusCode.StatusCodeNotInitialized;
  
  

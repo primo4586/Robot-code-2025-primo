@@ -15,6 +15,8 @@ import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.units.VoltageUnit;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,7 +28,7 @@ import static frc.robot.subsystems.Elevator.ElevatorConstanst.*;
 
 import java.util.function.DoubleSupplier;
 
-public class ElevatorSubsystem extends SubsystemBase { //todo: add sysid for the elevator
+public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX m_masterMotor; // falcon 500
   private TalonFX m_followMotor; // falcon 500
   private Follower follower;
@@ -36,7 +38,7 @@ public class ElevatorSubsystem extends SubsystemBase { //todo: add sysid for the
 private final SysIdRoutine m_sysIdRoutine =
    new SysIdRoutine(
       new SysIdRoutine.Config(
-         null,        // Use default ramp rate (1 V/s)
+         null ,        // Use default ramp rate (1 V/s)
          Volts.of(4), // Reduce dynamic step voltage to 4 to prevent brownout
          null,        // Use default timeout (10 s)
                       // Log state with Phoenix SignalLogger class
@@ -120,8 +122,9 @@ private final SysIdRoutine m_sysIdRoutine =
   public Command relocatePositionCommand() {
     return run(() -> 
     {
-      m_masterMotor.setControl(_systemControl.withPosition(targetPosition.getAsDouble()).withEnableFOC(true));
+      m_masterMotor.setControl(_systemControl.withPosition(targetPosition.getAsDouble()));
       m_followMotor.setControl(follower);
+      System.out.println("hello");
     });
   }
   /**
@@ -138,7 +141,7 @@ private final SysIdRoutine m_sysIdRoutine =
       m_followMotor.setControl(follower);
     }, 
     () -> 
-      m_masterMotor.set(0.02) // kg
+      m_masterMotor.set(0.015) // kg
     );
   }
 
@@ -171,6 +174,9 @@ private final SysIdRoutine m_sysIdRoutine =
     SmartDashboard.putBoolean("Elavator/IsAtTarget", isAtTarget());
     SmartDashboard.putNumber("Elavator/measurePosition", m_masterMotor.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Elavator/wantedPosition", targetPosition.getAsDouble());
+    SignalLogger.writeDouble("voltage", m_masterMotor.getMotorVoltage().getValueAsDouble());
+    SignalLogger.writeDouble("Velocity", m_masterMotor.getVelocity().getValueAsDouble());
+    SignalLogger.writeDouble("position", m_masterMotor.getPosition().getValueAsDouble());
   }
 
   private void configs(){

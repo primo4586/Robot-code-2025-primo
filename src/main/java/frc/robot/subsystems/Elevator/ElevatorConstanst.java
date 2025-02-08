@@ -11,7 +11,7 @@ public class ElevatorConstanst { // todo: tune values
     public static final int FOLLOW_TALONFX_ID = 31;
 
     public static final double ROLLER_RADIUS = 0.048; // In meters
-    public static final double MAXIMUM_HIGHT = 3; // In meters
+    public static final double MAXIMUM_HIGHT = 2.516845703125; // In meters
     public static final double GEAR_RATIO = 15 ;  // todo: i'm not sure if it true 
 
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
@@ -36,15 +36,15 @@ public class ElevatorConstanst { // todo: tune values
 
 
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
-      ELEVATOR_CONFIG.Slot0.kS = 0.4; // Volts to overcome static friction
-      ELEVATOR_CONFIG.Slot0.kV = 0.001; // Volts for a velocity target of 1 rps
-      ELEVATOR_CONFIG.Slot0.kA = 0.001; // Volts for an acceleration of 1 rps/s
-      ELEVATOR_CONFIG.Slot0.kP = 0.3;
+      ELEVATOR_CONFIG.Slot0.kS = 1.5; // Volts to overcome static friction
+      ELEVATOR_CONFIG.Slot0.kV = 3; // Volts for a velocity target of 1 rps
+      ELEVATOR_CONFIG.Slot0.kA = 9; // Volts for an acceleration of 1 rps/s
+      ELEVATOR_CONFIG.Slot0.kP = 30;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 350;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2500;      
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 6;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 10;      
     }
 
     public static final double HIGHT_OF_THE_GROUND = 0;
@@ -54,8 +54,8 @@ public class ElevatorConstanst { // todo: tune values
     public static final double MOVE_POWER = 0.6;
 
     public static final double L1_HEIGHT = 0;
-    public static final double L2_HEIGHT = 0;
-    public static final double L3_HEIGHT = 0;
-    public static final double L4_HEIGHT = 0; // todo tune values
+    public static final double L2_HEIGHT = 0.797607421875;
+    public static final double L3_HEIGHT = 1.4619140625;
+    public static final double L4_HEIGHT = 2.503173828125; // todo tune values
 
 }

@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.*;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -19,6 +20,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
@@ -57,8 +59,9 @@ public class RobotContainer {
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public static final CommandXboxController _driverController = new CommandXboxController(0);
-    public static final CommandXboxController _operatorController = new CommandXboxController(2);
-    public static final CommandXboxController _testerController = new CommandXboxController(1);
+    public static final CommandXboxController _operatorController = new CommandXboxController(1);
+    public static final CommandXboxController _testerController = new CommandXboxController(2);
+    public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
     // get the right joystick position and sets it to according position
     private static DoubleSupplier gripperArmPosition = _operatorController.getRightX() == 1 ?
@@ -81,14 +84,14 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(-_testerController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
-                    .withVelocityY(-_testerController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
-                    .withRotationalRate(-_testerController.getRightX() * MaxAngularRate * 0.1) // Drive counterclockwise with negative X (left)
-            )
-        );
+        // drivetrain.setDefaultCommand(
+        //     // Drivetrain will execute this command periodically
+        //     drivetrain.applyRequest(() ->
+        //         drive.withVelocityX(-_testerController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
+        //             .withVelocityY(-_testerController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
+        //             .withRotationalRate(-_testerController.getRightX() * MaxAngularRate * 0.1) // Drive counterclockwise with negative X (left)
+        //     )
+        // );
 
         //Operator Controller
 
@@ -97,6 +100,7 @@ public class RobotContainer {
         _operatorController.y().onTrue(cannon.loosenCoralCommand());
 
         //elevator buttons
+        _operatorController.rightTrigger().onTrue(elevator.relocatePositionCommand());
         _operatorController.povUp().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT));
         _operatorController.povRight().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L2_HEIGHT));
         _operatorController.povDown().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));
@@ -120,10 +124,18 @@ public class RobotContainer {
 
         _testerController.povUp().whileTrue(elevator.moveCommand(1));
         _testerController.povDown().whileTrue(elevator.moveCommand(-1));
+        _testerController.start().onTrue(elevator.resetElevatorCommand());
 
         _testerController.povRight().whileTrue(gripperArm.moveArmCommand(1));
         _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(-1));
 
+        //sysysysy
+        _sysIdController.back().and(_sysIdController.y()).whileTrue(elevator.sysIdDynamic(Direction.kForward));
+        _sysIdController.back().and(_sysIdController.x()).whileTrue(elevator.sysIdDynamic(Direction.kReverse));
+        _sysIdController.start().and(_sysIdController.y()).whileTrue(elevator.sysIdQuasistatic(Direction.kForward));
+        _sysIdController.start().and(_sysIdController.x()).whileTrue(elevator.sysIdQuasistatic(Direction.kReverse));
+        _sysIdController.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
+        _sysIdController.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
 
         // _driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // _driverController.b().whileTrue(drivetrain.applyRequest(() ->

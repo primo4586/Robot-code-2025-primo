@@ -36,15 +36,15 @@ public class ElevatorConstanst { // todo: tune values
 
 
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
-      ELEVATOR_CONFIG.Slot0.kS = 1.5; // Volts to overcome static friction
-      ELEVATOR_CONFIG.Slot0.kV = 3; // Volts for a velocity target of 1 rps
-      ELEVATOR_CONFIG.Slot0.kA = 9; // Volts for an acceleration of 1 rps/s
+      ELEVATOR_CONFIG.Slot0.kS = 1.4258; // Volts to overcome static friction
+      ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps
+      ELEVATOR_CONFIG.Slot0.kA = 9.0127; // Volts for an acceleration of 1 rps/s
       ELEVATOR_CONFIG.Slot0.kP = 30;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 6;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 10;      
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 300;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 250;      
     }
 
     public static final double HIGHT_OF_THE_GROUND = 0;
@@ -57,5 +57,8 @@ public class ElevatorConstanst { // todo: tune values
     public static final double L2_HEIGHT = 0.797607421875;
     public static final double L3_HEIGHT = 1.4619140625;
     public static final double L4_HEIGHT = 2.503173828125; // todo tune values
+
+    public static final double LOW_ALGEA_HEIGHT = 0.89;
+    public static final double HIGH_ALGEA_HEIGHT = 0; //TODO: FIND VALUE
 
 }

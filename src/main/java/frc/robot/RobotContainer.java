@@ -64,13 +64,13 @@ public class RobotContainer {
     public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
     // get the right joystick position and sets it to according position
-    private static DoubleSupplier gripperArmPosition = _operatorController.getRightX() == 1 ?
+    private static DoubleSupplier gripperArmPosition = _operatorController.getRightX() > 0.5 ?
                                                             () ->GripperArmConstants.PROCESSOR_ANGLE :
-                                                            _operatorController.getRightY() == -1 ? 
+                                                            _operatorController.getRightY() < -0.5 ? 
                                                             () -> GripperArmConstants.REEF_ANGLE :
-                                                                _operatorController.getRightY() == 1 ? 
-                                                                () -> GripperArmConstants.FLOOR_ANGLE : () -> 0;
-
+                                                                _operatorController.getRightY() > 0.5 ? 
+                                                                () -> GripperArmConstants.FLOOR_ANGLE : () -> 0.15; // todo change this part
+    
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
 
@@ -84,14 +84,14 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        // drivetrain.setDefaultCommand(
-        //     // Drivetrain will execute this command periodically
-        //     drivetrain.applyRequest(() ->
-        //         drive.withVelocityX(-_testerController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
-        //             .withVelocityY(-_testerController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
-        //             .withRotationalRate(-_testerController.getRightX() * MaxAngularRate * 0.1) // Drive counterclockwise with negative X (left)
-        //     )
-        // );
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-_testerController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
+                    .withVelocityY(-_testerController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
+                    .withRotationalRate(-_testerController.getRightX() * MaxAngularRate * 0.1) // Drive counterclockwise with negative X (left)
+            )
+        );
 
         //Operator Controller
 
@@ -101,6 +101,8 @@ public class RobotContainer {
 
         //elevator buttons
         _operatorController.rightTrigger().onTrue(elevator.relocatePositionCommand());
+        _operatorController.rightTrigger().onTrue(gripperArm.relocateAngelCommand());
+        _operatorController.leftTrigger().onTrue(gripperArm.setTargetAngelCommand(gripperArmPosition.getAsDouble()));
         _operatorController.povUp().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT));
         _operatorController.povRight().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L2_HEIGHT));
         _operatorController.povDown().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));
@@ -112,7 +114,7 @@ public class RobotContainer {
         _operatorController.rightStick().whileTrue(gripperArm.setTargetAngelCommand(gripperArmPosition.getAsDouble()));
 
         //resets
-        _operatorController.back().onTrue(gripperArm.setHomeCommand());
+        _testerController.back().onTrue(gripperArm.setHomeCommand());
         _operatorController.back().onTrue(elevator.resetElevatorCommand());
 
 
@@ -126,14 +128,15 @@ public class RobotContainer {
         _testerController.povDown().whileTrue(elevator.moveCommand(-1));
         _testerController.start().onTrue(elevator.resetElevatorCommand());
 
-        _testerController.povRight().whileTrue(gripperArm.moveArmCommand(1));
-        _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(-1));
+        
+        _testerController.povRight().whileTrue(gripperArm.moveArmCommand(-1));
+        _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(1));
 
         //sysysysy
-        _sysIdController.back().and(_sysIdController.y()).whileTrue(elevator.sysIdDynamic(Direction.kForward));
-        _sysIdController.back().and(_sysIdController.x()).whileTrue(elevator.sysIdDynamic(Direction.kReverse));
-        _sysIdController.start().and(_sysIdController.y()).whileTrue(elevator.sysIdQuasistatic(Direction.kForward));
-        _sysIdController.start().and(_sysIdController.x()).whileTrue(elevator.sysIdQuasistatic(Direction.kReverse));
+        _sysIdController.back().and(_sysIdController.y()).whileTrue(gripperArm.sysIdDynamic(Direction.kForward));
+        _sysIdController.back().and(_sysIdController.x()).whileTrue(gripperArm.sysIdDynamic(Direction.kReverse));
+        _sysIdController.start().and(_sysIdController.y()).whileTrue(gripperArm.sysIdQuasistatic(Direction.kForward));
+        _sysIdController.start().and(_sysIdController.x()).whileTrue(gripperArm.sysIdQuasistatic(Direction.kReverse));
         _sysIdController.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
         _sysIdController.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
 

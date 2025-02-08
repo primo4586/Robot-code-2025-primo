@@ -124,7 +124,6 @@ private final SysIdRoutine m_sysIdRoutine =
     {
       m_masterMotor.setControl(_systemControl.withPosition(targetPosition.getAsDouble()));
       m_followMotor.setControl(follower);
-      System.out.println("hello");
     });
   }
   /**

@@ -5,11 +5,13 @@
 package frc.robot.subsystems.gripperArm;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicExpoVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -20,11 +22,13 @@ import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import static frc.robot.subsystems.gripperArm.GripperArmConstants.*;
 
 import java.util.function.DoubleSupplier;
 
+import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.Misc.*;
 public class GripperArm extends SubsystemBase {
 
@@ -36,6 +40,25 @@ public class GripperArm extends SubsystemBase {
    * we dont use mm beause the movment of the arm is minimall and mm is for large distance movment.
    */
   private PositionVoltage systemControl; // to control a position
+
+  private final VoltageOut m_voltReq = new VoltageOut(0.0);
+
+  private final SysIdRoutine m_sysIdRoutine =
+    new SysIdRoutine(
+        new SysIdRoutine.Config(
+          null ,        // Use default ramp rate (1 V/s)
+          Volts.of(4), // Reduce dynamic step voltage to 4 to prevent brownout
+          null,        // Use default timeout (10 s)
+                        // Log state with Phoenix SignalLogger class
+          (state) -> SignalLogger.writeString("state", state.toString())
+        ),
+        new SysIdRoutine.Mechanism(
+          (volts) -> m_motor.setControl(m_voltReq.withOutput(volts.in(Volts))),
+          null,
+          this
+        )
+    );
+
 
   // singelton
   private static GripperArm instance;
@@ -91,7 +114,7 @@ public class GripperArm extends SubsystemBase {
      () -> {
       resetPosition();
       m_motor.stopMotor();
-     }).until(() -> m_limitSwitch.get());
+     }).until(() -> !m_limitSwitch.get());
   }
 
   /**
@@ -118,18 +141,28 @@ public class GripperArm extends SubsystemBase {
    * @return
    */
   public Command relocateAngelCommand() {
-      return run(() -> m_motor.setControl(systemControl.withPosition(targetAngel.getAsDouble())));
+      return run(() -> {m_motor.setControl(systemControl.withPosition(targetAngel.getAsDouble())); System.out.println("gripper arm is running");});
   }
 
   public Command moveArmCommand(int vec){
     return startEnd(() -> m_motor.set(0.3 * vec), () -> m_motor.stopMotor());
   }
 
+  //sysId
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutine.quasistatic(direction);
+ }
+ 
+ public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return m_sysIdRoutine.dynamic(direction);
+ }
+
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("gripper position", m_motor.getPosition().getValueAsDouble());
-    SmartDashboard.putBoolean("is at targer", isAtSetPoint()); // todo: put this in a folder. 
-    SmartDashboard.putBoolean("gripperArm switch", m_limitSwitch.get());
+    SmartDashboard.putNumber("gripper/gripper position", m_motor.getPosition().getValueAsDouble());
+    SmartDashboard.putBoolean("gripper/is at targer", isAtSetPoint()); // todo: put this in a folder. 
+    SmartDashboard.putBoolean("gripper/gripperArm switch", m_limitSwitch.get());
+    SmartDashboard.putNumber("gripper/target position", targetAngel.getAsDouble());
   }
 
   private void configs() {
@@ -157,12 +190,9 @@ public class GripperArm extends SubsystemBase {
      configuration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = BACKWARD_LIMIT;
 
      configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-     configuration.HardwareLimitSwitch.ReverseLimitAutosetPositionEnable = true;
-     configuration.HardwareLimitSwitch.ReverseLimitRemoteSensorID = LIMIT_SWITCH_ID;
-     configuration.HardwareLimitSwitch.ReverseLimitAutosetPositionValue = LIMIT_SWITCH_POSITION;
- 
+
      configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-     configuration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+     configuration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
      StatusCode statusCode = StatusCode.StatusCodeNotInitialized;
  
  

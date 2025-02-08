@@ -12,12 +12,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+
 import static frc.robot.subsystems.Gripper.GripperConstants.*;
 import static frc.robot.Misc.*;
 
 public class GripperSubsystem extends SubsystemBase {
   private TalonFX m_motor;
   private boolean velocityCheck = false;
+  private double timer = 0;
 
   // singelton
   private static GripperSubsystem instance;
@@ -38,8 +41,12 @@ public class GripperSubsystem extends SubsystemBase {
    */
   private boolean hasAlgea(){
     if (m_motor.getVelocity().getValueAsDouble() > VELOCITY_MIN_ERROR) // if the motor pass the velocity threshold
-      velocityCheck = true;
-    return velocityCheck && Math.abs(m_motor.getVelocity().getValueAsDouble()) < VELOCITY_MIN_ERROR; // if the motor started slowing down 
+      velocityCheck = true; 
+      
+    if (velocityCheck && Math.abs(m_motor.getVelocity().getValueAsDouble()) < VELOCITY_MIN_ERROR)
+      timer += 0.02;
+      
+    return  timer > HOLED_TIME; // if the motor started slowing down 
   }
 
   /**
@@ -58,13 +65,12 @@ public class GripperSubsystem extends SubsystemBase {
    */
   public Command collectUntilCollectedCommand(){ 
     return startEnd(() -> m_motor.set(COLLECT_POWER),
-     () -> 
-     {
-     m_motor.set(HOLED_POWER);
+    () ->
+     {m_motor.set(HOLED_POWER);
       velocityCheck = false; // reset the velocity check
-     }
-    ).until(() -> hasAlgea()) // this checks if once the motor was at high speed now the motor is slow.
-    .andThen(() -> Commands.waitSeconds(HOLED_TIME)); //the motor needs time to grab the algea
+      timer = 0; // reset the timer 
+     })
+    .until(() -> hasAlgea()); // this checks if once the motor was at high speed now the motor is slow.
   }
 
   /**
@@ -86,6 +92,8 @@ public class GripperSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Gripper/has algea", hasAlgea());
+    SmartDashboard.putBoolean("Gripper/Velocity check", velocityCheck);
+    SmartDashboard.putNumber("Gripper/Timer", timer);
 
   }
 

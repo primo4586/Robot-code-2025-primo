@@ -7,9 +7,9 @@ public class GripperConstants {
     public static final int MOTOR_ID = 22;
 
     public static final double COLLECT_POWER = 0.5;
-    public static final double HOLED_POWER = 0.065; 
+    public static final double HOLED_POWER = 0.08; 
     public static final double TOSS_POWER = -0.7;
-    public static final double HOLED_TIME = 1.5;
+    public static final double HOLED_TIME = 0.5;
     public static final double TOSS_TIME = 0.5;
 
     //Peaks

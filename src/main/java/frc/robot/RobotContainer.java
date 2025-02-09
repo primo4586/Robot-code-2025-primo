@@ -92,7 +92,7 @@ public class RobotContainer {
         _operatorController.y().onTrue(cannon.loosenCoralCommand());
 
         //gripper arm
-        gripperArm.setDefaultCommand(gripperArm.relocateAngelCommand(_operatorController));
+        // gripperArm.setDefaultCommand(gripperArm.relocateAngelCommand(_operatorController));
 
         //elevator buttons
         elevator.setDefaultCommand(elevator.relocatePositionCommand()); //todo this might be a problem
@@ -107,7 +107,7 @@ public class RobotContainer {
 
         //resets
         _testerController.back().onTrue(gripperArm.setHomeCommand());
-        _operatorController.back().onTrue(elevator.resetElevatorCommand());
+      //  _operatorController.back().onTrue(elevator.resetElevatorCommand());
 
 
         //Tester

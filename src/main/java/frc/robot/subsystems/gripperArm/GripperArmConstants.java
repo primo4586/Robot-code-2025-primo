@@ -13,11 +13,11 @@ public class GripperArmConstants { // TODO: fIND ALL VALUES
 
         // PID Constants
     //TODO find values
-    public static final double KP = 0.08;
+    public static final double KP = 20;
     public static final double KD = 0;
-    public static final double KS  = 0.026858;
-    public static final double KA = 0.02239;
-    public static final double KV = 1.6691;
+    public static final double KS  = 0;
+    public static final double KA = 0;
+    public static final double KV = 0;
 
     public static final double PEAK_VOLTAGE = 11.5;
     public static final double PEAK_CURRENT = 60;
@@ -32,6 +32,6 @@ public class GripperArmConstants { // TODO: fIND ALL VALUES
     //Angles
     public static final double REEF_ANGLE = -1;
     public static final double FLOOR_ANGLE = -1.5;
-    public static final double PROCESSOR_ANGLE = -2; //TODO: Find values
+    public static final double PROCESSOR_ANGLE = -2.3984375;
 
 }

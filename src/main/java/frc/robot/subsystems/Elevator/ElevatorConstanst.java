@@ -39,12 +39,12 @@ public class ElevatorConstanst { // todo: tune values
       ELEVATOR_CONFIG.Slot0.kS = 1.4258; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps
       ELEVATOR_CONFIG.Slot0.kA = 9.0127; // Volts for an acceleration of 1 rps/s
-      ELEVATOR_CONFIG.Slot0.kP = 30;
+      ELEVATOR_CONFIG.Slot0.kP = 40;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 300;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 250;      
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 1;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2500;      
     }
 
     public static final double HIGHT_OF_THE_GROUND = 0;

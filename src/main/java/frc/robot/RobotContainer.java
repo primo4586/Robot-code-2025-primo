@@ -63,14 +63,6 @@ public class RobotContainer {
     public static final CommandXboxController _testerController = new CommandXboxController(2);
     public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
-    // get the right joystick position and sets it to according position
-    private static DoubleSupplier gripperArmPosition = _operatorController.getRightX() > 0.5 ?
-                                                            () ->GripperArmConstants.PROCESSOR_ANGLE :
-                                                            _operatorController.getRightY() < -0.5 ? 
-                                                            () -> GripperArmConstants.REEF_ANGLE :
-                                                                _operatorController.getRightY() > 0.5 ? 
-                                                                () -> GripperArmConstants.FLOOR_ANGLE : () -> 0.15; // todo change this part
-    
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
 
@@ -99,10 +91,11 @@ public class RobotContainer {
         _operatorController.a().onTrue(cannon.adjustCoralCommand());
         _operatorController.y().onTrue(cannon.loosenCoralCommand());
 
+        //gripper arm
+        gripperArm.setDefaultCommand(gripperArm.relocateAngelCommand(_operatorController));
+
         //elevator buttons
-        _operatorController.rightTrigger().onTrue(elevator.relocatePositionCommand());
-        _operatorController.rightTrigger().onTrue(gripperArm.relocateAngelCommand());
-        _operatorController.leftTrigger().onTrue(gripperArm.setTargetAngelCommand(gripperArmPosition.getAsDouble()));
+        elevator.setDefaultCommand(elevator.relocatePositionCommand()); //todo this might be a problem
         _operatorController.povUp().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT));
         _operatorController.povRight().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L2_HEIGHT));
         _operatorController.povDown().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));
@@ -111,7 +104,6 @@ public class RobotContainer {
         //gripper (right/left joysticks)
         _operatorController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
         _operatorController.rightBumper().onTrue(gripper.tossCommand());
-        _operatorController.rightStick().whileTrue(gripperArm.setTargetAngelCommand(gripperArmPosition.getAsDouble()));
 
         //resets
         _testerController.back().onTrue(gripperArm.setHomeCommand());

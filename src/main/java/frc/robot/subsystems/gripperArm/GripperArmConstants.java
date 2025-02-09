@@ -11,7 +11,7 @@ public class GripperArmConstants { // TODO: fIND ALL VALUES
     public static final double MINIMUN_POSITION_ERROR = 1;
     public static final double MINIMUN_VELOCITY = 1;
 
-        // MotionMagic Constants
+        // PID Constants
     //TODO find values
     public static final double KP = 0.08;
     public static final double KD = 0;
@@ -30,8 +30,8 @@ public class GripperArmConstants { // TODO: fIND ALL VALUES
     public static final double ABS_SENSOR_POSITION = 0;
 
     //Angles
-    public static final double REEF_ANGLE = 0.3;
-    public static final double FLOOR_ANGLE = 0.2;
-    public static final double PROCESSOR_ANGLE = 0.5; //TODO: Find values
+    public static final double REEF_ANGLE = -1;
+    public static final double FLOOR_ANGLE = -1.5;
+    public static final double PROCESSOR_ANGLE = -2; //TODO: Find values
 
 }

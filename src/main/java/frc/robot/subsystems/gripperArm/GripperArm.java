@@ -18,10 +18,13 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import static frc.robot.subsystems.gripperArm.GripperArmConstants.*;
@@ -34,8 +37,7 @@ public class GripperArm extends SubsystemBase {
 
   private TalonFX m_motor; // falcon 500 motor
   private DigitalInput m_limitSwitch; // limit switch idk ISR really wanted it
-  
-  private static DoubleSupplier targetAngel = () -> 0;
+  private static double lastAngle = 0; 
   /*
    * we dont use mm beause the movment of the arm is minimall and mm is for large distance movment.
    */
@@ -100,8 +102,16 @@ public class GripperArm extends SubsystemBase {
    * @return true if the arm is at the set point. false otherwise.
    */
   private boolean isAtSetPoint() {
-    return Math.abs(m_motor.getPosition().getValueAsDouble() -  (targetAngel.getAsDouble() / 360)) < MINIMUN_POSITION_ERROR &&
+    return Math.abs(m_motor.getPosition().getValueAsDouble() -  (lastAngle)) < MINIMUN_POSITION_ERROR &&
      m_motor.getVelocity().getValueAsDouble() < MINIMUN_VELOCITY;
+  }
+
+  public double getAngle(CommandXboxController joyStick) {
+    double angel = joyStick.getRightY() > 0.7 ? REEF_ANGLE :
+            joyStick.getRightY() < -0.7 ? FLOOR_ANGLE :
+              joyStick.getRightX() > 0.7 ? PROCESSOR_ANGLE : lastAngle;
+    lastAngle = angel;
+    return angel;
   }
 
   /**
@@ -117,22 +127,6 @@ public class GripperArm extends SubsystemBase {
      }).until(() -> !m_limitSwitch.get());
   }
 
-  /**
-   * set the target angle
-   * @param targetAngel
-   */
-  public void setTargetAngel(double targetAngel){ 
-    this.targetAngel = () -> targetAngel;
-
-  }
-
-    /**
-   * set the target angle (as a command)
-   * @param targetAngel
-   */
-  public Command setTargetAngelCommand(double targetAngel){ 
-    return runOnce(() -> setTargetAngel(targetAngel));
-  }
 
 
   /**
@@ -140,8 +134,8 @@ public class GripperArm extends SubsystemBase {
    * you need to call it once per game. and use setTargetAngel to Change the target angle
    * @return
    */
-  public Command relocateAngelCommand() {
-      return run(() -> {m_motor.setControl(systemControl.withPosition(targetAngel.getAsDouble())); System.out.println("gripper arm is running");});
+  public Command relocateAngelCommand(CommandXboxController joyStick) {
+      return run(() -> {m_motor.setControl(systemControl.withPosition(getAngle(joyStick))); System.out.println("gripper arm is running");});
   }
 
   public Command moveArmCommand(int vec){
@@ -160,9 +154,9 @@ public class GripperArm extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("gripper/gripper position", m_motor.getPosition().getValueAsDouble());
-    SmartDashboard.putBoolean("gripper/is at targer", isAtSetPoint()); // todo: put this in a folder. 
+    SmartDashboard.putBoolean("gripper/is at targer", isAtSetPoint());
     SmartDashboard.putBoolean("gripper/gripperArm switch", m_limitSwitch.get());
-    SmartDashboard.putNumber("gripper/target position", targetAngel.getAsDouble());
+    SmartDashboard.putNumber("gripper/target position", lastAngle);
   }
 
   private void configs() {

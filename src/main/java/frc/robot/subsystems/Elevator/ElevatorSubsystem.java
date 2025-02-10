@@ -55,7 +55,7 @@ private final SysIdRoutine m_sysIdRoutine =
 
   private static MotionMagicVoltage _systemControl = new MotionMagicVoltage(0);
 
-  private static DoubleSupplier targetPosition = () -> 0.0;
+  private static double targetPosition = 0.0;
 
   private static ElevatorSubsystem instance;
   /**
@@ -104,7 +104,7 @@ private final SysIdRoutine m_sysIdRoutine =
    * @param position the desired target position in metters.
    */
   public void setTargetPosition(double position) {
-    targetPosition = () -> position;
+    targetPosition = position;
   }
 
    /**
@@ -123,27 +123,26 @@ private final SysIdRoutine m_sysIdRoutine =
   public Command relocatePositionCommand() {
     return run(() -> 
     {
-      m_masterMotor.setControl(_systemControl.withPosition(targetPosition.getAsDouble()));
+      m_masterMotor.setControl(_systemControl.withPosition(targetPosition));
       m_followMotor.setControl(follower); // following the master
-    }).withName("Relocate elevator to " + targetPosition.getAsDouble()).
-    withInterruptBehavior(InterruptionBehavior.kCancelSelf); // stop it self if anoter Command is running
+    }).withName("Relocate elevator to " + targetPosition);
   }
   /**
    * a Command that moves the Elavator at a constant power {@link #MOVE_POWER}
    * with direction of the parameter and stop the elevator
-   * when butten is relesd, then set the motor to overcome gravity and stay in place. 
+  * when butten is relesd, then set the motor to overcome gravity and stay in place. 
    * @param vec a value that is 1 or -1 depending on the direction
    * @return
    */
-  public Command moveCommand(int vec){
-    return runEnd(() -> 
+public Command moveCommand(int vec){
+  return runEnd(() -> 
     {
       m_masterMotor.set(MOVE_POWER * vec);
       m_followMotor.setControl(follower);
     }, 
     () -> 
-      m_masterMotor.set(0.015) // kg
-    ).withName("move elevator Command" + MOVE_POWER * vec)
+      targetPosition = m_masterMotor.getPosition().getValueAsDouble() // todo: fixed this part
+      ).withName("move elevator Command" + MOVE_POWER * vec)
     .withInterruptBehavior(InterruptionBehavior.kCancelIncoming); // stop other commands in this subsystem when running 
   }
 
@@ -167,7 +166,7 @@ private final SysIdRoutine m_sysIdRoutine =
    * @return true if the elevator is at its target position, false otherwise.
    */
   public boolean isAtTarget() {
-    return Math.abs(m_masterMotor.getPosition().getValueAsDouble() - targetPosition.getAsDouble()) < MINIMUN_POSITION_ERROR
+    return Math.abs(m_masterMotor.getPosition().getValueAsDouble() - targetPosition) < MINIMUN_POSITION_ERROR
             && Math.abs(m_masterMotor.getVelocity().getValueAsDouble()) < MINIMUN_VELOCITY_ERROR;
   }
 
@@ -175,7 +174,7 @@ private final SysIdRoutine m_sysIdRoutine =
   public void periodic() {
     SmartDashboard.putBoolean("Elavator/IsAtTarget", isAtTarget());
     SmartDashboard.putNumber("Elavator/measurePosition", m_masterMotor.getPosition().getValueAsDouble());
-    SmartDashboard.putNumber("Elavator/wantedPosition", targetPosition.getAsDouble());
+    SmartDashboard.putNumber("Elavator/wantedPosition", targetPosition);
     SignalLogger.writeDouble("voltage", m_masterMotor.getMotorVoltage().getValueAsDouble());
     SignalLogger.writeDouble("Velocity", m_masterMotor.getVelocity().getValueAsDouble());
     SignalLogger.writeDouble("position", m_masterMotor.getPosition().getValueAsDouble());

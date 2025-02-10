@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.Commands.CommandGroupFactory;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
@@ -95,7 +95,7 @@ public class RobotContainer {
         gripperArm.setDefaultCommand(gripperArm.relocateAngelCommand(_operatorController));
 
         //elevator buttons
-        elevator.setDefaultCommand(elevator.relocatePositionCommand()); //todo this is a problem
+        elevator.setDefaultCommand(elevator.relocatePositionCommand());
         _operatorController.povUp().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT));
         _operatorController.povRight().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L2_HEIGHT));
         _operatorController.povDown().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));
@@ -107,7 +107,7 @@ public class RobotContainer {
 
         //resets
         _testerController.back().onTrue(gripperArm.setHomeCommand());
-      //  _operatorController.back().onTrue(elevator.resetElevatorCommand());
+        _operatorController.start().onTrue(elevator.resetElevatorCommand());
 
 
         //Tester
@@ -123,6 +123,8 @@ public class RobotContainer {
         
         _testerController.povRight().whileTrue(gripperArm.moveArmCommand(-1));
         _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(1));
+
+        _testerController.rightTrigger().onTrue(CommandGroupFactory.putCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
 
         //sysysysy
         _sysIdController.back().and(_sysIdController.y()).whileTrue(gripperArm.sysIdDynamic(Direction.kForward));

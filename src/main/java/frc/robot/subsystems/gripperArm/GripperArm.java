@@ -24,11 +24,13 @@ import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import static frc.robot.subsystems.gripperArm.GripperArmConstants.*;
 
+import java.security.PublicKey;
 import java.util.function.DoubleSupplier;
 
 import static edu.wpi.first.units.Units.Volts;
@@ -37,7 +39,9 @@ public class GripperArm extends SubsystemBase {
 
   private TalonFX m_motor; // falcon 500 motor
   private DigitalInput m_limitSwitch; // limit switch idk ISR really wanted it
-  private static double lastAngle = 0; 
+
+  private double lastAngle = 0; 
+  private Double angle = 0.0; 
   /*
    * we dont use mm beause the movment of the arm is minimall and mm is for large distance movment.
    */
@@ -93,6 +97,7 @@ public class GripperArm extends SubsystemBase {
 
   public void resetPosition() {
     m_motor.setPosition(0);
+    lastAngle = 0;
   }
 
   /**
@@ -106,12 +111,18 @@ public class GripperArm extends SubsystemBase {
      m_motor.getVelocity().getValueAsDouble() < MINIMUN_VELOCITY;
   }
 
-  public double getAngle(CommandXboxController joyStick) {
-    double angel = joyStick.getRightY() > 0.7 ? REEF_ANGLE :
-            joyStick.getRightY() < -0.7 ? FLOOR_ANGLE : lastAngle;
-    lastAngle = angel;
-    return angel;
+  public void getAngle(CommandXboxController joyStick) {
+    angle  = joyStick.getRightY() > 0.7 ? REEF_ANGLE :
+            joyStick.getRightY() < -0.7 ? FLOOR_ANGLE :
+            joyStick.getRightX() < -0.7 ? 0:
+            lastAngle;
+
+    lastAngle = angle;
   }
+
+  public Command setAngle(double angle){
+      return runOnce(() -> lastAngle = angle);  
+    }
 
   /**
    * a command that will bring the gripper arm to the home position, (up position).
@@ -123,6 +134,7 @@ public class GripperArm extends SubsystemBase {
      () -> {
       resetPosition();
       m_motor.stopMotor();
+
      }).until(() -> !m_limitSwitch.get());
   }
 
@@ -134,11 +146,15 @@ public class GripperArm extends SubsystemBase {
    * @return
    */
   public Command relocateAngelCommand(CommandXboxController joyStick) {
-      return run(() -> m_motor.setControl(systemControl.withPosition(getAngle(joyStick))));
+      return run(() -> {
+        getAngle(joyStick);
+        m_motor.setControl(systemControl.withPosition(angle));
+      }).withName("Relocate arm to " + angle)
+     .withInterruptBehavior(InterruptionBehavior.kCancelSelf);
   }
 
   public Command moveArmCommand(int vec){
-    return startEnd(() -> m_motor.set(0.3 * vec), () -> m_motor.set(0.015));
+    return startEnd(() -> m_motor.set(0.3 * vec), () -> lastAngle = m_motor.getPosition().getValueAsDouble() );
   }
 
   //sysId

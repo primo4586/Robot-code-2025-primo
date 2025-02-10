@@ -139,7 +139,7 @@ public class GripperArm extends SubsystemBase {
   }
 
   public Command moveArmCommand(int vec){
-    return startEnd(() -> m_motor.set(0.3 * vec), () -> m_motor.set(0.02));
+    return startEnd(() -> m_motor.set(0.3 * vec), () -> m_motor.set(0.015));
   }
 
   //sysId

@@ -1,8 +1,6 @@
 package frc.robot.subsystems.gripperArm;
 
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
-
-public class GripperArmConstants { // TODO: fIND ALL VALUES
+public class GripperArmConstants {
     public static final int MOTOR_ID = 20; 
     public static final int LIMIT_SWITCH_ID = 9; 
 
@@ -12,7 +10,6 @@ public class GripperArmConstants { // TODO: fIND ALL VALUES
     public static final double MINIMUN_VELOCITY = 1;
 
         // PID Constants
-    //TODO find values
     public static final double KP = 20;
     public static final double KD = 0;
     public static final double KS  = 0;

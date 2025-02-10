@@ -20,6 +20,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Misc;
 
@@ -94,7 +95,7 @@ private final SysIdRoutine m_sysIdRoutine =
    * and for knowing where the elevator is when the program starts.
    */
   public Command resetElevatorCommand(){
-    return runOnce(() -> resetElevator());
+    return runOnce(() -> resetElevator()).withName("reset elevator");
   }
 
   /**
@@ -112,7 +113,7 @@ private final SysIdRoutine m_sysIdRoutine =
    * @param position the desired target position in metters.
    */
   public Command setTargetPositionCommand(double position) {
-    return runOnce(() -> setTargetPosition(position));
+    return runOnce(() -> setTargetPosition(position)).withName("set elevator target to " + position);
   }
   /**
    * A command that moves the elevator to its target position.
@@ -123,8 +124,9 @@ private final SysIdRoutine m_sysIdRoutine =
     return run(() -> 
     {
       m_masterMotor.setControl(_systemControl.withPosition(targetPosition.getAsDouble()));
-      m_followMotor.setControl(follower);
-    });
+      m_followMotor.setControl(follower); // following the master
+    }).withName("Relocate elevator to " + targetPosition.getAsDouble()).
+    withInterruptBehavior(InterruptionBehavior.kCancelSelf); // stop it self if anoter Command is running
   }
   /**
    * a Command that moves the Elavator at a constant power {@link #MOVE_POWER}
@@ -141,7 +143,8 @@ private final SysIdRoutine m_sysIdRoutine =
     }, 
     () -> 
       m_masterMotor.set(0.015) // kg
-    );
+    ).withName("move elevator Command" + MOVE_POWER * vec)
+    .withInterruptBehavior(InterruptionBehavior.kCancelIncoming); // stop other commands in this subsystem when running 
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {

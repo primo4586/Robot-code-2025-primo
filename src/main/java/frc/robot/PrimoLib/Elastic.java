@@ -2,6 +2,7 @@ package frc.robot.PrimoLib;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Elastic {
     public static void autoSelector(){
@@ -107,5 +108,9 @@ public class Elastic {
     SmartDashboard.putData("cycle 3 level", m_chooserLevelCycle2);
 
 
+    }
+
+    public static void dispalyCommandScheduler(){
+        SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance() );
     }
 }

@@ -146,12 +146,19 @@ public class GripperArm extends SubsystemBase {
    * @return
    */
   public Command relocateAngelCommand(CommandXboxController joyStick) {
-      return run(() -> {
+      return runOnce(() -> {
         getAngle(joyStick);
         m_motor.setControl(systemControl.withPosition(angle));
       }).withName("Relocate arm to " + angle)
      .withInterruptBehavior(InterruptionBehavior.kCancelSelf);
   }
+  public Command relocateAngelCommand(double angle) {
+    return run(() -> {
+      this.angle = angle; 
+      m_motor.setControl(systemControl.withPosition(angle));
+    }).withName("Relocate arm to " + angle)
+   .withInterruptBehavior(InterruptionBehavior.kCancelSelf);
+}
 
   public Command moveArmCommand(int vec){
     return startEnd(() -> m_motor.set(0.3 * vec), () -> lastAngle = m_motor.getPosition().getValueAsDouble() );

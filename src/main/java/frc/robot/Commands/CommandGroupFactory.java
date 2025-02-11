@@ -21,6 +21,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
+import frc.robot.subsystems.Elevator.ElevatorConstanst;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Gripper.GripperSubsystem;
 import frc.robot.subsystems.gripperArm.GripperArm;
@@ -38,14 +39,16 @@ public class CommandGroupFactory {
     private final static GripperArm gripperArm = GripperArm.getInstance();
 
     public static Command putCoralTakeAlgea(double level, double gripperAngle){
-        return Commands.sequence(elevator.setTargetPositionCommand(L4_HEIGHT)
-        .andThen(gripperArm.setAngle(0)
-        .andThen(Commands.waitUntil(() -> elevator.isAtTarget()))) 
-        .andThen(cannon.loosenCoralCommand())
-        .andThen(gripperArm.setAngle(gripperAngle).andThen(elevator.setTargetPositionCommand(level)))
-        .andThen(Commands.waitUntil(() -> elevator.isAtTarget()))
-        .andThen(gripper.collectUntilCollectedCommand())
-        ).withName("putCoralTakeAlgea");
+        return Commands.parallel(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT).
+        andThen(Commands.waitUntil(() -> elevator.isAtTarget()).andThen(cannon.loosenCoralCommand())));
+        // return Commands.sequence(elevator.setTargetPositionCommand(L4_HEIGHT)
+        // .andThen(gripperArm.setAngle(0)
+        // .andThen(Commands.waitUntil(() -> elevator.isAtTarget()))) 
+        // .andThen(cannon.loosenCoralCommand())
+        // .andThen(gripperArm.setAngle(gripperAngle).andThen(elevator.setTargetPositionCommand(level)))
+        // .andThen(Commands.waitUntil(() -> elevator.isAtTarget()))
+        // .andThen(gripper.collectUntilCollectedCommand())
+        // ).withName("putCoralTakeAlgea");
     }
 }
 

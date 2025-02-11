@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    ElevatorSubsystem.getInstance().setDefaultCommand(ElevatorSubsystem.getInstance().relocatePositionCommand());
     Elastic.dispalyCommandScheduler();
 
     /*

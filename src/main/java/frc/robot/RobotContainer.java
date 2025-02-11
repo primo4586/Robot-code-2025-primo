@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Commands.CommandGroupFactory;
+import frc.robot.Commands.swerveCommands.PutCoralTakeAlgea;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
@@ -124,7 +125,8 @@ public class RobotContainer {
         _testerController.povRight().whileTrue(gripperArm.moveArmCommand(-1));
         _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(1));
 
-        _testerController.rightTrigger().onTrue(CommandGroupFactory.putCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
+        _testerController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
+        _testerController.leftTrigger().onTrue(CommandGroupFactory.putCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
 
         //sysysysy
         _sysIdController.back().and(_sysIdController.y()).whileTrue(gripperArm.sysIdDynamic(Direction.kForward));

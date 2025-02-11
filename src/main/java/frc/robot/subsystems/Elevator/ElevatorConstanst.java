@@ -48,8 +48,8 @@ public class ElevatorConstanst { // todo: tune values
     }
 
     public static final double HIGHT_OF_THE_GROUND = 0;
-    public static final double MINIMUN_POSITION_ERROR = 0.5;
-    public static final double MINIMUN_VELOCITY_ERROR = 0.5;
+    public static final double MINIMUN_POSITION_ERROR = 0.05;
+    public static final double MINIMUN_VELOCITY_ERROR = 0.05;
 
     public static final double MOVE_POWER = 0.6;
 

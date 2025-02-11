@@ -127,6 +127,16 @@ private final SysIdRoutine m_sysIdRoutine =
       m_followMotor.setControl(follower); // following the master
     }).withName("Relocate elevator to " + targetPosition);
   }
+
+  public Command relocatePositionCommand(double angel) {
+
+    return run(() -> 
+    {
+      targetPosition = angel;
+      m_masterMotor.setControl(_systemControl.withPosition(targetPosition));
+      m_followMotor.setControl(follower); // following the master
+    }).withName("Relocate elevator to " + angel);
+  }
   /**
    * a Command that moves the Elavator at a constant power {@link #MOVE_POWER}
    * with direction of the parameter and stop the elevator
@@ -142,8 +152,7 @@ public Command moveCommand(int vec){
     }, 
     () -> 
       targetPosition = m_masterMotor.getPosition().getValueAsDouble() // todo: fixed this part
-      ).withName("move elevator Command" + MOVE_POWER * vec)
-    .withInterruptBehavior(InterruptionBehavior.kCancelIncoming); // stop other commands in this subsystem when running 
+      ).withName("move elevator Command" + MOVE_POWER * vec);
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {

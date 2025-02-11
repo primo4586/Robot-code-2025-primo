@@ -9,6 +9,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
@@ -38,9 +39,16 @@ import frc.robot.subsystems.gripperArm.GripperArmConstants;
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-
+    private DoubleSupplier targetAngle = _driverController.povUp().getAsBoolean() ? () -> 0.0 :
+                                      _driverController.povRight().getAsBoolean() ? () -> 90.0 :
+                                      _driverController.povDown().getAsBoolean() ? () -> 180.0 : 
+                                      _driverController.povLeft().getAsBoolean() ? () -> 270.0 : () -> -1;
+                                      
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.FieldCentricFacingAngle angleDrive = new SwerveRequest.FieldCentricFacingAngle()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -82,7 +90,17 @@ public class RobotContainer {
                 drive.withVelocityX(-_testerController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
                     .withVelocityY(-_testerController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
                     .withRotationalRate(-_testerController.getRightX() * MaxAngularRate * 0.1) // Drive counterclockwise with negative X (left)
-            )
+            ).onlyWhile(() -> targetAngle.getAsDouble() == -1)
+        );
+
+        //Driver Controller
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                angleDrive.withVelocityX(-_testerController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
+                    .withVelocityY(-_testerController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
+                    .withTargetDirection(new Rotation2d((Math.toRadians(targetAngle.getAsDouble())))) // Drive counterclockwise with negative X (left)
+                    ).unless(() -> targetAngle.getAsDouble() == -1)
         );
 
         //Operator Controller

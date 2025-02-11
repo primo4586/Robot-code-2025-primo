@@ -88,21 +88,22 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-_testerController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
-                    .withVelocityY(-_testerController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
-                    .withRotationalRate(-_testerController.getRightX() * MaxAngularRate * 0.1) // Drive counterclockwise with negative X (left)
-            ).onlyWhile(() -> targetAngle.getAsDouble() == -1)
+                drive.withVelocityX(-_driverController.getLeftY() * MaxSpeed * 0.4) // Drive forward with negative Y (forward)
+                    .withVelocityY(-_driverController.getLeftX() * MaxSpeed * 0.4) // Drive left with negative X (left)
+                    .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * 0.4) // Drive counterclockwise with negative X (left)
+            )
         );
+        _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
 
         //Driver Controller
-        drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                angleDrive.withVelocityX(-_testerController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
-                    .withVelocityY(-_testerController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
-                    .withTargetDirection(new Rotation2d((Math.toRadians(targetAngle.getAsDouble())))) // Drive counterclockwise with negative X (left)
-                    ).unless(() -> targetAngle.getAsDouble() == -1)
-        );
+        // drivetrain.setDefaultCommand(
+        //     // Drivetrain will execute this command periodically
+        //     drivetrain.applyRequest(() ->
+        //         angleDrive.withVelocityX(-_driverController.getLeftY() * MaxSpeed * 0.1) // Drive forward with negative Y (forward)
+        //             .withVelocityY(-_driverController.getLeftX() * MaxSpeed * 0.1) // Drive left with negative X (left)
+        //             .withTargetDirection(new Rotation2d((Math.toRadians(targetAngle.getAsDouble())))) // Drive counterclockwise with negative X (left)
+        //             ).unless(() -> targetAngle.getAsDouble() == -1)
+        // );
 
         //Operator Controller
 
@@ -121,19 +122,20 @@ public class RobotContainer {
         _operatorController.povLeft().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L4_HEIGHT)); 
 
         //gripper (right/left joysticks)
-        _operatorController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
-        _operatorController.rightBumper().onTrue(gripper.tossCommand());
+        _driverController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
+        _driverController.rightBumper().onTrue(gripper.tossCommand());
 
         //resets
-        _testerController.back().onTrue(gripperArm.setHomeCommand());
+        _operatorController.back().onTrue(gripperArm.setHomeCommand());
         _operatorController.start().onTrue(elevator.resetElevatorCommand());
+        //gripper
+        _operatorController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
+        _operatorController.rightBumper().onTrue(gripper.tossCommand());
 
 
         //Tester
         _testerController.a().onTrue(cannon.adjustCoralCommand());
         _testerController.y().onTrue(cannon.loosenCoralCommand());
-        _testerController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
-        _testerController.rightBumper().onTrue(gripper.tossCommand());
 
         _testerController.povUp().whileTrue(elevator.moveCommand(1));
         _testerController.povDown().whileTrue(elevator.moveCommand(-1));
@@ -143,8 +145,6 @@ public class RobotContainer {
         _testerController.povRight().whileTrue(gripperArm.moveArmCommand(-1));
         _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(1));
 
-        _testerController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
-        _testerController.leftTrigger().onTrue(CommandGroupFactory.putCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
 
         //sysysysy
         _sysIdController.back().and(_sysIdController.y()).whileTrue(gripperArm.sysIdDynamic(Direction.kForward));

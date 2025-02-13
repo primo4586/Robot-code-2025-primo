@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Commands.CommandGroupFactory;
@@ -40,10 +41,7 @@ import frc.robot.subsystems.gripperArm.GripperArmConstants;
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-    private DoubleSupplier targetAngle = _driverController.povUp().getAsBoolean() ? () -> 0.0 :
-                                      _driverController.povRight().getAsBoolean() ? () -> 90.0 :
-                                      _driverController.povDown().getAsBoolean() ? () -> 180.0 : 
-                                      _driverController.povLeft().getAsBoolean() ? () -> 270.0 : () -> -1;
+    
                                       
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -72,6 +70,13 @@ public class RobotContainer {
     public static final CommandXboxController _testerController = new CommandXboxController(2);
     public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
+    private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.5 : 1.0;
+
+    private DoubleSupplier targetAngle = () -> _driverController.povUp().getAsBoolean() ?  0.0 :
+    _driverController.povRight().getAsBoolean() ?  90.0 :
+    _driverController.povDown().getAsBoolean() ?  180.0 : 
+    _driverController.povLeft().getAsBoolean() ?  270.0 :  -1;
+
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
 
@@ -88,14 +93,14 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-_driverController.getLeftY() * MaxSpeed * 0.4) // Drive forward with negative Y (forward)
-                    .withVelocityY(-_driverController.getLeftX() * MaxSpeed * 0.4) // Drive left with negative X (left)
-                    .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * 0.4) // Drive counterclockwise with negative X (left)
-            )
+                drive.withVelocityX(-_driverController.getLeftY() * MaxSpeed  * slowMode.getAsDouble() ) // Drive forward with negative Y (forward)
+                    .withVelocityY(-_driverController.getLeftX() * MaxSpeed * slowMode.getAsDouble() ) // Drive left with negative X (left)
+                    .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * slowMode.getAsDouble()) // Drive counterclockwise with negative X (left)
+            ).onlyIf(() -> targetAngle.getAsDouble() == -1)
         );
         _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
 
-        //Driver Controller
+        // //driver  Controller
         // drivetrain.setDefaultCommand(
         //     // Drivetrain will execute this command periodically
         //     drivetrain.applyRequest(() ->
@@ -120,10 +125,6 @@ public class RobotContainer {
         _operatorController.povRight().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L2_HEIGHT));
         _operatorController.povDown().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));
         _operatorController.povLeft().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L4_HEIGHT)); 
-
-        //gripper (right/left joysticks)
-        _driverController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
-        _driverController.rightBumper().onTrue(gripper.tossCommand());
 
         //resets
         _operatorController.back().onTrue(gripperArm.setHomeCommand());

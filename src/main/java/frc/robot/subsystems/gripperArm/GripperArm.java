@@ -114,7 +114,7 @@ public class GripperArm extends SubsystemBase {
   public void getAngle(CommandXboxController joyStick) {
     angle  = joyStick.getRightY() > 0.7 ? REEF_ANGLE :
             joyStick.getRightY() < -0.7 ? FLOOR_ANGLE :
-            joyStick.getRightX() < -0.7 ? 0:
+            joyStick.getRightX() < -0.7 ? PROCESSOR_ANGLE:
             lastAngle;
 
     lastAngle = angle;

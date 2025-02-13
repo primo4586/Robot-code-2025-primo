@@ -28,7 +28,8 @@ public class GripperArmConstants {
 
     //Angles
     public static final double REEF_ANGLE = -2.5; //if this value causes problems then raise this value by very little
-    public static final double FLOOR_ANGLE = -1.5;
+    public static final double FLOOR_ANGLE = -2.6;
     public static final double PROCESSOR_ANGLE = -2.3984375;
+    
 
 }

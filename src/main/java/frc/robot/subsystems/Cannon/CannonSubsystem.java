@@ -73,6 +73,12 @@ public class CannonSubsystem extends SubsystemBase {
     return startEnd(() -> m_motor.set(MOTOR_SPEED),() -> m_motor.stopMotor()).withTimeout(LOOSEN_TIME);
   }
 
+  /**
+   * stops the motor
+   */
+  public Command stopMotorCommand(){
+    return runOnce(() -> m_motor.stopMotor());
+  }
 
   private void configs(){
     SparkMaxConfig config = new SparkMaxConfig();

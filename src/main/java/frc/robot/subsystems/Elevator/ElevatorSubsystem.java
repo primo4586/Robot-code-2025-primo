@@ -88,6 +88,10 @@ private final SysIdRoutine m_sysIdRoutine =
     m_masterMotor.setPosition(HIGHT_OF_THE_GROUND);
   }
 
+  public boolean isOpen(){
+    return Math.abs(m_masterMotor.getPosition().getValueAsDouble() - L4_HEIGHT) < 0.1;
+  }
+
     /**
    * Reset the elevator to its default position at the ground (as a command);
    *
@@ -152,6 +156,7 @@ public Command moveCommand(int vec){
     }, 
     () -> 
       targetPosition = m_masterMotor.getPosition().getValueAsDouble() // todo: fixed this part
+      
       ).withName("move elevator Command" + MOVE_POWER * vec);
   }
 

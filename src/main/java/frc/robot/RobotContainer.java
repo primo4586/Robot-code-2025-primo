@@ -17,11 +17,13 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -62,6 +64,11 @@ public class RobotContainer {
     private final GripperSubsystem gripper = GripperSubsystem.getInstance();
     private final GripperArm gripperArm = GripperArm.getInstance();
 
+    SlewRateLimiter xAccLimiterb = new SlewRateLimiter(10);
+    SlewRateLimiter yAccLimiterb = new SlewRateLimiter(10);
+    SlewRateLimiter rotAccLimiterb = new SlewRateLimiter(10);
+
+
 
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -71,6 +78,7 @@ public class RobotContainer {
     public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
     private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.5 : 1.0;
+
 
     private DoubleSupplier targetAngle = () -> _driverController.povUp().getAsBoolean() ?  0.0 :
     _driverController.povRight().getAsBoolean() ?  90.0 :
@@ -91,12 +99,23 @@ public class RobotContainer {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
+            new ConditionalCommand(
+                drivetrain.applyRequest(() ->
+                    drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.5 * MaxSpeed)
+                    .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.5 * MaxSpeed)
+                    .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.7)),
+                drivetrain.applyRequest(() ->
+                    angleDrive.withVelocityX(_driverController.getLeftY() * MaxSpeed * 0.5) // Drive forward with negative Y (forward)
+                        .withVelocityY(_driverController.getLeftX() * MaxSpeed * 0.5) // Drive left with negative X (left)
+                        .withTargetDirection(new Rotation2d((Math.toRadians(targetAngle.getAsDouble()))))),
+                        () -> targetAngle.getAsDouble() == -1
+                        )
+        );
+        drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-_driverController.getLeftY() * MaxSpeed  * slowMode.getAsDouble() ) // Drive forward with negative Y (forward)
-                    .withVelocityY(-_driverController.getLeftX() * MaxSpeed * slowMode.getAsDouble() ) // Drive left with negative X (left)
-                    .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * slowMode.getAsDouble()) // Drive counterclockwise with negative X (left)
-            ).onlyIf(() -> targetAngle.getAsDouble() == -1)
+            drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.5 * MaxSpeed)
+            .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.5 * MaxSpeed)
+            .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.7))
         );
         _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
 
@@ -110,11 +129,17 @@ public class RobotContainer {
         //             ).unless(() -> targetAngle.getAsDouble() == -1)
         // );
 
+
+        //temp
+        _driverController.b().whileTrue(gripperArm.moveArmCommand(1));
+        _driverController.x().whileTrue(gripperArm.moveArmCommand(-1));
+
         //Operator Controller
 
         //cannon
-        _operatorController.a().onTrue(cannon.adjustCoralCommand());
-        _operatorController.y().onTrue(cannon.loosenCoralCommand());
+        _operatorController.a().whileTrue(elevator.moveCommand(1));
+        _operatorController.y().whileTrue(elevator.moveCommand(-1));
+        _operatorController.start().onTrue(cannon.stopMotorCommand());
 
         //gripper arm
         gripperArm.setDefaultCommand(gripperArm.relocateAngelCommand(_operatorController));
@@ -128,7 +153,7 @@ public class RobotContainer {
 
         //resets
         _operatorController.back().onTrue(gripperArm.setHomeCommand());
-        _operatorController.start().onTrue(elevator.resetElevatorCommand());
+
         //gripper
         _operatorController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
         _operatorController.rightBumper().onTrue(gripper.tossCommand());
@@ -180,7 +205,7 @@ public class RobotContainer {
         // m_joystick.x().whileTrue(m_mechanism.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        _driverController.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        _driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
@@ -188,5 +213,10 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected(); //todo: connect the chooser to the path
+    }
+
+    public void log() {
+        SmartDashboard.putNumber("slowMode", slowMode.getAsDouble());
+        SmartDashboard.putNumber("swerve angel ", targetAngle.getAsDouble());
     }
 }

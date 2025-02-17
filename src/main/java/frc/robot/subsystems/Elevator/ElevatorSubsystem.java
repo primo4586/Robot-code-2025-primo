@@ -53,7 +53,7 @@ private final SysIdRoutine m_sysIdRoutine =
    );
 
 
-  private static MotionMagicVoltage _systemControl = new MotionMagicVoltage(0);
+  private static MotionMagicVoltage _systemControl = new MotionMagicVoltage(0).withEnableFOC(true);
 
   private static double targetPosition = 0.0;
 
@@ -81,7 +81,7 @@ private final SysIdRoutine m_sysIdRoutine =
   /**
    * Reset the elevator to its default position at the ground.
    *
-   * <p>This is useful for making sure the elevator is in a safe position
+   * This is useful for making sure the elevator is in a safe position
    * and for knowing where the elevator is when the program starts.
    */
   public void resetElevator(){
@@ -91,7 +91,7 @@ private final SysIdRoutine m_sysIdRoutine =
     /**
    * Reset the elevator to its default position at the ground (as a command);
    *
-   * <p>This is useful for making sure the elevator is in a safe position
+   * This is useful for making sure the elevator is in a safe position
    * and for knowing where the elevator is when the program starts.
    */
   public Command resetElevatorCommand(){
@@ -166,7 +166,7 @@ public Command moveCommand(int vec){
   /**
    * Check if the elevator is at its target position.
    *
-   * <p>This method returns true if the elevator is close enough to its target
+   * This method returns true if the elevator is close enough to its target
    * position and not moving quickly enough to be considered at its target
    * position. The threshold for "close enough" is defined in {@link #MINIMUN_POSITION_ERROR}
    * and the threshold for "not moving quickly enough" is defined in

@@ -56,7 +56,7 @@ public class driveToPointWithPIDCommand extends Command {
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
+  // Called everey time the scheduler runs while the command is schduled.
   @Override
   public void execute() {
     swerve.setControl(

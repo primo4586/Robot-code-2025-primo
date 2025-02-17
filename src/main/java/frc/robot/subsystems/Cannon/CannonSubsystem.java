@@ -26,7 +26,6 @@ public class CannonSubsystem extends SubsystemBase {
   //singlton
   private static CannonSubsystem instance;
 
-
   public static CannonSubsystem getInstance(){
     if (instance == null){
       instance = new CannonSubsystem();

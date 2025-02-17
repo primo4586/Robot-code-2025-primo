@@ -14,6 +14,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+/*align the robot with the reef angle */
 public class alignPointCommand extends Command {
     private final CommandSwerveDrivetrain swerve = RobotContainer.drivetrain;
   private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()

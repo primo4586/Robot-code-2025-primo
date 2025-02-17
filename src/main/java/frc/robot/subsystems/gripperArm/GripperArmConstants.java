@@ -11,7 +11,7 @@ public class GripperArmConstants {
 
         // PID Constants
     public static final double KP = 19.716;
-    public static final double KD = 0.16079;
+    public static final double KD = 10;
     public static final double KS  = 0;
     public static final double KA = 0.015145;
     public static final double KV = 1.6843;
@@ -25,9 +25,6 @@ public class GripperArmConstants {
 
     public static final double GEAR_RATIO = 15;
     public static final double ABS_SENSOR_POSITION = 0;
-
-    public static final double VELOCITY = 20;
-    public static final double ACCELERATION = 20/3;
 
     //Angles
     public static final double REEF_ANGLE = -2.5; //if this value causes problems then raise this value by very little

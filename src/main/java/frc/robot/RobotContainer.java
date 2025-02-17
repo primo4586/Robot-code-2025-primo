@@ -101,20 +101,20 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             new ConditionalCommand(
                 drivetrain.applyRequest(() ->
-                    drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.5 * MaxSpeed)
-                    .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.5 * MaxSpeed)
+                    drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+                    .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
                     .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.7)),
                 drivetrain.applyRequest(() ->
-                    angleDrive.withVelocityX(_driverController.getLeftY() * MaxSpeed * 0.5) // Drive forward with negative Y (forward)
-                        .withVelocityY(_driverController.getLeftX() * MaxSpeed * 0.5) // Drive left with negative X (left)
+                    angleDrive.withVelocityX(_driverController.getLeftY() * MaxSpeed * 0.45) // Drive forward with negative Y (forward)
+                        .withVelocityY(_driverController.getLeftX() * MaxSpeed * 0.45) // Drive left with negative X (left)
                         .withTargetDirection(new Rotation2d((Math.toRadians(targetAngle.getAsDouble()))))),
                         () -> targetAngle.getAsDouble() == -1
                         )
         );
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() ->
-            drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.5 * MaxSpeed)
-            .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.5 * MaxSpeed)
+            drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+            .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
             .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.7))
         );
         _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
@@ -137,8 +137,8 @@ public class RobotContainer {
         //Operator Controller
 
         //cannon
-        _operatorController.a().whileTrue(elevator.moveCommand(1));
-        _operatorController.y().whileTrue(elevator.moveCommand(-1));
+        _operatorController.a().onTrue(cannon.adjustCoralCommand());
+        _operatorController.y().onTrue(cannon.loosenCoralCommand());
         _operatorController.start().onTrue(cannon.stopMotorCommand());
 
         //gripper arm

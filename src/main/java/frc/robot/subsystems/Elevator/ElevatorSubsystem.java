@@ -125,7 +125,7 @@ private final SysIdRoutine m_sysIdRoutine =
    * and you should call this Command once per match
    */
   public Command relocatePositionCommand() {
-    return run(() -> 
+    return runOnce(() -> 
     {
       m_masterMotor.setControl(_systemControl.withPosition(targetPosition));
       m_followMotor.setControl(follower); // following the master

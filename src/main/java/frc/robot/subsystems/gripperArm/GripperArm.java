@@ -88,7 +88,7 @@ public class GripperArm extends SubsystemBase {
   private GripperArm() {
     m_motor = new TalonFX(MOTOR_ID, CANIVOR_NAME);
     m_limitSwitch = new DigitalInput(LIMIT_SWITCH_ID);
-    systemControl = new PositionVoltage(0).withVelocity(VELOCITY).withEnableFOC(true);
+    systemControl = new PositionVoltage(0);
     resetPosition();
     configs();
 
@@ -133,7 +133,8 @@ public class GripperArm extends SubsystemBase {
     return startEnd(() -> m_motor.set(RESET_POWER),
      () -> {
       resetPosition();
-      m_motor.stopMotor();
+      lastAngle = 0;
+      angle = 0.0;
 
      }).until(() -> !m_limitSwitch.get());
   }

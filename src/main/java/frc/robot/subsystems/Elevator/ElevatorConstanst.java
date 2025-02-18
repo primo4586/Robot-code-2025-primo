@@ -32,31 +32,31 @@ public class ElevatorConstanst { // todo: tune values
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -2;
 
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
-      ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO / (ROLLER_RADIUS * 2 * Math.PI); 
-
+      ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO / (ROLLER_RADIUS * 2 * Math.PI);
 
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 1.4258; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps
-      ELEVATOR_CONFIG.Slot0.kA = 9.0127; // Volts for an acceleration of 1 rps/s
-      ELEVATOR_CONFIG.Slot0.kP = 40;
+      ELEVATOR_CONFIG.Slot0.kA = 0.75; // Volts for an acceleration of 1 rps/s 9.0127
+      ELEVATOR_CONFIG.Slot0.kP = 30;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 0.0;
 
       ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 2;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2500;      
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2 ;      
     }
 
     public static final double HIGHT_OF_THE_GROUND = 0;
     public static final double MINIMUN_POSITION_ERROR = 0.05;
     public static final double MINIMUN_VELOCITY_ERROR = 0.05;
 
-    public static final double MOVE_POWER = 0.6;
+    public static final double MOVE_POWER = 0.3;
 
     public static final double L1_HEIGHT = 0;
     public static final double L2_HEIGHT = 0.847607421875;
     public static final double L3_HEIGHT = 1.5119140625;
-    public static final double L4_HEIGHT = 2.553173828125; // todo tune values
+    public static final double L4_HEIGHT = 2; // todo tune values
+    //2.553173828125
 
     public static final double LOW_ALGEA_HEIGHT = 0.89;
     public static final double HIGH_ALGEA_HEIGHT = 0; //TODO: FIND VALUE

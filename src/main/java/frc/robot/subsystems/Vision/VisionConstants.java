@@ -14,7 +14,7 @@ import edu.wpi.first.math.numbers.N3;
 public class VisionConstants { // Todo: find values
     //right camera
     public static final String RIGHT_CAMERA_NAME = "rightCamera";
-    public static final Transform3d RIGHT_CAMERA_TO_ROBOT =  new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d RIGHT_CAMERA_TO_ROBOT =  new Transform3d(new Translation3d(27, -4.5, 34), new Rotation3d(0, 0, 0));
 
     //left camera
     public static final String LEFT_CAMERA_NAME = "leftCamera";

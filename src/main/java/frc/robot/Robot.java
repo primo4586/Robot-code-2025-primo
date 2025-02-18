@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     ElevatorSubsystem.getInstance().setDefaultCommand(ElevatorSubsystem.getInstance().relocatePositionCommand());
     Elastic.dispalyCommandScheduler();
+    m_robotContainer.log();
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.

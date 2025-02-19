@@ -3,6 +3,7 @@ package frc.robot.PrimoLib;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Vision.Vision;
 
 public class Elastic {
     public static void autoSelector(){
@@ -112,5 +113,10 @@ public class Elastic {
 
     public static void dispalyCommandScheduler(){
         SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance() );
+    }
+
+    public static void displayCameraDeta(){
+        Vision camera = Vision.getFrontCamera();
+        SmartDashboard.putNumber("Vision/front/angelFromTarget", camera.getAngleFromTarget());
     }
 }

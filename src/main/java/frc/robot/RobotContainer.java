@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Commands.CommandGroupFactory;
 import frc.robot.Commands.swerveCommands.PutCoralTakeAlgea;
+import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
@@ -133,6 +134,9 @@ public class RobotContainer {
         //temp
         _driverController.b().whileTrue(gripperArm.moveArmCommand(1));
         _driverController.x().whileTrue(gripperArm.moveArmCommand(-1));
+
+        _driverController.leftTrigger().onTrue(new driveToPointWithPIDCommand(false));
+        _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(true));
 
         //Operator Controller
 

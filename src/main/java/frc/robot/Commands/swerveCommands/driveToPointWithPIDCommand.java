@@ -36,9 +36,9 @@ public class driveToPointWithPIDCommand extends Command {
     rotionPidController.setTolerance(1);
 
     driveXPidController.setGoal(target.getX());
-    driveXPidController.setTolerance(1);
+    driveXPidController.setTolerance(0.02);
     driveYPidController.setGoal(target.getY());
-    driveYPidController.setTolerance(1);
+    driveYPidController.setTolerance(0.02);
   }
 
   public driveToPointWithPIDCommand(Pose2d target){
@@ -47,9 +47,9 @@ public class driveToPointWithPIDCommand extends Command {
     rotionPidController.setTolerance(1);
 
     driveXPidController.setGoal(target.getX());
-    driveXPidController.setTolerance(1);
+    driveXPidController.setTolerance(0.02);
     driveYPidController.setGoal(target.getY());
-    driveYPidController.setTolerance(1);
+    driveYPidController.setTolerance(0.02);
   }
 
   // Called when the command is initially scheduled.

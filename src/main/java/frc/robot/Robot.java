@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.Utils;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,8 +59,8 @@ public class Robot extends TimedRobot {
                 // Change our trust in the measurement based on the tags we can see
                 var estStdDevs = _frontCamera.getEstimationStdDevs();
 
-                m_robotContainer.drivetrain.addVisionMeasurement(
-                        est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+                RobotContainer.drivetrain.addVisionMeasurement(
+                        est.estimatedPose.toPose2d(), Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
             });
 
     // right camera

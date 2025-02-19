@@ -21,16 +21,16 @@ public class VisionConstants { // Todo: find values
     public static final Transform3d LEFT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
     //front camera
-    public static final String FRONT_CAMERA_NAME = "leftCamera";
-    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final String FRONT_CAMERA_NAME = "frontCamera";
+    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(27, -4.5, 34), new Rotation3d(0, 0, 0));
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout =
-    AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+    AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
-    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8); //TODO: tune to each camera
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(2, 2, 4); //TODO: tune to each camera
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
     
 }

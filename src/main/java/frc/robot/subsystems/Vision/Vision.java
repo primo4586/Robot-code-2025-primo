@@ -97,7 +97,7 @@ import java.util.List;
       */
       public static Vision getFrontCamera() {
         if (_frontCamera == null) {
-            _frontCamera = new Vision(LEFT_CAMERA_NAME, LEFT_CAMERA_TO_ROBOT);
+            _frontCamera = new Vision(FRONT_CAMERA_NAME, FRONT_CAMERA_TO_ROBOT);
         }
         return _frontCamera;
     }

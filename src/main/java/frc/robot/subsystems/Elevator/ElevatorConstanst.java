@@ -38,11 +38,11 @@ public class ElevatorConstanst { // todo: tune values
       ELEVATOR_CONFIG.Slot0.kS = 1.4258; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps
       ELEVATOR_CONFIG.Slot0.kA = 0.75; // Volts for an acceleration of 1 rps/s 9.0127
-      ELEVATOR_CONFIG.Slot0.kP = 30;
+      ELEVATOR_CONFIG.Slot0.kP = 40;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
-      ELEVATOR_CONFIG.Slot0.kD = 0.0;
+      ELEVATOR_CONFIG.Slot0.kD = 10;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 2;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 3;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2 ;      
     }
 
@@ -55,7 +55,7 @@ public class ElevatorConstanst { // todo: tune values
     public static final double L1_HEIGHT = 0;
     public static final double L2_HEIGHT = 0.847607421875;
     public static final double L3_HEIGHT = 1.5119140625;
-    public static final double L4_HEIGHT = 2; // todo tune values
+    public static final double L4_HEIGHT = 2.553173828125; // todo tune values
     //2.553173828125
 
     public static final double LOW_ALGEA_HEIGHT = 0.89;

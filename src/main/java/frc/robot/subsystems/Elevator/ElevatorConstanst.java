@@ -42,7 +42,7 @@ public class ElevatorConstanst { // todo: tune values
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 10;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 2;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 3;
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2 ;      
     }
 

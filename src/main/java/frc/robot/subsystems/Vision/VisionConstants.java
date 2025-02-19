@@ -22,11 +22,11 @@ public class VisionConstants { // Todo: find values
 
     //front camera
     public static final String FRONT_CAMERA_NAME = "frontCamera";
-    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(27, -4.5, 34), new Rotation3d(0, 0, 0));
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout =
-    AprilTagFieldLayout.loadField(AprilTagFields.   );
+    AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)

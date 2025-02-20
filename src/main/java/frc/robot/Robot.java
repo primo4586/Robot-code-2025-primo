@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Measure;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Vision.Vision;
+import frc.robot.subsystems.Vision.VisionConstants;
 import frc.robot.PrimoLib.Elastic;
 
 public class Robot extends TimedRobot {
@@ -26,12 +29,15 @@ public class Robot extends TimedRobot {
   private final Vision _frontCamera = Vision.getFrontCamera();
   private final Vision _leftCamera = Vision.getLeftCamera();
   private final Vision _rightCamera = Vision.getRightCamera();
+  
+  private double[] cameraPoseArray = new double[] {0, 0, 0};
 
   private final boolean kUseLimelight = false;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
     Elastic.autoSelector();
+    m_robotContainer.drivetrain.setStateStdDevs(VisionConstants.kSingleTagStdDevs);
   }
 
   @Override
@@ -40,6 +46,8 @@ public class Robot extends TimedRobot {
     ElevatorSubsystem.getInstance().setDefaultCommand(ElevatorSubsystem.getInstance().relocatePositionCommand());
     Elastic.dispalyCommandScheduler();
     m_robotContainer.log();
+    SmartDashboard.putNumber("getXfromTarget", Vision.getFrontCamera().getXfromTarget());
+    SmartDashboard.putNumber("getYfromTarget", Vision.getFrontCamera().getYfromTarget());
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.
@@ -61,6 +69,10 @@ public class Robot extends TimedRobot {
 
                 RobotContainer.drivetrain.addVisionMeasurement(
                         est.estimatedPose.toPose2d(), Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
+                        cameraPoseArray[0] = est.estimatedPose.toPose2d().getX();
+                        cameraPoseArray[1] = est.estimatedPose.toPose2d().getY();
+                        cameraPoseArray[2] = est.estimatedPose.toPose2d().getRotation().getDegrees();
+                        SmartDashboard.putNumberArray(" robot pose ", cameraPoseArray);
             });
 
     // right camera

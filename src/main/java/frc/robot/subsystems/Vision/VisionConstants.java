@@ -22,7 +22,7 @@ public class VisionConstants { // Todo: find values
 
     //front camera
     public static final String FRONT_CAMERA_NAME = "frontCamera";
-    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(27, -4.5, 34), new Rotation3d(0, 0, 0));
+    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.27, -0.45, 0.34), new Rotation3d(0, 0, Math.PI));
 
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout =
@@ -30,7 +30,7 @@ public class VisionConstants { // Todo: find values
 
     // The standard deviations of our vision estimated poses, which affect correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
-    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(2, 2, 4); //TODO: tune to each camera
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(10, 10, 10); //TODO: tune to each camera
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
     
 }

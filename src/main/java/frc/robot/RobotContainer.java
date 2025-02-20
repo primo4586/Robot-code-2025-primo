@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Commands.CommandGroupFactory;
 import frc.robot.Commands.swerveCommands.PutCoralTakeAlgea;
+import frc.robot.Commands.swerveCommands.driveToPointWithCamera;
 import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -42,7 +43,7 @@ import frc.robot.subsystems.gripperArm.GripperArmConstants;
 
 
 public class RobotContainer {
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     
                                       
@@ -104,7 +105,7 @@ public class RobotContainer {
                 drivetrain.applyRequest(() ->
                     drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
                     .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-                    .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.7)),
+                    .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.9)),
                 drivetrain.applyRequest(() ->
                     angleDrive.withVelocityX(_driverController.getLeftY() * MaxSpeed * 0.45) // Drive forward with negative Y (forward)
                         .withVelocityY(_driverController.getLeftX() * MaxSpeed * 0.45) // Drive left with negative X (left)
@@ -119,6 +120,7 @@ public class RobotContainer {
             .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.7))
         );
         _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
+
 
         // //driver  Controller
         // drivetrain.setDefaultCommand(

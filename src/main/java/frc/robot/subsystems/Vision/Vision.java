@@ -32,6 +32,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
  import edu.wpi.first.math.numbers.N3;
  import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 import java.util.List;
@@ -50,6 +51,10 @@ import java.util.List;
      private final PhotonCamera camera;
      private final PhotonPoseEstimator photonEstimator;
      private Matrix<N3, N1> curStdDevs;
+     private double lastXPosition = 0;
+     private double lastYPosition = 0;
+
+     private double[] cameraPoseArray = new double[] {0, 0, 0};
  
      // Simulation
      private PhotonCameraSim cameraSim;
@@ -256,4 +261,15 @@ import java.util.List;
     public double getAngleFromTarget() {
         return getDetectingObject() ? camera.getLatestResult().getBestTarget().getYaw() : 0;
     }
+
+    public double getXfromTarget(){
+        lastXPosition = getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX() : lastYPosition;
+        return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX(): 0;
+    }
+    public double getYfromTarget(){
+        lastYPosition = getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getY() : lastYPosition;
+        return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getY(): lastYPosition;
+    }
+
+    
  }

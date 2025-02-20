@@ -19,20 +19,23 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class driveToPointWithPIDCommand extends Command {
 
+  static double  MaxSpeed = RobotContainer.MaxSpeed;
+  static double  MaxAngularRate = RobotContainer.MaxSpeed;
   private static final CommandSwerveDrivetrain swerve = RobotContainer.drivetrain;
   private static final SwerveRequest.FieldCentric roborCentric = new SwerveRequest.FieldCentric()
-    .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+  .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+  .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-  ProfiledPIDController driveXPidController = new ProfiledPIDController(0,0,0,new Constraints(0, 0));
-  ProfiledPIDController driveYPidController = new ProfiledPIDController(0,0,0,new Constraints(0, 0));
-  PIDController rotionPidController = new PIDController(0, 0, 0);
+  ProfiledPIDController driveXPidController = new ProfiledPIDController(0.285,0,0.01,new Constraints(0, 0));
+  ProfiledPIDController driveYPidController = new ProfiledPIDController(0.285,0,0.01,new Constraints(0, 0));
+  PIDController rotionPidController = new PIDController(0.05, 0, 0);
 
   /** Creates a new driveToPointWithPIDCommand. */
   public driveToPointWithPIDCommand(boolean isRight) {
     Pose2d target = PrimoCalc.ChooseReef(isRight);
     rotionPidController.enableContinuousInput(180, -180);
-    rotionPidController.setSetpoint(target.getRotation().getDegrees());
+    rotionPidController.setSetpoint(target.getRotation().getRadians());
     rotionPidController.setTolerance(1);
 
     driveXPidController.setGoal(target.getX());

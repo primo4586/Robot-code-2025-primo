@@ -134,8 +134,7 @@ public class RobotContainer {
 
 
         //temp
-        _driverController.b().whileTrue(gripperArm.moveArmCommand(1));
-        _driverController.x().whileTrue(gripperArm.moveArmCommand(-1));
+
 
         _driverController.leftTrigger().onTrue(new driveToPointWithPIDCommand(false));
         _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(true));
@@ -148,14 +147,17 @@ public class RobotContainer {
         _operatorController.start().onTrue(cannon.stopMotorCommand());
 
         //gripper arm
-        gripperArm.setDefaultCommand(gripperArm.relocateAngelCommand(_operatorController));
+        gripperArm.setDefaultCommand( new ConditionalCommand
+        (gripperArm.relocateAngelCommand(_operatorController),
+        Commands.none(),
+        () -> gripperArm.isDiffrent()));
 
         //elevator buttons
-        elevator.setDefaultCommand(elevator.relocatePositionCommand());
-        _operatorController.povUp().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT));
-        _operatorController.povRight().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L2_HEIGHT));
-        _operatorController.povDown().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));
-        _operatorController.povLeft().onTrue(elevator.setTargetPositionCommand(ElevatorConstanst.L4_HEIGHT)); 
+        
+        _operatorController.povUp().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT));
+        _operatorController.povRight().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT));
+        _operatorController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
+        _operatorController.povLeft().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT)); 
 
         //resets
         _operatorController.back().onTrue(gripperArm.setHomeCommand());
@@ -166,7 +168,7 @@ public class RobotContainer {
 
 
         //Tester
-        _testerController.a().onTrue(cannon.adjustCoralCommand());
+        _testerController.a().onTrue(cannon.catchCoralCommand());
         _testerController.y().onTrue(cannon.loosenCoralCommand());
 
         _testerController.povUp().whileTrue(elevator.moveCommand(1));

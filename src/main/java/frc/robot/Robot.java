@@ -27,8 +27,6 @@ public class Robot extends TimedRobot {
   private String m_autoSelectedLevel;
   private final RobotContainer m_robotContainer;
   private final Vision _frontCamera = Vision.getFrontCamera();
-  private final Vision _leftCamera = Vision.getLeftCamera();
-  private final Vision _rightCamera = Vision.getRightCamera();
   
   private double[] cameraPoseArray = new double[] {0, 0, 0};
 
@@ -74,29 +72,7 @@ public class Robot extends TimedRobot {
                         cameraPoseArray[2] = est.estimatedPose.toPose2d().getRotation().getDegrees();
                         SmartDashboard.putNumberArray(" robot pose ", cameraPoseArray);
             });
-
-    // right camera
-    visionEst = _rightCamera.getEstimatedGlobalPose();
-    visionEst.ifPresent(
-            est -> {
-                // Change our trust in the measurement based on the tags we can see
-                var estStdDevs = _frontCamera.getEstimationStdDevs();
-
-                m_robotContainer.drivetrain.addVisionMeasurement(
-                        est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-            });
-
-    // left camera
-    visionEst = _leftCamera.getEstimatedGlobalPose();
-    visionEst.ifPresent(
-            est -> {
-                // Change our trust in the measurement based on the tags we can see
-                var estStdDevs = _frontCamera.getEstimationStdDevs();
-
-                m_robotContainer.drivetrain.addVisionMeasurement(
-                        est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-            });
-  }
+          }
 
   @Override
   public void disabledInit() {}

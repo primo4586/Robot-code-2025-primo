@@ -23,4 +23,6 @@ public class CannonConstants {
         public static final double MOTOR_SPEED = 0.7;
         public static final double ADJUST_SPEED = 0.3;
         public static final double LOOSEN_TIME = 1.5;
+        public static final double CATCH_SPEED = 0.2;
+        public static final double CATCH_TIME = 0.1;
 }

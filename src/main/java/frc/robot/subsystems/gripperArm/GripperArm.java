@@ -120,6 +120,10 @@ public class GripperArm extends SubsystemBase {
     lastAngle = angle;
   }
 
+  public boolean isDiffrent(){
+    return lastAngle != angle;
+  }
+
   public Command setAngle(double angle){
       return runOnce(() -> lastAngle = angle);  
     }

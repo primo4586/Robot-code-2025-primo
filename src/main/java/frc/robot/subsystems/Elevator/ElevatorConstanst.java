@@ -42,8 +42,8 @@ public class ElevatorConstanst { // todo: tune values
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 10;
 
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 3;
-      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2 ;      
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 4;
+      ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 2.5 ;      
     }
 
     public static final double HIGHT_OF_THE_GROUND = 0;
@@ -53,10 +53,11 @@ public class ElevatorConstanst { // todo: tune values
     public static final double MOVE_POWER = 0.3;
 
     public static final double L1_HEIGHT = 0;
-    public static final double L2_HEIGHT = 0.847607421875;
-    public static final double L3_HEIGHT = 1.5119140625;
-    public static final double L4_HEIGHT = 2.553173828125; // todo tune values
+    public static final double L2_HEIGHT = 0.847607421875 - 0.06;
+    public static final double L3_HEIGHT = 1.5119140625 - 0.06;
+    public static final double L4_HEIGHT = 2.553173828125 - 0.07; // todo tune values
     //2.553173828125
+    
 
     public static final double LOW_ALGEA_HEIGHT = 0.89;
     public static final double HIGH_ALGEA_HEIGHT = 0; //TODO: FIND VALUE

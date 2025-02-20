@@ -72,6 +72,10 @@ public class CannonSubsystem extends SubsystemBase {
     return startEnd(() -> m_motor.set(MOTOR_SPEED),() -> m_motor.stopMotor()).withTimeout(LOOSEN_TIME);
   }
 
+  public Command catchCoralCommand(){
+    return startEnd(() -> m_motor.set(CATCH_SPEED),() -> m_motor.stopMotor()).withTimeout(CATCH_TIME);
+  }
+
   /**
    * stops the motor
    */

@@ -132,9 +132,17 @@ private final SysIdRoutine m_sysIdRoutine =
     }).withName("Relocate elevator to " + targetPosition);
   }
 
+/*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * A command that moves the elevator to a given target position.
+   *
+   * @param angel the desired target position in metters.
+   * @return a command that moves the elevator to the target position.
+   */
+/******  1b839331-5531-4772-b574-85c599cd248f  *******/
   public Command relocatePositionCommand(double angel) {
 
-    return run(() -> 
+    return runOnce(() -> 
     {
       targetPosition = angel;
       m_masterMotor.setControl(_systemControl.withPosition(targetPosition));

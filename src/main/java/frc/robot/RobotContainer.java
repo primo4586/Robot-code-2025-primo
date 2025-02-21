@@ -147,10 +147,7 @@ public class RobotContainer {
         _operatorController.start().onTrue(cannon.stopMotorCommand());
 
         //gripper arm
-        gripperArm.setDefaultCommand( new ConditionalCommand
-        (gripperArm.relocateAngelCommand(_operatorController),
-        Commands.none(),
-        () -> gripperArm.isDiffrent()));
+        gripperArm.setDefaultCommand(gripperArm.relocateAngelCommand()); //^ this might crash the Command scheduler
 
         //elevator buttons
         

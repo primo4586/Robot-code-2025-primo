@@ -27,6 +27,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 import static frc.robot.subsystems.gripperArm.GripperArmConstants.*;
 
@@ -39,9 +41,12 @@ public class GripperArm extends SubsystemBase {
 
   private TalonFX m_motor; // falcon 500 motor
   private DigitalInput m_limitSwitch; // limit switch idk ISR really wanted it
+  private CommandXboxController joyStick = RobotContainer._operatorController;
 
   private double lastAngle = 0; 
-  private Double angle = 0.0; 
+  private Double angle = 0.0;
+  
+  private boolean isDiffrent = false;
   /*
    * we dont use mm beause the movment of the arm is minimall and mm is for large distance movment.
    */
@@ -111,16 +116,24 @@ public class GripperArm extends SubsystemBase {
      m_motor.getVelocity().getValueAsDouble() < MINIMUN_VELOCITY;
   }
 
-  public void getAngle(CommandXboxController joyStick) {
+  public void getAngle() {
+    
     angle  = joyStick.getRightY() > 0.7 ? REEF_ANGLE :
             joyStick.getRightY() < -0.7 ? FLOOR_ANGLE :
             joyStick.getRightX() < -0.7 ? PROCESSOR_ANGLE:
             lastAngle;
+    
+    if (lastAngle != angle){
+      isDiffrent = true;
+      lastAngle = angle;
+    }else{
+      isDiffrent = false;
+    }
 
-    lastAngle = angle;
   }
 
   public boolean isDiffrent(){
+    getAngle();
     return lastAngle != angle;
   }
 
@@ -150,15 +163,14 @@ public class GripperArm extends SubsystemBase {
    * you need to call it once per game. and use setTargetAngel to Change the target angle
    * @return
    */
-  public Command relocateAngelCommand(CommandXboxController joyStick) {
+  public Command relocateAngelCommand() {
       return runOnce(() -> {
-        getAngle(joyStick);
         m_motor.setControl(systemControl.withPosition(angle));
       }).withName("Relocate arm to " + angle)
      .withInterruptBehavior(InterruptionBehavior.kCancelSelf);
   }
   public Command relocateAngelCommand(double angle) {
-    return run(() -> {
+    return runOnce(() -> {
       this.angle = angle; 
       m_motor.setControl(systemControl.withPosition(angle));
     }).withName("Relocate arm to " + angle)
@@ -180,10 +192,12 @@ public class GripperArm extends SubsystemBase {
 
   @Override
   public void periodic() {
+    getAngle();
     SmartDashboard.putNumber("gripper/gripper position", m_motor.getPosition().getValueAsDouble());
     SmartDashboard.putBoolean("gripper/is at targer", isAtSetPoint());
     SmartDashboard.putBoolean("gripper/gripperArm switch", m_limitSwitch.get());
     SmartDashboard.putNumber("gripper/target position", lastAngle);
+    SmartDashboard.putBoolean("gripper/diffrent", isDiffrent);
   }
 
   private void configs() {

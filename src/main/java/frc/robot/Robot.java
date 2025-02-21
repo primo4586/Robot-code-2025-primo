@@ -41,7 +41,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    ElevatorSubsystem.getInstance().setDefaultCommand(ElevatorSubsystem.getInstance().relocatePositionCommand());
     Elastic.dispalyCommandScheduler();
     m_robotContainer.log();
     SmartDashboard.putNumber("getXfromTarget", Vision.getFrontCamera().getXfromTarget());

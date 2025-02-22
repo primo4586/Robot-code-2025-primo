@@ -133,7 +133,6 @@ public class GripperArm extends SubsystemBase {
   }
 
   public boolean isDiffrent(){
-    getAngle();
     return lastAngle != angle;
   }
 

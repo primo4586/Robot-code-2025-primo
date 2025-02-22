@@ -79,7 +79,7 @@ public class RobotContainer {
     public static final CommandXboxController _testerController = new CommandXboxController(2);
     public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
-    private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.5 : 1.0;
+    private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.4 : 1.0;
 
 
     private DoubleSupplier targetAngle = () -> _driverController.povUp().getAsBoolean() ?  0.0 :
@@ -98,26 +98,26 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        // Note that X is defined as forward according to WPILib convention,
-        // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-            new ConditionalCommand(
-                drivetrain.applyRequest(() ->
-                    drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-                    .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-                    .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.9)),
-                drivetrain.applyRequest(() ->
-                    angleDrive.withVelocityX(_driverController.getLeftY() * MaxSpeed * 0.45) // Drive forward with negative Y (forward)
-                        .withVelocityY(_driverController.getLeftX() * MaxSpeed * 0.45) // Drive left with negative X (left)
-                        .withTargetDirection(new Rotation2d((Math.toRadians(targetAngle.getAsDouble()))))),
-                        () -> targetAngle.getAsDouble() == -1
-                        )
-        );
+        // // Note that X is defined as forward according to WPILib convention,
+        // // and Y is defined as to the left according to WPILib convention.
+        // drivetrain.setDefaultCommand(
+        //     new ConditionalCommand(
+        //         drivetrain.applyRequest(() ->
+        //             drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+        //             .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+        //             .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.9)),
+        //         drivetrain.applyRequest(() ->
+        //             angleDrive.withVelocityX(_driverController.getLeftY() * MaxSpeed * 0.45) // Drive forward with negative Y (forward)
+        //                 .withVelocityY(_driverController.getLeftX() * MaxSpeed * 0.45) // Drive left with negative X (left)
+        //                 .withTargetDirection(new Rotation2d((Math.toRadians(targetAngle.getAsDouble()))))),
+        //                 () -> targetAngle.getAsDouble() == -1
+        //                 )
+        // );
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() ->
-            drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-            .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-            .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.7))
+            drive.withVelocityX( - _driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+            .withVelocityY( - _driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+            .withRotationalRate(-  _driverController.getRightX() * MaxAngularRate * 0.9))
         );
         _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
 
@@ -134,10 +134,13 @@ public class RobotContainer {
 
 
         //temp
+        elevator.setDefaultCommand(elevator.relocatePositionCommand());
+        _operatorController.x().whileTrue(elevator.moveCommand(1).andThen(elevator.relocatePositionCommand()));;
+        _operatorController.b().whileTrue(elevator.moveCommand(-1).andThen(elevator.relocatePositionCommand()));
 
 
         _driverController.leftTrigger().onTrue(new driveToPointWithPIDCommand(false));
-        _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(true));
+        _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(Misc.RED_REEF_H_POSITION));
 
         //Operator Controller
 

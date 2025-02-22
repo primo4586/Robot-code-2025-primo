@@ -1,11 +1,14 @@
 package frc.robot.PrimoLib;
 
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Vision.Vision;
 
 public class Elastic {
+    static Field2d m_field = new Field2d();
     public static void autoSelector(){
     //Creating SendableChooser Object
 
@@ -118,5 +121,14 @@ public class Elastic {
     public static void displayCameraDeta(){
         Vision camera = Vision.getFrontCamera();
         SmartDashboard.putNumber("Vision/front/angelFromTarget", camera.getAngleFromTarget());
+    }
+
+    public static void displayField(){
+        // Do this in either robot or subsystem init
+        SmartDashboard.putData("Field", m_field);
+    }
+
+    public static void displayRobotPose(){
+        m_field.setRobotPose(RobotContainer.drivetrain.getState().Pose);
     }
 }

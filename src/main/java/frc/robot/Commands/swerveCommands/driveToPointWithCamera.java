@@ -51,11 +51,11 @@ public class driveToPointWithCamera extends Command {
   // Called everey time the scheduler runs while the command is schduled.
   @Override
   public void execute() {
-    swerve.setControl(
-      roborCentric.withVelocityX(driveXPidController.calculate(Vision.getFrontCamera().getXfromTarget()) * RobotContainer.MaxSpeed)
-        .withVelocityY(driveYPidController.calculate(Vision.getFrontCamera().getYfromTarget() -0.02) * RobotContainer.MaxSpeed)
+    // swerve.setControl(
+    //   roborCentric.withVelocityX(driveXPidController.calculate(Vision.getFrontCamera().getXfromTarget()) * RobotContainer.MaxSpeed)
+    //     .withVelocityY(driveYPidController.calculate(Vision.getFrontCamera().getYfromTarget() -0.02) * RobotContainer.MaxSpeed)
         
-    );
+    // );
   }
 
 

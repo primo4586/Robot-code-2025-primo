@@ -53,11 +53,11 @@ public class ElevatorConstanst { // todo: tune values
     public static final double MOVE_POWER = 0.3;
 
     public static final double L1_HEIGHT = 0;
-    public static final double L2_HEIGHT = 0.847607421875 - 0.06;
-    public static final double L3_HEIGHT = 1.5119140625 - 0.06;
-    public static final double L4_HEIGHT = 2.553173828125 - 0.07; // todo tune values
-    //2.553173828125
-    
+    public static final double L2_HEIGHT = 0.94384765625 -0.24;
+    public static final double L3_HEIGHT = 1.534423828125 -0.24;
+    public static final double L4_HEIGHT = 2.31689453125; // todo tune values
+    //our reef height: 2.553173828125 - 0.10;
+    //real reef height:
 
     public static final double LOW_ALGEA_HEIGHT = 0.89;
     public static final double HIGH_ALGEA_HEIGHT = 0; //TODO: FIND VALUE

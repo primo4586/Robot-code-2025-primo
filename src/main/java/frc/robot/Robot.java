@@ -35,6 +35,7 @@ public class Robot extends TimedRobot {
   public Robot() {
     m_robotContainer = new RobotContainer();
     Elastic.autoSelector();
+    Elastic.displayField();
     m_robotContainer.drivetrain.setStateStdDevs(VisionConstants.kSingleTagStdDevs);
   }
 
@@ -42,9 +43,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     Elastic.dispalyCommandScheduler();
+    Elastic.displayRobotPose();
     m_robotContainer.log();
-    SmartDashboard.putNumber("getXfromTarget", Vision.getFrontCamera().getXfromTarget());
-    SmartDashboard.putNumber("getYfromTarget", Vision.getFrontCamera().getYfromTarget());
+    // SmartDashboard.putNumber("getXfromTarget", Vision.getFrontCamera().getXfromTarget());
+    // SmartDashboard.putNumber("getYfromTarget", Vision.getFrontCamera().getYfromTarget());
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.

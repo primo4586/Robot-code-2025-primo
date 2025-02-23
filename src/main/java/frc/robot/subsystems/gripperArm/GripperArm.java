@@ -132,7 +132,8 @@ public class GripperArm extends SubsystemBase {
 
   }
 
-  public boolean isDiffrent(){
+  public boolean isDiffrent(CommandXboxController joyStick){
+    getAngle();
     return lastAngle != angle;
   }
 
@@ -151,6 +152,7 @@ public class GripperArm extends SubsystemBase {
       resetPosition();
       lastAngle = 0;
       angle = 0.0;
+      m_motor.set(0);
 
      }).until(() -> !m_limitSwitch.get());
   }

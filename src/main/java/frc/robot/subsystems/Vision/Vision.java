@@ -262,14 +262,14 @@ import java.util.List;
         return getDetectingObject() ? camera.getLatestResult().getBestTarget().getYaw() : 0;
     }
 
-   // public double getXfromTarget(){
-     //   lastXPosition = getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX() : lastYPosition;
-       // return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX(): 0;
-    //}
-    //public double getYfromTarget(){
-      //  lastYPosition = getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getY() : lastYPosition;
-        //return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getY(): lastYPosition;
-    //}
+   public double getXfromTarget(){
+       lastXPosition = getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX() : lastYPosition;
+       return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX(): 0;
+    }
+    public double getYfromTarget(){
+       lastYPosition = getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getY() : lastYPosition;
+        return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getY(): lastYPosition;
+    }
 
     
  }

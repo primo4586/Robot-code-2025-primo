@@ -62,6 +62,7 @@ public class driveToPointWithPIDCommand extends Command {
     driveXPidController.setTolerance(0.02);
     driveYPidController.setGoal(target.getY());
     driveYPidController.setTolerance(0.02);
+    addRequirements(swerve);
   }
 
   // Called when the command is initially scheduled.

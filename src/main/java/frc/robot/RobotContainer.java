@@ -139,8 +139,8 @@ public class RobotContainer {
         _operatorController.b().whileTrue(elevator.moveCommand(-1).andThen(elevator.relocatePositionCommand()));
 
 
-        _driverController.leftTrigger().onTrue(new driveToPointWithPIDCommand(false));
-        _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(Misc.RED_REEF_H_POSITION));
+        _driverController.leftTrigger().onTrue(new driveToPointWithCamera());
+        _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(true));
 
         //Operator Controller
 
@@ -150,7 +150,8 @@ public class RobotContainer {
         _operatorController.start().onTrue(cannon.stopMotorCommand());
 
         //gripper arm
-        gripperArm.setDefaultCommand(gripperArm.relocateAngelCommand()); //^ this might crash the Command scheduler
+        gripperArm.setDefaultCommand(
+        (gripperArm.relocateAngelCommand()));
 
         //elevator buttons
         

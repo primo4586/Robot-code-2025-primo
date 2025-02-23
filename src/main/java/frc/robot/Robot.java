@@ -6,8 +6,15 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoMode;
+import edu.wpi.first.cscore.VideoSource;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Measure;
+import edu.wpi.first.util.PixelFormat;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,6 +44,10 @@ public class Robot extends TimedRobot {
     Elastic.autoSelector();
     Elastic.displayField();
     m_robotContainer.drivetrain.setStateStdDevs(VisionConstants.kSingleTagStdDevs);
+    
+    UsbCamera usbCamera = new UsbCamera("coralCam", 0);
+    usbCamera.setPixelFormat(PixelFormat.kYUYV);
+    CameraServer.startAutomaticCapture(usbCamera);
   }
 
   @Override
@@ -67,11 +78,7 @@ public class Robot extends TimedRobot {
                 var estStdDevs = _frontCamera.getEstimationStdDevs();
 
                 RobotContainer.drivetrain.addVisionMeasurement(
-                        est.estimatedPose.toPose2d(), Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
-                        cameraPoseArray[0] = est.estimatedPose.toPose2d().getX();
-                        cameraPoseArray[1] = est.estimatedPose.toPose2d().getY();
-                        cameraPoseArray[2] = est.estimatedPose.toPose2d().getRotation().getDegrees();
-                        SmartDashboard.putNumberArray(" robot pose ", cameraPoseArray);
+                        new Pose2d(est.estimatedPose.toPose2d().getTranslation(), RobotContainer.drivetrain.getState().Pose.getRotation()), Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
             });
           }
 

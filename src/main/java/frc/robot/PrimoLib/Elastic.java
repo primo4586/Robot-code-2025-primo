@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -194,5 +195,9 @@ public class Elastic {
 
     public static void displayRobotPose(){
         m_field.setRobotPose(RobotContainer.drivetrain.getState().Pose);
+    }
+
+    public static void setTargetPose(Pose2d targetPose) {
+        m_field.getObject("Reef Target").setPose(targetPose);
     }
 }

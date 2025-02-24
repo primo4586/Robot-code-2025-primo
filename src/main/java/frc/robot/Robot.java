@@ -48,9 +48,9 @@ public class Robot extends TimedRobot {
     Elastic.displayField();
     m_robotContainer.drivetrain.setStateStdDevs(VisionConstants.kSingleTagStdDevs);
     
-    UsbCamera usbCamera = new UsbCamera("coralCam", 0);
-    usbCamera.setPixelFormat(PixelFormat.kYUYV);
-    CameraServer.startAutomaticCapture(usbCamera);
+    // UsbCamera usbCamera = new UsbCamera("coralCam", 0);
+    // usbCamera.setPixelFormat(PixelFormat.kYUYV);
+    // CameraServer.startAutomaticCapture(usbCamera);
   }
 
   @Override

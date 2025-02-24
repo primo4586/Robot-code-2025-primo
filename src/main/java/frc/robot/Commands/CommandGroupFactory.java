@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
+import frc.robot.PrimoLib.Elastic;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
 import frc.robot.subsystems.Elevator.ElevatorConstanst;
@@ -38,17 +39,10 @@ public class CommandGroupFactory {
     private final static GripperSubsystem gripper = GripperSubsystem.getInstance();
     private final static GripperArm gripperArm = GripperArm.getInstance();
 
-    public static Command putCoralTakeAlgea(double level, double gripperAngle){
-        return Commands.parallel(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT).
-        andThen(Commands.waitUntil(() -> elevator.isAtTarget()).andThen(cannon.loosenCoralCommand())));
-        // return Commands.sequence(elevator.setTargetPositionCommand(L4_HEIGHT)
-        // .andThen(gripperArm.setAngle(0)
-        // .andThen(Commands.waitUntil(() -> elevator.isAtTarget()))) 
-        // .andThen(cannon.loosenCoralCommand())
-        // .andThen(gripperArm.setAngle(gripperAngle).andThen(elevator.setTargetPositionCommand(level)))
-        // .andThen(Commands.waitUntil(() -> elevator.isAtTarget()))
-        // .andThen(gripper.collectUntilCollectedCommand())
-        // ).withName("putCoralTakeAlgea");
+    public static Command putCoral(double height){
+        return Commands.parallel(elevator.relocatePositionCommand(height) ,Commands.waitUntil(() -> elevator.isAtTarget()).andThen(cannon.loosenCoralCommand())).andThen(elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT));
     }
+
+
 }
 

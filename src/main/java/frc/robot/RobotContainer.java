@@ -7,6 +7,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.Misc.RED_REEF_H_POSITION;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
@@ -31,6 +32,7 @@ import frc.robot.Commands.CommandGroupFactory;
 import frc.robot.Commands.swerveCommands.PutCoralTakeAlgea;
 import frc.robot.Commands.swerveCommands.driveToPointWithCamera;
 import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
+import frc.robot.PrimoLib.Elastic;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
@@ -88,11 +90,12 @@ public class RobotContainer {
     _driverController.povLeft().getAsBoolean() ?  270.0 :  -1;
 
     /* Path follower */
-    private final SendableChooser<Command> autoChooser;
+    // private final SendableChooser<Command> autoChooser;
+    
 
     public RobotContainer() {
-        autoChooser = AutoBuilder.buildAutoChooser("Tests");
-        SmartDashboard.putData("Auto Mode", autoChooser);
+        // autoChooser = AutoBuilder.buildAutoChooser("Tests");
+        // SmartDashboard.putData("Auto Mode", autoChooser);
 
         configureBindings();
     }
@@ -137,10 +140,15 @@ public class RobotContainer {
         elevator.setDefaultCommand(elevator.relocatePositionCommand());
         _operatorController.x().whileTrue(elevator.moveCommand(1).andThen(elevator.relocatePositionCommand()));;
         _operatorController.b().whileTrue(elevator.moveCommand(-1).andThen(elevator.relocatePositionCommand()));
+        _driverController.leftStick().onTrue(cannon.loosenCoralCommand());
 
 
-        _driverController.leftTrigger().onTrue(new driveToPointWithCamera());
-        _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(true));
+        _driverController.leftTrigger().onTrue(new driveToPointWithCamera(false));
+        // _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(RED_REEF_H_POSITION));
+        
+
+        
+
 
         //Operator Controller
 
@@ -221,7 +229,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
-        return autoChooser.getSelected(); //todo: connect the chooser to the path
+        return Elastic.commandSelector.getCommand(); //todo: connect the chooser to the path
     }
 
     public void log() {

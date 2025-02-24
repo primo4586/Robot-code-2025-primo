@@ -1,14 +1,63 @@
 package frc.robot.PrimoLib;
 
+import java.util.HashMap;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerPath;
+
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
+import frc.robot.Commands.CommandGroupFactory;
+import frc.robot.subsystems.Cannon.CannonSubsystem;
+import frc.robot.subsystems.Elevator.ElevatorConstanst;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Vision.Vision;
 
 public class Elastic {
     static Field2d m_field = new Field2d();
+    public static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
+    public static CannonSubsystem cannonSubsystem = CannonSubsystem.getInstance();
+
+    public static HashMap<String, PathPlannerPath> pathsMap = new HashMap<>();
+    public static CommandSelector commandSelector;
+    static final String[] PATHS = new String[]{
+        // "H path",
+        "H to collection",
+        // "Collection2 to D",
+        // "literallyWalkForward"
+    };
+
+    public static void loadPaths() {
+        for(String path : PATHS) {
+            try {
+                pathsMap.put(path, PathPlannerPath.fromPathFile(path));
+                System.out.println("LOADED PROPERLY!!!");
+                System.out.println("LOADED PROPERLY!!!");
+                System.out.println("LOADED PROPERLY!!!");
+                System.out.println("LOADED PROPERLY!!!");
+                System.out.println("LOADED PROPERLY!!!");
+                System.out.println("LOADED PROPERLY!!!");
+                System.out.println("LOADED PROPERLY!!!");
+            } catch (Exception e) {
+                System.out.println(path + " didn't load properly!!!1");
+                System.out.println(path + " didn't load properly!!!2");
+                System.out.println(path + " didn't load properly!!!3");
+                System.out.println(path + " didn't load properly!!!4");
+                System.out.println(path + " didn't load properly!!!5");
+                // System.out.println(e.getMessage());
+                e.printStackTrace();
+                // TODO: handle exception
+            }
+        }
+    }
+
+
     public static void autoSelector(){
     //Creating SendableChooser Object
 
@@ -34,9 +83,24 @@ public class Elastic {
     m_chooserGetOutTheWay.addOption("true", "true");
     SmartDashboard.putData("GetOutTheWay?", m_chooserGetOutTheWay);
 
+    SequentialCommandGroup coralH4_Collect_D = 
+        // AutoBuilder.followPath(pathsMap.get("H path"))
+        new InstantCommand()
+        .andThen(CommandGroupFactory.putCoral(ElevatorConstanst.L4_HEIGHT))
+        // .andThen(AutoBuilder.followPath(pathsMap.get("H to collection")))
+        
+        .andThen(cannonSubsystem.collectUntilCoralCommand().withTimeout(1));
+        // .andThen(AutoBuilder.followPath(pathsMap.get("Collection2 to D")));
+        
+    Command literallyWalkForward = new InstantCommand();
+        // AutoBuilder.followPath(pathsMap.get("literallyWalkForward"));
+        
 
-
-
+    HashMap<String, Command> commands = new HashMap<>();
+    commands.put("literallyWalkForwards", literallyWalkForward);
+    commands.put("Coral H4, Collect, Go To D", coralH4_Collect_D);
+    commandSelector = new CommandSelector(commands, "Auto Chooser yay");
+    
     // ^cycle 1
     m_chooserReefCycle1.setDefaultOption("Reef-A", "Reef-A"); //the one selected by default when the dashboard starts
     m_chooserReefCycle1.addOption("Reef-A", "Reef-A");

@@ -41,7 +41,10 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    Elastic.loadPaths();
+
     Elastic.autoSelector();
+    
     Elastic.displayField();
     m_robotContainer.drivetrain.setStateStdDevs(VisionConstants.kSingleTagStdDevs);
     
@@ -55,6 +58,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     Elastic.dispalyCommandScheduler();
     Elastic.displayRobotPose();
+    SmartDashboard.putNumber("angleFromTarget", Vision.getReefCamera().getAngleFromTarget());
     m_robotContainer.log();
     // SmartDashboard.putNumber("getXfromTarget", Vision.getFrontCamera().getXfromTarget());
     // SmartDashboard.putNumber("getYfromTarget", Vision.getFrontCamera().getYfromTarget());

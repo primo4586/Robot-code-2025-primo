@@ -60,38 +60,10 @@ import java.util.List;
      private PhotonCameraSim cameraSim;
      private VisionSystemSim visionSim;
 
-     private static Vision _rightCamera;
-     private static Vision _leftCamera;
+
+     private static Vision _reefCamera;
      private static Vision _frontCamera;
  
-     /**
-      * Returns the first camera's Vision instance.
-      *
-      * This is a singleton instance, so the same instance is returned every time.
-      *
-      * @return the first camera's Vision instance
-      */
-     public static Vision getRightCamera() {
-         if (_rightCamera == null) {
-             _rightCamera = new Vision(RIGHT_CAMERA_NAME, RIGHT_CAMERA_TO_ROBOT);
-         }
-         return _rightCamera;
-     }
- 
-
-     /**
-      * Returns the second camera's Vision instance.
-      *
-      * This is a singleton instance, so the same instance is returned every time.
-      *
-      * @return the second camera's Vision instance
-      */
-     public static Vision getLeftCamera() {
-         if (_leftCamera == null) {
-             _leftCamera = new Vision(LEFT_CAMERA_NAME, LEFT_CAMERA_TO_ROBOT);
-         }
-         return _leftCamera;
-     }
 
      /**
       * Returns the second camera's Vision instance.
@@ -105,6 +77,20 @@ import java.util.List;
             _frontCamera = new Vision(FRONT_CAMERA_NAME, FRONT_CAMERA_TO_ROBOT);
         }
         return _frontCamera;
+    }
+
+    /**
+      * Returns the second camera's Vision instance.
+      *
+      * This is a singleton instance, so the same instance is returned every time.
+      *
+      * @return the second camera's Vision instance
+      */
+      public static Vision getReefCamera() {
+        if (_reefCamera == null) {
+            _reefCamera = new Vision(REEF_CAMERA_NAME, REEF_CAMERA_TO_ROBOT);
+        }
+        return _reefCamera;
     }
  
     private Vision(String kCameraName,Transform3d kRobotToCam) {
@@ -271,5 +257,6 @@ import java.util.List;
         return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getY(): lastYPosition;
     }
 
+    
     
  }

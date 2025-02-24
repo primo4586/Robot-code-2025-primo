@@ -4,7 +4,9 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -27,6 +29,11 @@ public class VisionConstants { // Todo: find values
     public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.27, -0.45, 0.34),
             new Rotation3d(0, 0, 0));
 
+        // reef camera
+    public static final String REEF_CAMERA_NAME = "reefCamera";
+    public static final Transform3d REEF_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0, -0, 0),
+            new Rotation3d(0, 0, 0));
+
     // The layout of the AprilTags on the field
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout
             .loadField(AprilTagFields.k2025ReefscapeWelded);
@@ -37,5 +44,9 @@ public class VisionConstants { // Todo: find values
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(10, 10, Integer.MAX_VALUE); // TODO: tune to
                                                                                                        // each camera
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, Integer.MAX_VALUE);
+
+    public static final Pose2d leftReefTargetGoal = new Pose2d(0.319, -0.085, new Rotation2d(14.93));
+
+    public static final Pose2d rightReefTargetGoal = new Pose2d(0, 0, new Rotation2d(1));
 
 }

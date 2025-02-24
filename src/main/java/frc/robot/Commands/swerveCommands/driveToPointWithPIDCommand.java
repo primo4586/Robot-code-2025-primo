@@ -33,8 +33,8 @@ public class driveToPointWithPIDCommand extends Command {
   .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-  ProfiledPIDController driveXPidController = new ProfiledPIDController(0.355,0,0.01,new Constraints(0, 0));
-  ProfiledPIDController driveYPidController = new ProfiledPIDController(0.355,0,0.01,new Constraints(0, 0));
+  PIDController driveXPidController = new PIDController(3.5, 0, 0.0);
+  PIDController driveYPidController = new PIDController(3.5, 0, 0.0);
   PIDController rotionPidController = new PIDController(0.05, 0, 0);
 
   CommandXboxController joyStick = RobotContainer._driverController;
@@ -46,9 +46,9 @@ public class driveToPointWithPIDCommand extends Command {
     rotionPidController.setSetpoint(target.getRotation().getRadians());
     rotionPidController.setTolerance(1);
 
-    driveXPidController.setGoal(target.getX());
+    driveXPidController.setSetpoint(target.getX());
     driveXPidController.setTolerance(0.02);
-    driveYPidController.setGoal(target.getY());
+    driveYPidController.setSetpoint(target.getY());
     driveYPidController.setTolerance(0.02);
   }
 
@@ -58,9 +58,9 @@ public class driveToPointWithPIDCommand extends Command {
     rotionPidController.setSetpoint(target.getRotation().getDegrees());
     rotionPidController.setTolerance(1);
 
-    driveXPidController.setGoal(target.getX());
+    driveXPidController.setSetpoint(target.getX());
     driveXPidController.setTolerance(0.02);
-    driveYPidController.setGoal(target.getY());
+    driveYPidController.setSetpoint(target.getY());
     driveYPidController.setTolerance(0.02);
     addRequirements(swerve);
   }
@@ -75,8 +75,8 @@ public class driveToPointWithPIDCommand extends Command {
     SmartDashboard.putNumber("swerve x error", target.getX() - swerve.getState().Pose.getX());
     SmartDashboard.putNumber("swerve y error", target.getY() - swerve.getState().Pose.getY());
     swerve.setControl(
-      roborCentric.withVelocityX(driveXPidController.calculate(swerve.getState().Pose.getX()))
-        .withVelocityY(driveYPidController.calculate(swerve.getState().Pose.getY()))
+      roborCentric.withVelocityX(- driveXPidController.calculate(swerve.getState().Pose.getX()))
+        .withVelocityY( - driveYPidController.calculate(swerve.getState().Pose.getY()))
         .withRotationalRate(joyStick.getRightX() * MaxAngularRate * 0.7)
     );
   }
@@ -90,6 +90,6 @@ public class driveToPointWithPIDCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driveXPidController.atGoal() && driveYPidController.atGoal();
+    return driveXPidController.atSetpoint() && driveYPidController.atSetpoint();
   }
 }

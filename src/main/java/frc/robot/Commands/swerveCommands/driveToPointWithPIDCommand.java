@@ -33,8 +33,8 @@ public class driveToPointWithPIDCommand extends Command {
   .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-  PIDController driveXPidController = new PIDController(3.5, 0, 0.0);
-  PIDController driveYPidController = new PIDController(3.5, 0, 0.0);
+  PIDController driveXPidController = new PIDController(3.8, 0, 1.0);
+  PIDController driveYPidController = new PIDController(3.8, 0, 1.0);
   PIDController rotionPidController = new PIDController(0.05, 0, 0);
 
   CommandXboxController joyStick = RobotContainer._driverController;

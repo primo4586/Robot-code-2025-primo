@@ -144,7 +144,7 @@ public class RobotContainer {
 
 
         _driverController.leftTrigger().onTrue(new driveToPointWithCamera(false));
-        // _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(RED_REEF_H_POSITION));
+        _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(RED_REEF_H_POSITION));
         
 
         

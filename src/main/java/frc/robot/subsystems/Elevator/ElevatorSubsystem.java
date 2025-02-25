@@ -223,3 +223,4 @@ public Command moveCommand(int vec){
     System.out.println("Elevator follow motor couldn't apply configs" + statusCode.toString());
   }
 }
+

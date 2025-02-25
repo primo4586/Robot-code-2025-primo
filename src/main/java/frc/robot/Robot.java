@@ -11,6 +11,7 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Measure;
@@ -30,7 +31,7 @@ public class Robot extends TimedRobot {
 
 
   private String m_autoSelectedReef;
-  
+  private int robotRotation;
   private String m_autoSelectedLevel;
   private final RobotContainer m_robotContainer;
   private final Vision _frontCamera = Vision.getFrontCamera();
@@ -82,7 +83,7 @@ public class Robot extends TimedRobot {
                 var estStdDevs = _frontCamera.getEstimationStdDevs();
 
                 RobotContainer.drivetrain.addVisionMeasurement(
-                        new Pose2d(est.estimatedPose.toPose2d().getTranslation(), RobotContainer.drivetrain.getState().Pose.getRotation()), Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
+                        est.estimatedPose.toPose2d(), Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
             });
           }
 
@@ -90,7 +91,8 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   @Override
   public void disabledExit() {}

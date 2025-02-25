@@ -41,6 +41,7 @@ public class driveToPointWithPIDCommand extends Command {
 
   /** Creates a new driveToPointWithPIDCommand. */
   public driveToPointWithPIDCommand(boolean isRight) {
+    addRequirements(swerve);
     target = PrimoCalc.ChooseReef(isRight);
     rotionPidController.enableContinuousInput(180, -180);
     rotionPidController.setSetpoint(target.getRotation().getRadians());

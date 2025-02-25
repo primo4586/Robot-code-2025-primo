@@ -221,7 +221,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
-        return autoChooser.getSelected(); //todo: connect the chooser to the path
+        return CommandGroupFactory.autoCommand();
     }
 
     public void log() {

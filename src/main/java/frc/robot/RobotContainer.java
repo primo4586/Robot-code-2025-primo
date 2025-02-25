@@ -7,6 +7,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.Misc.BLUE_REEF_D_POSITION;
 import static frc.robot.Misc.RED_REEF_H_POSITION;
 
 import java.util.function.DoubleSupplier;
@@ -143,10 +144,10 @@ public class RobotContainer {
         _driverController.leftStick().onTrue(cannon.loosenCoralCommand());
 
 
-        _driverController.leftTrigger().onTrue(new driveToPointWithCamera(false));
-        _driverController.rightTrigger().onTrue(new driveToPointWithPIDCommand(RED_REEF_H_POSITION));
+        _driverController.leftTrigger().whileTrue(new driveToPointWithPIDCommand(false));
+        _driverController.rightTrigger().whileTrue(new driveToPointWithPIDCommand(true));
         
-
+        
         
 
 

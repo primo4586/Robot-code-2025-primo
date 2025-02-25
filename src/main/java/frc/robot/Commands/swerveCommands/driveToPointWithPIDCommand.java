@@ -33,9 +33,9 @@ public class driveToPointWithPIDCommand extends Command {
   .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-  PIDController driveXPidController = new PIDController(3.8, 0, 1.0);
-  PIDController driveYPidController = new PIDController(3.8, 0, 1.0);
-  PIDController rotionPidController = new PIDController(0.05, 0, 0);
+  PIDController driveXPidController = new PIDController(5, 1.5, 0.4);
+  PIDController driveYPidController = new PIDController(5, 1.5, 0.4);
+  PIDController rotionPidController = new PIDController(0.025, 0, 0.01);
 
   CommandXboxController joyStick = RobotContainer._driverController;
 
@@ -75,9 +75,9 @@ public class driveToPointWithPIDCommand extends Command {
     SmartDashboard.putNumber("swerve x error", target.getX() - swerve.getState().Pose.getX());
     SmartDashboard.putNumber("swerve y error", target.getY() - swerve.getState().Pose.getY());
     swerve.setControl(
-      roborCentric.withVelocityX(- driveXPidController.calculate(swerve.getState().Pose.getX()))
-        .withVelocityY( - driveYPidController.calculate(swerve.getState().Pose.getY()))
-        .withRotationalRate(joyStick.getRightX() * MaxAngularRate * 0.7)
+      roborCentric.withVelocityX( - driveXPidController.calculate(swerve.getState().Pose.getX()) * 0.7)
+        .withVelocityY( - driveYPidController.calculate(swerve.getState().Pose.getY()) * 0.7)
+        .withRotationalRate( - joyStick.getRightX() * MaxAngularRate * 0.7)
     );
   }
 

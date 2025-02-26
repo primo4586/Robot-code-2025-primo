@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Commands.swerveCommands.PutCoralTakeAlgea;
 import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
@@ -41,7 +42,7 @@ public class CommandGroupFactory {
     private final static GripperArm gripperArm = GripperArm.getInstance();
 
     public static Command putCoral(double level, double gripperAngle){
-        return Commands.parallel(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT).
+        return Commands.parallel(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT).andThen(Commands.waitSeconds(0.02)).
         andThen(Commands.waitUntil(() -> elevator.isAtTarget()).andThen(cannon.loosenCoralCommand())));
         // return Commands.sequence(elevator.setTargetPositionCommand(L4_HEIGHT)
         // .andThen(gripperArm.setAngle(0)
@@ -55,7 +56,7 @@ public class CommandGroupFactory {
 
     public static Command autoCommand(){
         return Commands.parallel(new driveToPointWithPIDCommand(false).withTimeout(5)
-        .andThen(new PutCoralTakeAlgea(ElevatorConstanst.L4_HEIGHT, GripperArmConstants.REEF_ANGLE)));
+        .andThen(putCoral(ElevatorConstanst.L4_HEIGHT, GripperArmConstants.REEF_ANGLE)));
     }
 
 

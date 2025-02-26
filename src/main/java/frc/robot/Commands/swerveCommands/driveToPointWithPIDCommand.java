@@ -5,6 +5,7 @@ package frc.robot.Commands.swerveCommands;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 
 import java.lang.annotation.Target;
+import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -14,6 +15,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -24,6 +27,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class driveToPointWithPIDCommand extends Command {
   private static Pose2d target;
+                private DoubleSupplier vector = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? 1 : -1;
 
   static double  MaxSpeed = RobotContainer.MaxSpeed;
   static double  MaxAngularRate = RobotContainer.MaxSpeed;
@@ -36,9 +40,6 @@ public class driveToPointWithPIDCommand extends Command {
   PIDController driveXPidController = new PIDController(5, 1.5, 0.4);
   PIDController driveYPidController = new PIDController(5, 1.5, 0.4);
   PIDController rotionPidController = new PIDController(0.025, 0, 0.01);
-
-  CommandXboxController joyStick = RobotContainer._driverController;
-
   /** Creates a new driveToPointWithPIDCommand. */
   public driveToPointWithPIDCommand(boolean isRight) {
     target = PrimoCalc.ChooseReef(isRight);
@@ -75,9 +76,8 @@ public class driveToPointWithPIDCommand extends Command {
     SmartDashboard.putNumber("swerve x error", target.getX() - swerve.getState().Pose.getX());
     SmartDashboard.putNumber("swerve y error", target.getY() - swerve.getState().Pose.getY());
     swerve.setControl(
-      roborCentric.withVelocityX( - driveXPidController.calculate(swerve.getState().Pose.getX()) * 0.7)
-        .withVelocityY( - driveYPidController.calculate(swerve.getState().Pose.getY()) * 0.7)
-        .withRotationalRate( - joyStick.getRightX() * MaxAngularRate * 0.7)
+      roborCentric.withVelocityX(  vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX()) * 0.7)
+        .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY()) * 0.7)
     );
   }
 

@@ -26,7 +26,7 @@ public class VisionConstants { // Todo: find values
 
     // front camera
     public static final String FRONT_CAMERA_NAME = "frontCamera";
-    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.27,-0.02, 0.34),
+    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.27,0.1, 0.34),
             new Rotation3d(0, 0, 0));
 
         // reef camera

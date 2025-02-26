@@ -25,15 +25,15 @@ public class PutCoralTakeAlgea extends SequentialCommandGroup {
 
         ParallelDeadlineGroup preparePutCoral = new ParallelDeadlineGroup(
             Commands.waitSeconds(0.02).andThen(Commands.waitUntil(() -> elevator.isAtTarget())),
-            elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT).repeatedly(),
-            gripperArm.relocateAngelCommand(0).repeatedly());
+            elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT),
+            gripperArm.relocateAngelCommand(0));
 
 
             ParallelDeadlineGroup prepateTakeAlgea = new ParallelDeadlineGroup(
                 Commands.waitSeconds(0.02).andThen(
                 Commands.waitUntil(() -> elevator.isAtTarget())),
                 elevator.relocatePositionCommand(level),
-                gripperArm.relocateAngelCommand(gripperAngle).repeatedly());
+                gripperArm.relocateAngelCommand(gripperAngle));
 
 
         // SequentialCommandGroup command =  new SequentialCommandGroup(

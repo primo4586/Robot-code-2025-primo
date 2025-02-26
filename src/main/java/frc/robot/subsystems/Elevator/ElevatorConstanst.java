@@ -55,7 +55,7 @@ public class ElevatorConstanst { // todo: tune values
     public static final double L1_HEIGHT = 0;
     public static final double L2_HEIGHT = 0.94384765625 -0.24;
     public static final double L3_HEIGHT = 1.534423828125 -0.24;
-    public static final double L4_HEIGHT = 2.553173828125 - 0.14; // todo tune values
+    public static final double L4_HEIGHT = 2.31689453125; // todo tune values
     //our reef height: 2.553173828125 - 0.10;
     //real reef height: 2.31689453125; 
 

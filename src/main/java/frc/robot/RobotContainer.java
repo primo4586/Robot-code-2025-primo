@@ -39,11 +39,11 @@ import frc.robot.PrimoLib.Elastic;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
-import frc.robot.subsystems.Elevator.ElevatorConstanst;
-import frc.robot.subsystems.Elevator.ElevatorSubsystem;
+// import frc.robot.subsystems.Elevator.ElevatorConstanst;
+// import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Gripper.GripperSubsystem;
 import frc.robot.subsystems.gripperArm.GripperArm;
-import frc.robot.subsystems.gripperArm.GripperArmConstants;
+// import frc.robot.subsystems.gripperArm.GripperArmConstants;
 
 
 
@@ -66,10 +66,10 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CannonSubsystem cannon = CannonSubsystem.getInstance();
-    private final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
-    private final GripperSubsystem gripper = GripperSubsystem.getInstance();
-    private final GripperArm gripperArm = GripperArm.getInstance();
+    // private final CannonSubsystem cannon = CannonSubsystem.getInstance();
+    // private final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
+    // private final GripperSubsystem gripper = GripperSubsystem.getInstance();
+    // private final GripperArm gripperArm = GripperArm.getInstance();
 
     SlewRateLimiter xAccLimiterb = new SlewRateLimiter(10);
     SlewRateLimiter yAccLimiterb = new SlewRateLimiter(10);
@@ -121,11 +121,11 @@ public class RobotContainer {
         // );
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() ->
-            drive.withVelocityX(  _driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-            .withVelocityY(  _driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-            .withRotationalRate(  _driverController.getRightX() * MaxAngularRate * 0.9))
+            drive.withVelocityX( - _driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+            .withVelocityY( - _driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+            .withRotationalRate( - _driverController.getRightX() * MaxAngularRate * 0.9))
         );
-        _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
+        // _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
 
 
         // //driver  Controller
@@ -140,10 +140,10 @@ public class RobotContainer {
 
 
         //temp
-        elevator.setDefaultCommand(elevator.relocatePositionCommand());
-        _operatorController.x().whileTrue(elevator.moveCommand(1).andThen(elevator.relocatePositionCommand()));;
-        _operatorController.b().whileTrue(elevator.moveCommand(-1).andThen(elevator.relocatePositionCommand()));
-        _driverController.leftStick().onTrue(cannon.loosenCoralCommand());
+        // elevator.setDefaultCommand(elevator.relocatePositionCommand());
+        // _operatorController.x().whileTrue(elevator.moveCommand(1).andThen(elevator.relocatePositionCommand()));;
+        // _operatorController.b().whileTrue(elevator.moveCommand(-1).andThen(elevator.relocatePositionCommand()));
+        // _driverController.leftStick().onTrue(cannon.loosenCoralCommand());
 
 
         _driverController.leftTrigger().whileTrue(new driveToPointWithPIDCommand(false));
@@ -156,47 +156,47 @@ public class RobotContainer {
         //Operator Controller
 
         //cannon
-        _operatorController.a().onTrue(cannon.adjustCoralCommand());
-        _operatorController.y().onTrue(cannon.loosenCoralCommand());
-        _operatorController.start().onTrue(cannon.stopMotorCommand());
+        // _operatorController.a().onTrue(cannon.adjustCoralCommand());
+        // _operatorController.y().onTrue(cannon.loosenCoralCommand());
+        // _operatorController.start().onTrue(cannon.stopMotorCommand());
 
         //gripper arm
-        gripperArm.setDefaultCommand(
-        (gripperArm.relocateAngelCommand()));
+        // gripperArm.setDefaultCommand(
+        // (gripperArm.relocateAngelCommand()));
 
         //elevator buttons
         
-        _operatorController.povUp().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT));
-        _operatorController.povRight().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT));
-        _operatorController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
-        _operatorController.povLeft().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT)); 
+        // _operatorController.povUp().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT));
+        // _operatorController.povRight().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT));
+        // _operatorController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
+        // _operatorController.povLeft().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT)); 
 
         //resets
-        _operatorController.back().onTrue(gripperArm.setHomeCommand());
+        // _operatorController.back().onTrue(gripperArm.setHomeCommand());
 
-        //gripper
-        _operatorController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
-        _operatorController.rightBumper().onTrue(gripper.tossCommand());
+        // //gripper
+        // _operatorController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
+        // _operatorController.rightBumper().onTrue(gripper.tossCommand());
 
 
-        //Tester
-        _testerController.a().onTrue(cannon.catchCoralCommand());
-        _testerController.y().onTrue(cannon.loosenCoralCommand());
+        // //Tester
+        // _testerController.a().onTrue(cannon.catchCoralCommand());
+        // _testerController.y().onTrue(cannon.loosenCoralCommand());
 
-        _testerController.povUp().whileTrue(elevator.moveCommand(1));
-        _testerController.povDown().whileTrue(elevator.moveCommand(-1));
-        _testerController.start().onTrue(elevator.resetElevatorCommand());
+        // _testerController.povUp().whileTrue(elevator.moveCommand(1));
+        // _testerController.povDown().whileTrue(elevator.moveCommand(-1));
+        // _testerController.start().onTrue(elevator.resetElevatorCommand());
 
         
-        _testerController.povRight().whileTrue(gripperArm.moveArmCommand(-1));
-        _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(1));
+        // _testerController.povRight().whileTrue(gripperArm.moveArmCommand(-1));
+        // _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(1));
 
 
-        //sysysysy
-        _sysIdController.back().and(_sysIdController.y()).whileTrue(gripperArm.sysIdDynamic(Direction.kForward));
-        _sysIdController.back().and(_sysIdController.x()).whileTrue(gripperArm.sysIdDynamic(Direction.kReverse));
-        _sysIdController.start().and(_sysIdController.y()).whileTrue(gripperArm.sysIdQuasistatic(Direction.kForward));
-        _sysIdController.start().and(_sysIdController.x()).whileTrue(gripperArm.sysIdQuasistatic(Direction.kReverse));
+        // //sysysysy
+        // _sysIdController.back().and(_sysIdController.y()).whileTrue(gripperArm.sysIdDynamic(Direction.kForward));
+        // _sysIdController.back().and(_sysIdController.x()).whileTrue(gripperArm.sysIdDynamic(Direction.kReverse));
+        // _sysIdController.start().and(_sysIdController.y()).whileTrue(gripperArm.sysIdQuasistatic(Direction.kForward));
+        // _sysIdController.start().and(_sysIdController.x()).whileTrue(gripperArm.sysIdQuasistatic(Direction.kReverse));
         _sysIdController.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
         _sysIdController.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
 
@@ -232,7 +232,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
-        return CommandGroupFactory.autoCommand(); //todo: connect the chooser to the path
+        return new InstantCommand(() -> drivetrain.resetRotation(Rotation2d.fromDegrees(90))).andThen(CommandGroupFactory.autoCommand()); //todo: connect the chooser to the path
     }
 
     public void log() {

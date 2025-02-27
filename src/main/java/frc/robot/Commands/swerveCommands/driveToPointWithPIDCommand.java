@@ -77,7 +77,7 @@ public class driveToPointWithPIDCommand extends Command {
     SmartDashboard.putNumber("swerve x error", target.getX() - swerve.getState().Pose.getX());
     SmartDashboard.putNumber("swerve y error", target.getY() - swerve.getState().Pose.getY());
     swerve.setControl(
-      roborCentric.withVelocityX(-0.5)
+      roborCentric.withVelocityX(-1.5)
         .withVelocityY(0)
     );
   }

@@ -55,8 +55,8 @@ public class CommandGroupFactory {
     }
 
     public static Command autoCommand(){
-        return Commands.parallel(new driveToPointWithPIDCommand(false).withTimeout(8)
-        .andThen(putCoral(ElevatorConstanst.L4_HEIGHT, GripperArmConstants.REEF_ANGLE)));
+        return Commands.parallel(new driveToPointWithPIDCommand(false).withTimeout(8));
+        // .andThen(putCoral(ElevatorConstanst.L4_HEIGHT, GripperArmConstants.REEF_ANGLE)));
     }
 
 

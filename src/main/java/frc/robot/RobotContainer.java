@@ -121,9 +121,9 @@ public class RobotContainer {
         // );
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() ->
-            drive.withVelocityX( - _driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-            .withVelocityY( - _driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-            .withRotationalRate(-  _driverController.getRightX() * MaxAngularRate * 0.9))
+            drive.withVelocityX(  _driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+            .withVelocityY(  _driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+            .withRotationalRate(  _driverController.getRightX() * MaxAngularRate * 0.9))
         );
         _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
 

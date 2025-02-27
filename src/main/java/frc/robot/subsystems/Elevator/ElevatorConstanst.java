@@ -17,8 +17,11 @@ public class ElevatorConstanst { // todo: tune values
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {
 
+      ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
       ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
-      ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimit = 60; //^ i'm not sure if it true
+      ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimit = 50; //^ i'm not sure if it true
+      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimit = 30; //^ i'm not sure if it true
+
       ELEVATOR_CONFIG.Voltage.PeakForwardVoltage = 11.5;
       ELEVATOR_CONFIG.Voltage.PeakReverseVoltage = -11.5;
 
@@ -53,9 +56,9 @@ public class ElevatorConstanst { // todo: tune values
     public static final double MOVE_POWER = 0.3;
 
     public static final double L1_HEIGHT = 0;
-    public static final double L2_HEIGHT = 0.94384765625 -0.24;
-    public static final double L3_HEIGHT = 1.534423828125 -0.24;
-    public static final double L4_HEIGHT = 2.31689453125; // todo tune values
+    public static final double L2_HEIGHT = 0.716064453125 +0.03;
+    public static final double L3_HEIGHT = 1.572021484375;
+    public static final double L4_HEIGHT = 2.5029296875; // todo tune values
     //our reef height: 2.553173828125 - 0.10;
     //real reef height: 2.31689453125; 
 

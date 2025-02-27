@@ -84,24 +84,6 @@ public class Elastic {
     m_chooserGetOutTheWay.addOption("true", "true");
     SmartDashboard.putData("GetOutTheWay?", m_chooserGetOutTheWay);
 
-    SequentialCommandGroup coralH4_Collect_D = 
-        // AutoBuilder.followPath(pathsMap.get("H path"))
-        new InstantCommand()
-        .andThen(CommandGroupFactory.putCoral(ElevatorConstanst.L4_HEIGHT))
-        // .andThen(AutoBuilder.followPath(pathsMap.get("H to collection")))
-        
-        .andThen(cannonSubsystem.collectUntilCoralCommand().withTimeout(1));
-        // .andThen(AutoBuilder.followPath(pathsMap.get("Collection2 to D")));
-        
-    Command literallyWalkForward = new InstantCommand();
-        // AutoBuilder.followPath(pathsMap.get("literallyWalkForward"));
-        
-
-    HashMap<String, Command> commands = new HashMap<>();
-    commands.put("literallyWalkForwards", literallyWalkForward);
-    commands.put("Coral H4, Collect, Go To D", coralH4_Collect_D);
-    commandSelector = new CommandSelector(commands, "Auto Chooser yay");
-    
     // ^cycle 1
     m_chooserReefCycle1.setDefaultOption("Reef-A", "Reef-A"); //the one selected by default when the dashboard starts
     m_chooserReefCycle1.addOption("Reef-A", "Reef-A");

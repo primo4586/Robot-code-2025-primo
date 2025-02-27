@@ -5,7 +5,7 @@ public class GripperArmConstants {
     public static final int LIMIT_SWITCH_ID = 9; 
 
     // control values 
-    public static final double RESET_POWER = 0.5;
+    public static final double RESET_POWER = 0.35;
     public static final double MINIMUN_POSITION_ERROR = 1;
     public static final double MINIMUN_VELOCITY = 1;
 

@@ -249,7 +249,7 @@ import java.util.List;
     }
 
    public double getXfromTarget(){
-       lastXPosition = getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX() : lastYPosition;
+       lastXPosition = getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX() : lastXPosition;
        return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX(): 0;
     }
     public double getYfromTarget(){

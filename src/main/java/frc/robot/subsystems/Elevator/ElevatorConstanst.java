@@ -34,7 +34,7 @@ public class ElevatorConstanst { // todo: tune values
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO / (ROLLER_RADIUS * 2 * Math.PI);
 
-      // todo i belive all of this is bullshit sysid is shit. maybe p is right 
+      // TODO i belive all of this is bullshit sysid is shit. maybe p is right 
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 1.4258; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps

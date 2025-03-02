@@ -32,7 +32,7 @@ public class TunerConstants {
         .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
     // When using closed-loop control, the drive motor uses the control
     // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
-    private static final Slot0Configs driveGains = new Slot0Configs()
+    private static final Slot0Configs driveGains = new Slot0Configs() //^ the values are base of SYSID
         .withKP(27.052).withKI(0).withKD(0.72306)
         .withKS(0.19749).withKV(0.12141);
 
@@ -55,12 +55,19 @@ public class TunerConstants {
     // The stator current at which the wheels start to slip;
     // This needs to be tuned to your individual robot
     private static final Current kSlipCurrent = Amps.of(120.0);
+    private static final Current SUPPLY_CURRENT_LIMIT = Amps.of(70.0);
 
     // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
     // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
     private static final TalonFXConfiguration driveInitialConfigs = new TalonFXConfiguration()
     .withClosedLoopRamps(new ClosedLoopRampsConfigs()
-    .withVoltageClosedLoopRampPeriod(0.1));
+    .withVoltageClosedLoopRampPeriod(0.1))
+    .withCurrentLimits(new CurrentLimitsConfigs()
+    .withSupplyCurrentLimit(SUPPLY_CURRENT_LIMIT) //^this value is base of ctre docs and was added after battry went dead 
+    .withSupplyCurrentLimitEnable(true)
+    .withStatorCurrentLimit(kSlipCurrent) //^this was in SwerveModuleConstantsFactory and for organiztion u replace it here
+    .withStatorCurrentLimitEnable(true));
+
     private static final TalonFXConfiguration steerInitialConfigs = new TalonFXConfiguration()
         .withCurrentLimits(
             new CurrentLimitsConfigs()
@@ -79,6 +86,7 @@ public class TunerConstants {
 
     // Theoretical free speed (m/s) at 12 V applied output;
     // This needs to be tuned to your individual robot
+    //todo tune 
     public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(5);
 
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
@@ -98,6 +106,7 @@ public class TunerConstants {
     private static final MomentOfInertia kSteerInertia = KilogramSquareMeters.of(0.01);
     private static final MomentOfInertia kDriveInertia = KilogramSquareMeters.of(0.01);
     // Simulated voltage necessary to overcome friction
+    //TODO tune this
     private static final Voltage kSteerFrictionVoltage = Volts.of(0.2);
     private static final Voltage kDriveFrictionVoltage = Volts.of(0.2);
 
@@ -116,7 +125,6 @@ public class TunerConstants {
             .withDriveMotorGains(driveGains)
             .withSteerMotorClosedLoopOutput(kSteerClosedLoopOutput)
             .withDriveMotorClosedLoopOutput(kDriveClosedLoopOutput)
-            .withSlipCurrent(kSlipCurrent)
             .withSpeedAt12Volts(kSpeedAt12Volts)
             .withDriveMotorType(kDriveMotorType)
             .withSteerMotorType(kSteerMotorType)

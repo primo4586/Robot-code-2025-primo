@@ -26,7 +26,12 @@ public class VisionConstants { // Todo: find values
 
     // front camera
     public static final String FRONT_CAMERA_NAME = "frontCamera";
-    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.27,0.1, 0.34),
+    /*
+     * in ISR2 the wanted position most likely wasn't true and the value of y need to be 0.1 to work on 
+     * only one of the sides of the reefs. 
+     */
+    //todo push back the camera alighn it and maybe add another camera. 
+    public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.27,-0.5, 0.34),
             new Rotation3d(0, 0, 0));
 
         // reef camera
@@ -41,9 +46,9 @@ public class VisionConstants { // Todo: find values
     // The standard deviations of our vision estimated poses, which affect
     // correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
-    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(10, 10, Integer.MAX_VALUE); // TODO: tune to
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(3, 3, Integer.MAX_VALUE); // TODO: tune to
                                                                                                        // each camera
-    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, Integer.MAX_VALUE);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(5, 5, Integer.MAX_VALUE);
 
     public static final Pose2d leftReefTargetGoal = new Pose2d(0.319, -0.085, new Rotation2d(14.93));
 

@@ -1,7 +1,4 @@
 package frc.robot.subsystems.Cannon;
-
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class CannonConstants {

@@ -4,29 +4,23 @@ package frc.robot.Commands.swerveCommands;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 
-import java.lang.annotation.Target;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.PrimoLib.PrimoCalc;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
 public class driveToPointWithPIDCommand extends Command { //todo: need to orgeniz and tune evrything 
-  private static Pose2d target;
+  private static Pose2d _target;
                 private DoubleSupplier vector = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? 1 : -1;
 
   static double  MaxSpeed = RobotContainer.MaxSpeed;
@@ -43,19 +37,19 @@ public class driveToPointWithPIDCommand extends Command { //todo: need to orgeni
   /** Creates a new driveToPointWithPIDCommand. */
   public driveToPointWithPIDCommand(boolean isRight) {
     addRequirements(swerve);
-    target = PrimoCalc.ChooseReef(isRight);
+    _target = PrimoCalc.ChooseReef(isRight);
     rotionPidController.enableContinuousInput(180, -180);
-    rotionPidController.setSetpoint(target.getRotation().getRadians());
+    rotionPidController.setSetpoint(_target.getRotation().getRadians());
     rotionPidController.setTolerance(1);
 
-    driveXPidController.setSetpoint(target.getX());
+    driveXPidController.setSetpoint(_target.getX());
     driveXPidController.setTolerance(0.02);
-    driveYPidController.setSetpoint(target.getY());
+    driveYPidController.setSetpoint(_target.getY());
     driveYPidController.setTolerance(0.02);
   }
 
   public driveToPointWithPIDCommand(Pose2d target){
-    this.target = target;
+    _target = target;
     rotionPidController.enableContinuousInput(180, -180);
     rotionPidController.setSetpoint(target.getRotation().getDegrees());
     rotionPidController.setTolerance(1);
@@ -74,8 +68,8 @@ public class driveToPointWithPIDCommand extends Command { //todo: need to orgeni
   // Called everey time the scheduler runs while the command is schduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("swerve x error", target.getX() - swerve.getState().Pose.getX());
-    SmartDashboard.putNumber("swerve y error", target.getY() - swerve.getState().Pose.getY());
+    SmartDashboard.putNumber("swerve x error", _target.getX() - swerve.getState().Pose.getX());
+    SmartDashboard.putNumber("swerve y error", _target.getY() - swerve.getState().Pose.getY());
     swerve.setControl(
       roborCentric.withVelocityX(  vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX()) * 0.7)
         .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY()) * 0.7)

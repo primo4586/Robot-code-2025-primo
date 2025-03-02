@@ -5,17 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SelectCommand;
 
 /** Add your docs here. */
 public class CommandSelector {
     SendableChooser<Command> chooser;
-    SelectCommand selector;
     Map<String,Command> commands;
 
 

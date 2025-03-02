@@ -112,9 +112,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         )
     );
 
-    /* The SysId routine to test */
-    private SysIdRoutine m_sysIdRoutineToApply = m_sysIdRoutineTranslation;
-
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
      * <p>
@@ -241,7 +238,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      * @return Command to run
      */
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-        return m_sysIdRoutineToApply.quasistatic(direction);
+        return m_sysIdRoutineTranslation.quasistatic(direction);
     }
 
     /**
@@ -252,8 +249,35 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
      * @return Command to run
      */
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-        return m_sysIdRoutineToApply.dynamic(direction);
+        return m_sysIdRoutineTranslation.dynamic(direction);
     }
+
+
+    public Command sysIdQuasistaticRotation(SysIdRoutine.Direction direction){
+        return m_sysIdRoutineRotation.quasistatic(direction);
+    }
+    public Command sysIdDynamicRotion(SysIdRoutine.Direction direction){
+        return m_sysIdRoutineRotation.dynamic(direction);
+    }
+
+    public Command sysidQuasistaticSteer(SysIdRoutine.Direction direction){
+        return m_sysIdRoutineSteer.quasistatic(direction);
+    }
+
+/*************  ✨ Codeium Command ⭐  *************/
+    /**
+     * Runs the SysId Dynamic test in the given direction for the steer routine
+     * specified by {@link #m_sysIdRoutineSteer}.
+     *
+     * @param direction Direction of the SysId Dynamic test
+     * @return Command to run
+     */
+/******  c7295fe7-50dd-4472-83ae-e2ba2d57ebdb  *******/
+    public Command sysidDynamicSteer(SysIdRoutine.Direction direction){
+        return m_sysIdRoutineSteer.dynamic(direction);
+    }
+
+    
 
     @Override
     public void periodic() {

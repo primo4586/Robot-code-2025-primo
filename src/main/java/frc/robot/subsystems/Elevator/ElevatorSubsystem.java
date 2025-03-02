@@ -6,29 +6,18 @@ package frc.robot.subsystems.Elevator;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.GravityTypeValue;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.units.VoltageUnit;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Misc;
-
 import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.Elevator.ElevatorConstanst.*;
-
-import java.util.function.DoubleSupplier;
-
 public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX m_masterMotor; // falcon 500
   private TalonFX m_followMotor; // falcon 500

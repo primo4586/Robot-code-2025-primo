@@ -16,7 +16,6 @@ import frc.robot.RobotContainer;
 import frc.robot.PrimoLib.PrimoCalc;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision.Vision;
-import frc.robot.subsystems.Vision.VisionConstants;
 
 public class driveToPointWithCamera extends Command {
   static double MaxSpeed = RobotContainer.MaxSpeed;
@@ -27,7 +26,6 @@ public class driveToPointWithCamera extends Command {
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
   private final Vision _reefCamera = Vision.getReefCamera();
-  private final Vision _frontCamera = Vision.getFrontCamera();
 
   private Pose2d globalGoal; // with global pose astimation (red camera)
   private Pose2d goal; // between cameraGoal and globalGoal

@@ -17,8 +17,8 @@ public class ElevatorConstanst { // todo: tune values
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {
 
-      ELEVATOR_CONFIG.CurrentLimits.SupplyCurrentLimitEnable = true;
-      ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimit = 60; //^ i'm not sure if it true
+      ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimitEnable = true;
+      ELEVATOR_CONFIG.CurrentLimits.StatorCurrentLimit = 80; //^ at 60 (amp) it was to slow and use max amp. i dont know if you need cuurent limit here
       ELEVATOR_CONFIG.Voltage.PeakForwardVoltage = 11.5;
       ELEVATOR_CONFIG.Voltage.PeakReverseVoltage = -11.5;
 
@@ -34,6 +34,7 @@ public class ElevatorConstanst { // todo: tune values
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO / (ROLLER_RADIUS * 2 * Math.PI);
 
+      // todo i belive all of this is bullshit sysid is shit. maybe p is right 
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 1.4258; // Volts to overcome static friction
       ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps

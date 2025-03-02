@@ -4,8 +4,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -68,14 +70,25 @@ public class Robot extends TimedRobot {
           }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
   public void disabledPeriodic() {
   }
 
   @Override
-  public void disabledExit() {}
+  public void disabledExit() {
+    /*
+     * this is to log the swerve fast and Talons infromation
+     */
+    SignalLogger.start();
+    
+    /*
+     * this is to log network tabale. it could log more but you need to tune it. 
+     */
+    DataLogManager.start();
+  }
 
   @Override
   public void autonomousInit() {

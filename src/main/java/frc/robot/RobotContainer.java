@@ -32,7 +32,6 @@ import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Commands.CommandGroupFactory;
-import frc.robot.Commands.swerveCommands.PutCoralTakeAlgea;
 import frc.robot.Commands.swerveCommands.driveToPointWithCamera;
 import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
 import frc.robot.PrimoLib.Elastic;
@@ -42,8 +41,6 @@ import frc.robot.subsystems.Cannon.CannonSubsystem;
 import frc.robot.subsystems.Elevator.ElevatorConstanst;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Gripper.GripperSubsystem;
-import frc.robot.subsystems.gripperArm.GripperArm;
-import frc.robot.subsystems.gripperArm.GripperArmConstants;
 
 
 
@@ -69,7 +66,6 @@ public class RobotContainer {
     private final CannonSubsystem cannon = CannonSubsystem.getInstance();
     private final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
     private final GripperSubsystem gripper = GripperSubsystem.getInstance();
-    private final GripperArm gripperArm = GripperArm.getInstance();
 
     SlewRateLimiter xAccLimiterb = new SlewRateLimiter(10);
     SlewRateLimiter yAccLimiterb = new SlewRateLimiter(10);
@@ -125,8 +121,6 @@ public class RobotContainer {
             .withVelocityY( - _driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
             .withRotationalRate(-  _driverController.getRightX() * MaxAngularRate * 0.9))
         );
-        _operatorController.rightTrigger().onTrue( new PutCoralTakeAlgea(ElevatorConstanst.L3_HEIGHT,GripperArmConstants.REEF_ANGLE));
-
 
         // //driver  Controller
         // drivetrain.setDefaultCommand(
@@ -160,9 +154,6 @@ public class RobotContainer {
         _operatorController.y().onTrue(cannon.loosenCoralCommand());
         _operatorController.start().onTrue(cannon.stopMotorCommand());
 
-        //gripper arm
-        gripperArm.setDefaultCommand(
-        (gripperArm.relocateAngelCommand()));
 
         //elevator buttons
         
@@ -171,8 +162,6 @@ public class RobotContainer {
         _operatorController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
         _operatorController.povLeft().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT)); 
 
-        //resets
-        _operatorController.back().onTrue(gripperArm.setHomeCommand());
 
         //gripper
         _operatorController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
@@ -187,16 +176,8 @@ public class RobotContainer {
         _testerController.povDown().whileTrue(elevator.moveCommand(-1));
         _testerController.start().onTrue(elevator.resetElevatorCommand());
 
-        
-        _testerController.povRight().whileTrue(gripperArm.moveArmCommand(-1));
-        _testerController.povLeft().whileTrue(gripperArm.moveArmCommand(1));
 
 
-        //sysysysy
-        _sysIdController.back().and(_sysIdController.y()).whileTrue(gripperArm.sysIdDynamic(Direction.kForward));
-        _sysIdController.back().and(_sysIdController.x()).whileTrue(gripperArm.sysIdDynamic(Direction.kReverse));
-        _sysIdController.start().and(_sysIdController.y()).whileTrue(gripperArm.sysIdQuasistatic(Direction.kForward));
-        _sysIdController.start().and(_sysIdController.x()).whileTrue(gripperArm.sysIdQuasistatic(Direction.kReverse));
         _sysIdController.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
         _sysIdController.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
 

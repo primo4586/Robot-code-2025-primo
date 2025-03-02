@@ -25,7 +25,7 @@ import frc.robot.PrimoLib.PrimoCalc;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
-public class driveToPointWithPIDCommand extends Command {
+public class driveToPointWithPIDCommand extends Command { //todo: need to orgeniz and tune evrything 
   private static Pose2d target;
                 private DoubleSupplier vector = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? 1 : -1;
 

@@ -26,7 +26,6 @@ public class Elastic {
     public static CannonSubsystem cannonSubsystem = CannonSubsystem.getInstance();
 
     public static HashMap<String, PathPlannerPath> pathsMap = new HashMap<>();
-    public static CommandSelector commandSelector;
     static final String[] PATHS = new String[]{
         // "H path",
         "H to collection",
@@ -100,7 +99,6 @@ public class Elastic {
     HashMap<String, Command> commands = new HashMap<>();
     commands.put("literallyWalkForwards", literallyWalkForward);
     commands.put("Coral H4, Collect, Go To D", coralH4_Collect_D);
-    commandSelector = new CommandSelector(commands, "Auto Chooser yay");
     
     // ^cycle 1
     m_chooserReefCycle1.setDefaultOption("Reef-A", "Reef-A"); //the one selected by default when the dashboard starts

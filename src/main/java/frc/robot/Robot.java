@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionConstants;
+import frc.robot.Commands.positionCommands.updateGlobalPoseWithVision;
 import frc.robot.PrimoLib.Elastic;
 
 public class Robot extends TimedRobot {
@@ -43,31 +44,9 @@ public class Robot extends TimedRobot {
     Elastic.displayRobotPose();
     SmartDashboard.putNumber("angleFromTarget", Vision.getReefCamera().getAngleFromTarget());
     m_robotContainer.log();
-    // SmartDashboard.putNumber("getXfromTarget", Vision.getFrontCamera().getXfromTarget());
-    // SmartDashboard.putNumber("getYfromTarget", Vision.getFrontCamera().getYfromTarget());
+    new updateGlobalPoseWithVision(isDisabled()); // update the global pose
+  }
 
-    /*
-     * This example of adding Limelight is very simple and may not be sufficient for on-field use.
-     * Users typically need to provide a standard deviation that scales with the distance to target
-     * and changes with number of tags available.
-     *
-     * This example is sufficient to show that vision integration is possible, though exact implementation
-     * of how to use vision should be tuned per-robot and to the team's specification.
-     */
-
-    // Correct pose estimate with vision measurements
-    // front camera 
-    // !this has not been tested
-    var visionEst = _frontCamera.getEstimatedGlobalPose();
-    visionEst.ifPresent(
-            est -> {
-                // Change our trust in the measurement based on the tags we can see
-                var estStdDevs = _frontCamera.getEstimationStdDevs();
-
-                RobotContainer.drivetrain.addVisionMeasurement(
-                        est.estimatedPose.toPose2d(), Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
-            });
-          }
 
   @Override
   public void disabledInit() {

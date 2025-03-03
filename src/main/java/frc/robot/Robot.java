@@ -23,13 +23,12 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
-    Elastic.loadPaths();
 
     Elastic.autoSelector();
-    
+
     Elastic.displayField();
     RobotContainer.drivetrain.setStateStdDevs(VisionConstants.kSingleTagStdDevs);
-    
+
     // UsbCamera usbCamera = new UsbCamera("coralCam", 0);
     // usbCamera.setPixelFormat(PixelFormat.kYUYV);
     // CameraServer.startAutomaticCapture(usbCamera);
@@ -45,7 +44,6 @@ public class Robot extends TimedRobot {
     new updateGlobalPoseWithVision(isDisabled()); // update the global pose
   }
 
-
   @Override
   public void disabledInit() {
   }
@@ -60,23 +58,22 @@ public class Robot extends TimedRobot {
      * this is to log the swerve fast and Talons infromation
      */
     SignalLogger.start();
-    
+
     /*
-     * this is to log network tabale. it could log more but you need to tune it. 
+     * this is to log network tabale. it could log more but you need to tune it.
      */
     DataLogManager.start();
   }
 
   @Override
   public void autonomousInit() {
-    
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    //see which auto was selected
+    // see which auto was selected
 
     // m_autoSelectedLevel = m_chooserReef.getSelected();
     // System.out.println("Level selected: " + m_autoSelectedLevel);
@@ -89,11 +86,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
 
-    
   }
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+  }
 
   @Override
   public void teleopInit() {
@@ -107,7 +104,8 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopExit() {}
+  public void teleopExit() {
+  }
 
   @Override
   public void testInit() {
@@ -115,11 +113,14 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void testExit() {}
+  public void testExit() {
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }

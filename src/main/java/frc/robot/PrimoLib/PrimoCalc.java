@@ -41,21 +41,24 @@ public class PrimoCalc {
                 return new Rotation2d(angleToTargetRadians + Units.degreesToRadians(180));
         }
 
-        //TODO: make this work for red alliance too
         public static Pose2d ChooseReef(boolean isRight){ 
 
                 Pose2d currentPosition = swerve.getState().Pose;
+                double numerator = BLUE_REEF_CENTER_POSITION.getY() - currentPosition.getY();
+                double divider = BLUE_REEF_CENTER_POSITION.getX() - currentPosition.getX();
+
                 BooleanSupplier isBlue = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue;
                 /*
                  * caculate the angel between the robot and the reef 
-                 * from here we can know to wich side of the reef the robot needs to go.
+                 * from here we can know to which side of the reef the robot needs to go.
                 */
 
                 if (isBlue.getAsBoolean()){
+                        if (divider == 0){
+                                divider += 0.00000001;
+                        }
                         double reefAngle = 
-                        Math.toDegrees(Math.atan(
-                       (BLUE_REEF_CENTER_POSITION.getY() - currentPosition.getY()) /
-                       (BLUE_REEF_CENTER_POSITION.getX() - currentPosition.getX())));
+                        Math.toDegrees(Math.atan(numerator / divider));
 
                if (-90 < reefAngle && reefAngle <= -30){
                        if (currentPosition.getX() > BLUE_REEF_CENTER_POSITION.getX()){

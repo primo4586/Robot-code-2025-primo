@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -21,7 +20,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-  private final Vision _frontCamera = Vision.getFrontCamera();
 
   public Robot() {
     m_robotContainer = new RobotContainer();

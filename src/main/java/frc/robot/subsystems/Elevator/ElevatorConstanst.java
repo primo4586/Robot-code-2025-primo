@@ -6,13 +6,13 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 
-public class ElevatorConstanst { // todo: tune values 
+public class ElevatorConstanst { // TODO: tune values 
     public static final int MASTER_TALONFX_ID = 30;
     public static final int FOLLOW_TALONFX_ID = 31;
 
     public static final double ROLLER_RADIUS = 0.048; // In meters
     public static final double MAXIMUM_HIGHT = 2.516845703125; // In meters
-    public static final double GEAR_RATIO = 15 ;  // todo: i'm not sure if it true 
+    public static final double GEAR_RATIO = 15 ;  // TODO: i'm not sure if it true 
 
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {

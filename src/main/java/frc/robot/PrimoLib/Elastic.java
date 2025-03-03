@@ -31,29 +31,29 @@ public class Elastic {
         // "literallyWalkForward"
     };
 
-    public static void loadPaths() {
-        for(String path : PATHS) {
-            try {
-                pathsMap.put(path, PathPlannerPath.fromPathFile(path));
-                System.out.println("LOADED PROPERLY!!!");
-                System.out.println("LOADED PROPERLY!!!");
-                System.out.println("LOADED PROPERLY!!!");
-                System.out.println("LOADED PROPERLY!!!");
-                System.out.println("LOADED PROPERLY!!!");
-                System.out.println("LOADED PROPERLY!!!");
-                System.out.println("LOADED PROPERLY!!!");
-            } catch (Exception e) {
-                System.out.println(path + " didn't load properly!!!1");
-                System.out.println(path + " didn't load properly!!!2");
-                System.out.println(path + " didn't load properly!!!3");
-                System.out.println(path + " didn't load properly!!!4");
-                System.out.println(path + " didn't load properly!!!5");
-                // System.out.println(e.getMessage());
-                e.printStackTrace();
-                // TODO: handle exception
-            }
-        }
-    }
+    //
+    // public static void loadPaths() {
+    //     for(String path : PATHS) {
+    //         try {
+    //             pathsMap.put(path, PathPlannerPath.fromPathFile(path));
+    //             System.out.println("LOADED PROPERLY!!!");
+    //             System.out.println("LOADED PROPERLY!!!");
+    //             System.out.println("LOADED PROPERLY!!!");
+    //             System.out.println("LOADED PROPERLY!!!");
+    //             System.out.println("LOADED PROPERLY!!!");
+    //             System.out.println("LOADED PROPERLY!!!");
+    //             System.out.println("LOADED PROPERLY!!!");
+    //         } catch (Exception e) {
+    //             System.out.println(path + " didn't load properly!!!1");
+    //             System.out.println(path + " didn't load properly!!!2");
+    //             System.out.println(path + " didn't load properly!!!3");
+    //             System.out.println(path + " didn't load properly!!!4");
+    //             System.out.println(path + " didn't load properly!!!5");
+    //             // System.out.println(e.getMessage());
+    //             e.printStackTrace();
+    //         }
+    //     }
+    // }
 
 
 

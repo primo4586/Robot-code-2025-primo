@@ -7,7 +7,7 @@ package frc.robot.subsystems.Elevator;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.Follower;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,9 +40,11 @@ private final SysIdRoutine m_sysIdRoutine =
          this
       )
    );
-
-
-  private static MotionMagicVoltage _systemControl = new MotionMagicVoltage(0).withEnableFOC(true);
+  /*
+   * this system control controls the accleleretion directly and you dont need Kv and Ka
+   * controls the position. 
+   */
+  private static MotionMagicTorqueCurrentFOC _systemControl = new MotionMagicTorqueCurrentFOC(0); //^ this was Motion magic Voltage before. 
 
   private static double targetPosition = 0.0;
 

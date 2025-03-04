@@ -34,11 +34,12 @@ public class ElevatorConstanst { // TODO: tune values
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
       ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO / (ROLLER_RADIUS * 2 * Math.PI);
 
-      // TODO i belive all of this is bullshit sysid is shit. maybe p is right 
+      // TODO i belive all of this is bullshit, sysid is shit. maybe p is right 
       ELEVATOR_CONFIG.Slot0.kG = 0.3; // Volts to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 1.4258; // Volts to overcome static friction
-      ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps
-      ELEVATOR_CONFIG.Slot0.kA = 0.75; // Volts for an acceleration of 1 rps/s 9.0127
+      //^ when using MotionMagicTorqueCurrentFOC you dont kV and kA
+      // ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps
+      // ELEVATOR_CONFIG.Slot0.kA = 0.75; // Volts for an acceleration of 1 rps/s 
       ELEVATOR_CONFIG.Slot0.kP = 40;
       ELEVATOR_CONFIG.Slot0.kI = 0.0;
       ELEVATOR_CONFIG.Slot0.kD = 10;
@@ -56,7 +57,7 @@ public class ElevatorConstanst { // TODO: tune values
     public static final double L1_HEIGHT = 0;
     public static final double L2_HEIGHT = 0.94384765625 -0.24;
     public static final double L3_HEIGHT = 1.534423828125 -0.24;
-    public static final double L4_HEIGHT = 2.31689453125; // todo tune values
+    public static final double L4_HEIGHT = 2.31689453125; // TODO tune values
     //our reef height: 2.553173828125 - 0.10;
     //real reef height: 2.31689453125; 
 

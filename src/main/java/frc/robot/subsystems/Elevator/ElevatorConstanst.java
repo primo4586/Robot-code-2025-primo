@@ -12,7 +12,7 @@ public class ElevatorConstanst {
 
     public static final double ROLLER_RADIUS = 0.048; // In meters
     public static final double MAXIMUM_HIGHT = 2.516845703125; // In meters
-    public static final double GEAR_RATIO = 15 ;  // TODO: i'm not sure if it true 
+    public static final double GEAR_RATIO = 15 ;
 
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
     static {
@@ -57,11 +57,11 @@ public class ElevatorConstanst {
     public static final double L1_HEIGHT = 0;
     public static final double L2_HEIGHT = 0.94384765625 -0.24;
     public static final double L3_HEIGHT = 1.534423828125 -0.24;
-    public static final double L4_HEIGHT = 2.31689453125; // TODO tune values
+    public static final double L4_HEIGHT = 2.31689453125; // TODO check if this is still right. 
     //our reef height: 2.553173828125 - 0.10;
     //real reef height: 2.31689453125; 
 
     public static final double LOW_ALGEA_HEIGHT = 0.89;
-    public static final double HIGH_ALGEA_HEIGHT = 0; //TODO: FIND VALUE
+    public static final double HIGH_ALGEA_HEIGHT = 0;
 
 }

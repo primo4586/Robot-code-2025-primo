@@ -6,7 +6,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 
-public class ElevatorConstanst { // TODO: tune values 
+public class ElevatorConstanst { 
     public static final int MASTER_TALONFX_ID = 30;
     public static final int FOLLOW_TALONFX_ID = 31;
 

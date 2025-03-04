@@ -24,7 +24,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
 import frc.robot.subsystems.Elevator.ElevatorConstanst;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
-import frc.robot.subsystems.Gripper.GripperSubsystem;
 
 public class RobotContainer {
     public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -41,7 +40,6 @@ public class RobotContainer {
 
     private final CannonSubsystem cannon = CannonSubsystem.getInstance();
     private final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
-    private final GripperSubsystem gripper = GripperSubsystem.getInstance();
 
     SlewRateLimiter xAccLimiterb = new SlewRateLimiter(10);
     SlewRateLimiter yAccLimiterb = new SlewRateLimiter(10);
@@ -141,9 +139,6 @@ public class RobotContainer {
         _operatorController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
         _operatorController.povLeft().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT));
 
-        // gripper
-        _operatorController.leftBumper().onTrue(gripper.collectUntilCollectedCommand());
-        _operatorController.rightBumper().onTrue(gripper.tossCommand());
 
         // Tester
         _testerController.a().onTrue(cannon.catchCoralCommand());

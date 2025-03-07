@@ -39,18 +39,13 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
    * and we use FOC to control the acceleration.
    * but MA did use profile.
    */
-  PIDController driveXPidController = new PIDController(5, 1.5, 0.4); // TODO: check the values again.
-  PIDController driveYPidController = new PIDController(5, 1.5, 0.4);
+  PIDController driveXPidController = new PIDController(1, 1.5, 0); // TODO: check the values again.
+  PIDController driveYPidController = new PIDController(1, 1.5, 0);
+  
 
   /** Creates a new driveToPointWithPIDCommand. */
-  public driveToPointWithPIDCommand(boolean isRight) {
+  public driveToPointWithPIDCommand() {
     addRequirements(swerve);
-    _target = PrimoCalc.ChooseReef(isRight);
-
-    driveXPidController.setSetpoint(_target.getX());
-    driveXPidController.setTolerance(0.02);
-    driveYPidController.setSetpoint(_target.getY());
-    driveYPidController.setTolerance(0.02);
   }
 
   public driveToPointWithPIDCommand(Pose2d target) {
@@ -65,6 +60,15 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    addRequirements(swerve);
+    _target =
+     PrimoCalc.ChooseReef(RobotContainer._driverController.rightTrigger()
+    .getAsBoolean());
+
+    driveXPidController.setSetpoint(_target.getX());
+    driveXPidController.setTolerance(0.02);
+    driveYPidController.setSetpoint(_target.getY());
+    driveYPidController.setTolerance(0.02);
   }
 
   // Called everey time the scheduler runs while the command is schduled.
@@ -74,9 +78,8 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
     SmartDashboard.putNumber("swerve y error", _target.getY() - swerve.getState().Pose.getY());
     swerve.setControl(
         facingAngel
-            .withVelocityX(vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX()) * 0.7)
-            .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY()) * 0.7)
-            .withTargetDirection(swerve.getState().Pose.getRotation()));
+            .withVelocityX(vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX()))
+            .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY())));
   }
 
   // Called once the command ends or is interrupted.

@@ -52,7 +52,7 @@ public class RobotContainer {
     public static final CommandXboxController _testerController = new CommandXboxController(2);
     public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
-    private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.4 : 1.0;
+    private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.3 : 1.0;
 
     private DoubleSupplier targetAngle = () -> _driverController.povUp().getAsBoolean() ? 0.0
             : _driverController.povRight().getAsBoolean() ? 90.0
@@ -97,8 +97,8 @@ public class RobotContainer {
         // );
         drivetrain.setDefaultCommand(
                 drivetrain.applyRequest(() -> drive
-                        .withVelocityX(-_driverController.getLeftY() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
-                        .withVelocityY(-_driverController.getLeftX() * slowMode.getAsDouble() * 0.45 * MaxSpeed)
+                        .withVelocityX(-_driverController.getLeftY() * slowMode.getAsDouble() * 0.7 * MaxSpeed)
+                        .withVelocityY(-_driverController.getLeftX() * slowMode.getAsDouble() * 0.7 * MaxSpeed)
                         .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * 0.9)));
 
         // //driver Controller

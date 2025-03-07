@@ -39,8 +39,8 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
    * and we use FOC to control the acceleration.
    * but MA did use profile.
    */
-  PIDController driveXPidController = new PIDController(5, 1.5, 0.4); // TODO: check the values again.
-  PIDController driveYPidController = new PIDController(5, 1.5, 0.4);
+  PIDController driveXPidController = new PIDController(4, 1.5, 0); // TODO: check the values again.
+  PIDController driveYPidController = new PIDController(4, 1.5, 0);
 
   private boolean isRight = false;
 
@@ -63,22 +63,22 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _target = PrimoCalc.ChooseReef(this.isRight);
-    driveXPidController.setSetpoint(_target.getX());
-    driveYPidController.setSetpoint(_target.getY());
   }
 
   // Called everey time the scheduler runs while the command is schduled.
   @Override
   public void execute() {
+    _target = PrimoCalc.ChooseReef(this.isRight);
+    driveXPidController.setSetpoint(_target.getX());
+    driveYPidController.setSetpoint(_target.getY());
     SmartDashboard.putNumber("swerve x error", driveXPidController.getError());
     SmartDashboard.putNumber("swerve y error", driveYPidController.getError());
     // SmartDashboard.putNumber("swerve rot error", swerve.getState().Pose.getRotation());
     swerve.setControl(
         facingAngel
-            .withVelocityX(- driveXPidController.calculate(swerve.getState().Pose.getX()) * 0.7)
-            .withVelocityY(- driveYPidController.calculate(swerve.getState().Pose.getY()) * 0.7)
-            .withTargetDirection(_target.getRotation()));
+            .withVelocityX(vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX()))
+            .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY()))
+            .withTargetDirection(swerve.getState().Pose.getRotation()));
   }
 
   // Called once the command ends or is interrupted.

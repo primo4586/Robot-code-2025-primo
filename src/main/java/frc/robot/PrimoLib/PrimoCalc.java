@@ -115,7 +115,7 @@ public class PrimoCalc {
                 (RED_REEF_CENTER_POSITION.getX() - currentPosition.getX())));
          
                 if (-90 < reefAngle && reefAngle <= -30){
-                       if (currentPosition.getX() < RED_REEF_CENTER_POSITION.getX()){
+                       if (currentPosition.getX() > RED_REEF_CENTER_POSITION.getX()){
                                return new Pose2d(
                                        isRight ? RED_REEF_L_POSITION.getX() : RED_REEF_K_POSITION.getX(),
                                        isRight ? RED_REEF_L_POSITION.getY() : RED_REEF_K_POSITION.getY(),
@@ -130,7 +130,7 @@ public class PrimoCalc {
                        }
                }
                else if (reefAngle <= 30){
-                        if (currentPosition.getX() < RED_REEF_CENTER_POSITION.getX())
+                        if (currentPosition.getX() > RED_REEF_CENTER_POSITION.getX())
                        {
                                return new Pose2d(
                                isRight ? RED_REEF_B_POSITION.getX() : RED_REEF_A_POSITION.getX(),
@@ -146,7 +146,7 @@ public class PrimoCalc {
                        }
                }
                else{
-                       if (currentPosition.getX() < RED_REEF_CENTER_POSITION.getX())
+                       if (currentPosition.getX() > RED_REEF_CENTER_POSITION.getX())
                        {
                                return new Pose2d(
                                isRight ? RED_REEF_D_POSITION.getX() : RED_REEF_C_POSITION.getX(),

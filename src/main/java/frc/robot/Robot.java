@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.Utils;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -13,22 +14,23 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionConstants;
-import frc.robot.Commands.positionCommands.updateGlobalPoseWithVision;
 import frc.robot.PrimoLib.Elastic;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+  private final Vision _frontCamera = Vision.getFrontCamera();
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    // Elastic.loadPaths();
 
     Elastic.autoSelector();
-
+    
     Elastic.displayField();
     RobotContainer.drivetrain.setStateStdDevs(VisionConstants.kSingleTagStdDevs);
-
+    
     // UsbCamera usbCamera = new UsbCamera("coralCam", 0);
     // usbCamera.setPixelFormat(PixelFormat.kYUYV);
     // CameraServer.startAutomaticCapture(usbCamera);
@@ -41,7 +43,31 @@ public class Robot extends TimedRobot {
     Elastic.displayRobotPose();
     SmartDashboard.putNumber("angleFromTarget", Vision.getReefCamera().getAngleFromTarget());
     m_robotContainer.log();
-    new updateGlobalPoseWithVision(isDisabled()); // update the global pose
+    // SmartDashboard.putNumber("getXfromTarget", Vision.getFrontCamera().getXfromTarget());
+    // SmartDashboard.putNumber("getYfromTarget", Vision.getFrontCamera().getYfromTarget());
+
+    /*
+     * This example of adding Limelight is very simple and may not be sufficient for on-field use.
+     * Users typically need to provide a standard deviation that scales with the distance to target
+     * and changes with number of tags available.
+     *
+     * This example is sufficient to show that vision integration is possible, though exact implementation
+     * of how to use vision should be tuned per-robot and to the team's specification.
+     */
+
+    // Correct pose estimate with vision measurements
+    // front camera 
+    // !this has not been tested
+    var visionEst = _frontCamera.getEstimatedGlobalPose();
+    visionEst.ifPresent(
+            est -> {
+                // Change our trust in the measurement based on the tags we can see
+                var estStdDevs = _frontCamera.getEstimationStdDevs();
+
+                RobotContainer.drivetrain.addVisionMeasurement(
+                        est.estimatedPose.toPose2d(), Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
+            }
+    );
   }
 
   @Override
@@ -58,22 +84,23 @@ public class Robot extends TimedRobot {
      * this is to log the swerve fast and Talons infromation
      */
     SignalLogger.start();
-
+    
     /*
-     * this is to log network tabale. it could log more but you need to tune it.
+     * this is to log network tabale. it could log more but you need to tune it. 
      */
     DataLogManager.start();
   }
 
   @Override
   public void autonomousInit() {
-
+    
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
-    // see which auto was selected
+    //see which auto was selected
 
     // m_autoSelectedLevel = m_chooserReef.getSelected();
     // System.out.println("Level selected: " + m_autoSelectedLevel);
@@ -86,11 +113,11 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
 
+    
   }
 
   @Override
-  public void autonomousExit() {
-  }
+  public void autonomousExit() {}
 
   @Override
   public void teleopInit() {
@@ -104,8 +131,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopExit() {
-  }
+  public void teleopExit() {}
 
   @Override
   public void testInit() {
@@ -113,14 +139,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testPeriodic() {
-  }
+  public void testPeriodic() {}
 
   @Override
-  public void testExit() {
-  }
+  public void testExit() {}
 
   @Override
-  public void simulationPeriodic() {
-  }
+  public void simulationPeriodic() {}
 }

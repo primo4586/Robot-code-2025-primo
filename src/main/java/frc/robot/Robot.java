@@ -24,7 +24,7 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
-    Elastic.loadPaths();
+    // Elastic.loadPaths();
 
     Elastic.autoSelector();
     
@@ -66,8 +66,9 @@ public class Robot extends TimedRobot {
 
                 RobotContainer.drivetrain.addVisionMeasurement(
                         est.estimatedPose.toPose2d(), Utils.fpgaToCurrentTime(est.timestampSeconds), estStdDevs);
-            });
-          }
+            }
+    );
+  }
 
   @Override
   public void disabledInit() {

@@ -29,7 +29,7 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   private static final SwerveRequest.FieldCentricFacingAngle facingAngel = new FieldCentricFacingAngle()
       .withDeadband(MaxSpeed * 0.1) // ^joy stick deadband but i'm not shure why we need Max Speed here?
       .withRotationalDeadband(MaxAngularRate * 0.1)
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage).withHeadingPID(7, 0, 0);
 
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
@@ -42,41 +42,43 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   PIDController driveXPidController = new PIDController(5, 1.5, 0.4); // TODO: check the values again.
   PIDController driveYPidController = new PIDController(5, 1.5, 0.4);
 
+  private boolean isRight = false;
+
   /** Creates a new driveToPointWithPIDCommand. */
   public driveToPointWithPIDCommand(boolean isRight) {
     addRequirements(swerve);
-    _target = PrimoCalc.ChooseReef(isRight);
-
-    driveXPidController.setSetpoint(_target.getX());
+    this.isRight = isRight;
+    
     driveXPidController.setTolerance(0.02);
-    driveYPidController.setSetpoint(_target.getY());
     driveYPidController.setTolerance(0.02);
   }
 
   public driveToPointWithPIDCommand(Pose2d target) {
-    _target = target;
-    driveXPidController.setSetpoint(target.getX());
-    driveXPidController.setTolerance(0.02);
-    driveYPidController.setSetpoint(target.getY());
-    driveYPidController.setTolerance(0.02);
     addRequirements(swerve);
+    _target = target;
+    driveXPidController.setTolerance(0.02);
+    driveYPidController.setTolerance(0.02);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    _target = PrimoCalc.ChooseReef(this.isRight);
+    driveXPidController.setSetpoint(_target.getX());
+    driveYPidController.setSetpoint(_target.getY());
   }
 
   // Called everey time the scheduler runs while the command is schduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("swerve x error", _target.getX() - swerve.getState().Pose.getX());
-    SmartDashboard.putNumber("swerve y error", _target.getY() - swerve.getState().Pose.getY());
+    SmartDashboard.putNumber("swerve x error", driveXPidController.getError());
+    SmartDashboard.putNumber("swerve y error", driveYPidController.getError());
+    // SmartDashboard.putNumber("swerve rot error", swerve.getState().Pose.getRotation());
     swerve.setControl(
         facingAngel
-            .withVelocityX(vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX()) * 0.7)
-            .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY()) * 0.7)
-            .withTargetDirection(swerve.getState().Pose.getRotation()));
+            .withVelocityX(- driveXPidController.calculate(swerve.getState().Pose.getX()) * 0.7)
+            .withVelocityY(- driveYPidController.calculate(swerve.getState().Pose.getY()) * 0.7)
+            .withTargetDirection(_target.getRotation()));
   }
 
   // Called once the command ends or is interrupted.

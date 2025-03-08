@@ -122,8 +122,8 @@ public class RobotContainer {
         _operatorController.b().whileTrue(elevator.moveCommand(-1).andThen(elevator.relocatePositionCommand()));
         _driverController.leftStick().onTrue(cannon.loosenCoralCommand());
 
-        _driverController.leftTrigger().whileTrue(new driveToPointWithPIDCommand());
-        _driverController.rightTrigger().whileTrue(new driveToPointWithPIDCommand());
+        _driverController.leftTrigger().whileTrue(new driveToPointWithPIDCommand(false));
+        _driverController.rightTrigger().whileTrue(new driveToPointWithPIDCommand(true));
 
         // Operator Controller
 

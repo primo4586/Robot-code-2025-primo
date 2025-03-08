@@ -32,12 +32,13 @@ public class UpdateGlobalPoseVision {
                 Utils.fpgaToCurrentTime(est.timestampSeconds), // add the timestamp
                 estStdDevs); // add the estimation standard deviations
           }
-        });
-
-        //display the vision estimate
+        
+        // display the vision estimate
         frontCameraEstimatePosition[0] = visionEst.get().estimatedPose.toPose2d().getTranslation().getX();
         frontCameraEstimatePosition[1] = visionEst.get().estimatedPose.toPose2d().getTranslation().getY();
         frontCameraEstimatePosition[2] = visionEst.get().estimatedPose.toPose2d().getRotation().getDegrees();
         SmartDashboard.putNumberArray("frontCameraEstimatePosition", frontCameraEstimatePosition);
+        });
+        
   }
     }

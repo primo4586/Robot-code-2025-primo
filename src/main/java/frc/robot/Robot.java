@@ -5,8 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.Utils;
-
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,12 +13,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionConstants;
 import frc.robot.PrimoLib.Elastic;
+import frc.robot.PrimoLib.positionCommands.UpdateGlobalPoseVision;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-  private final Vision _frontCamera = Vision.getFrontCamera();
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -43,8 +41,8 @@ public class Robot extends TimedRobot {
     Elastic.displayRobotPose();
     SmartDashboard.putNumber("angleFromTarget", Vision.getReefCamera().getAngleFromTarget());
     m_robotContainer.log();
-    // SmartDashboard.putNumber("getXfromTarget", Vision.getFrontCamera().getXfromTarget());
-    // SmartDashboard.putNumber("getYfromTarget", Vision.getFrontCamera().getYfromTarget());
+    UpdateGlobalPoseVision.updateGlobalPoseVision(isDisabled()); // update global pose with vision
+  }
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.
@@ -145,5 +143,7 @@ public class Robot extends TimedRobot {
   public void testExit() {}
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    
+  }
 }

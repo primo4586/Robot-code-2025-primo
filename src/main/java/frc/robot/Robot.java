@@ -5,8 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.ctre.phoenix6.Utils;
-
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,14 +12,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionConstants;
-import frc.robot.Commands.positionCommands.updateGlobalPoseWithVision;
 import frc.robot.PrimoLib.Elastic;
+import frc.robot.PrimoLib.positionCommands.UpdateGlobalPoseVision;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-  private final Vision _frontCamera = Vision.getFrontCamera();
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -44,7 +41,7 @@ public class Robot extends TimedRobot {
     Elastic.displayRobotPose();
     SmartDashboard.putNumber("angleFromTarget", Vision.getReefCamera().getAngleFromTarget());
     m_robotContainer.log();
-    new updateGlobalPoseWithVision(isDisabled()); // update the global pose
+    UpdateGlobalPoseVision.updateGlobalPoseVision(isDisabled()); // update global pose with vision
   }
 
 
@@ -123,5 +120,7 @@ public class Robot extends TimedRobot {
   public void testExit() {}
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+    
+  }
 }

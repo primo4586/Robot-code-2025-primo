@@ -28,10 +28,10 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   static double MaxAngularRate = RobotContainer.MaxSpeed;
   private static final CommandSwerveDrivetrain swerve = RobotContainer.drivetrain;
 
-  private static final SwerveRequest.FieldCentricFacingAngle facingAngel = new FieldCentricFacingAngle()
+  private static final SwerveRequest.FieldCentric facingAngel = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1) // ^joy stick deadband but i'm not shure why we need Max Speed here?
       .withRotationalDeadband(MaxAngularRate * 0.1)
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage).withHeadingPID(1, 0, 0);
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
@@ -58,8 +58,8 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    driveXPidController = new PIDController(3.5, 0, 0); // TODO: check the values again.
-    driveYPidController = new PIDController(3.5, 0, 0);
+    driveXPidController = new PIDController(3.7, 0, 0); // TODO: check the values again.
+    driveYPidController = new PIDController(3.7, 0, 0);
   }
 
   // Called everey time the scheduler runs while the command is schduled.
@@ -76,8 +76,7 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
     swerve.setControl(
         facingAngel
             .withVelocityX(vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX()))
-            .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY()))
-            .withTargetDirection(swerve.getState().Pose.getRotation()));
+            .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY())));
   }
 
   // Called once the command ends or is interrupted.

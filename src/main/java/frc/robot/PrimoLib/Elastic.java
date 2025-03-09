@@ -160,8 +160,6 @@ public class Elastic {
     }
 
     public static void displayCameraDeta() {
-        Vision camera = Vision.getFrontCamera();
-        SmartDashboard.putNumber("Vision/front/angelFromTarget", camera.getAngleFromTarget());
     }
 
     public static void displayField() {

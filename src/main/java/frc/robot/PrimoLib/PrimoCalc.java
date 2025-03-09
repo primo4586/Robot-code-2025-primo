@@ -95,8 +95,8 @@ public class PrimoCalc {
                        if (currentPosition.getX() > BLUE_REEF_CENTER_POSITION.getX())
                        {
                                return new Pose2d(
-                               isRight ? BLUE_REEF_H_POSITION.getX() : BLUE_REEF_G_POSITION.getX(),
-                               isRight ? BLUE_REEF_H_POSITION.getY() : BLUE_REEF_G_POSITION.getY(),
+                               isRight ? BLUE_REEF_J_POSITION.getX() : BLUE_REEF_I_POSITION.getX(),
+                               isRight ? BLUE_REEF_J_POSITION.getY() : BLUE_REEF_I_POSITION.getY(),
                                new Rotation2d(REEF_5_ANGLE));
                        }
                        else

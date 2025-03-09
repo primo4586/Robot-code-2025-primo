@@ -236,14 +236,6 @@ import java.util.List;
         return camera.getLatestResult().hasTargets();
     }
 
-     /**
-     * Get the angle from the target
-     * @return the angle from the target or 0 if no target
-     */
-
-    public double getAngleFromTarget() {
-        return getDetectingObject() ? camera.getLatestResult().getBestTarget().getYaw() : 0;
-    }
 
    public double getXfromTarget(){
        lastXPosition = getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getX() : lastXPosition;

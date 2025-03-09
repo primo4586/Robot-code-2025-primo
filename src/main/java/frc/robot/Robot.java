@@ -39,7 +39,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     Elastic.dispalyCommandScheduler();
     Elastic.displayRobotPose();
-    SmartDashboard.putNumber("angleFromTarget", Vision.getReefCamera().getAngleFromTarget());
     m_robotContainer.log();
     UpdateGlobalPoseVision.updateGlobalPoseVision(isDisabled()); // update global pose with vision
   }

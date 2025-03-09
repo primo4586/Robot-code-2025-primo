@@ -21,6 +21,8 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 public class driveToPointWithPIDCommand extends Command { // TODO: need to orgeniz and tune evrything + add comments
   private static Pose2d _target;
   private DoubleSupplier vector = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? 1 : -1;
+  PIDController driveXPidController;
+  PIDController driveYPidController;
 
   static double MaxSpeed = RobotContainer.MaxSpeed;
   static double MaxAngularRate = RobotContainer.MaxSpeed;
@@ -29,7 +31,7 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   private static final SwerveRequest.FieldCentricFacingAngle facingAngel = new FieldCentricFacingAngle()
       .withDeadband(MaxSpeed * 0.1) // ^joy stick deadband but i'm not shure why we need Max Speed here?
       .withRotationalDeadband(MaxAngularRate * 0.1)
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage).withHeadingPID(7, 0, 0);
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage).withHeadingPID(1, 0, 0);
 
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
@@ -39,9 +41,6 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
    * and we use FOC to control the acceleration.
    * but MA did use profile.
    */
-  PIDController driveXPidController = new PIDController(4, 1.5, 0); // TODO: check the values again.
-  PIDController driveYPidController = new PIDController(4, 1.5, 0);
-
   private boolean isRight = false;
 
   /** Creates a new driveToPointWithPIDCommand. */
@@ -49,25 +48,25 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
     addRequirements(swerve);
     this.isRight = isRight;
     
-    driveXPidController.setTolerance(0.02);
-    driveYPidController.setTolerance(0.02);
   }
 
   public driveToPointWithPIDCommand(Pose2d target) {
     addRequirements(swerve);
     _target = target;
-    driveXPidController.setTolerance(0.02);
-    driveYPidController.setTolerance(0.02);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    driveXPidController = new PIDController(3.5, 0, 0); // TODO: check the values again.
+    driveYPidController = new PIDController(3.5, 0, 0);
   }
 
   // Called everey time the scheduler runs while the command is schduled.
   @Override
   public void execute() {
+    driveXPidController.setTolerance(0.02);
+    driveYPidController.setTolerance(0.02);
     _target = PrimoCalc.ChooseReef(this.isRight);
     driveXPidController.setSetpoint(_target.getX());
     driveYPidController.setSetpoint(_target.getY());
@@ -91,6 +90,6 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driveXPidController.atSetpoint() && driveYPidController.atSetpoint();
+    return false;
   }
 }

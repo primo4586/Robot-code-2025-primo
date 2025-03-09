@@ -17,7 +17,7 @@ public class UpdateGlobalPoseVision {
     visionEst.ifPresent(
         est -> { //if there is a vision estimate
 
-          if (disabled) { // if the robot is disabled then we trust the vision rotation
+          if (true) { // if the robot is disabled then we trust the vision rotation
             var estStdDevs = _frontCamera.getEstimationStdDevs(); //the estimation standard deviations
             RobotContainer.drivetrain.addVisionMeasurement( // add the vision measurement to the global pose estimator
                 est.estimatedPose.toPose2d(), // add the vision measurement to the global pose estimator with the vision rotation

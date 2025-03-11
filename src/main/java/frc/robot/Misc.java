@@ -31,7 +31,7 @@ public class Misc {
     public static final Pose2d BLUE_REEF_L_POSITION = new Pose2d(3.71,4.84,new Rotation2d(Math.toRadians(-60)));
 
     public static final Pose2d RED_REEF_A_POSITION = new Pose2d(14.10,3.90,new Rotation2d(Math.toRadians(180)));
-    public static final Pose2d RED_REEF_B_POSITION = new Pose2d(14.10,4.27,new Rotation2d(Math.toRadians(180)));
+    public static final Pose2d RED_REEF_B_POSITION = new Pose2d(14.07,4.29,new Rotation2d(Math.toRadians(180)));
     public static final Pose2d RED_REEF_C_POSITION = new Pose2d(13.69,4.88,new Rotation2d(Math.toRadians(-120)));
     public static final Pose2d RED_REEF_D_POSITION = new Pose2d(13.36,5.04,new Rotation2d(Math.toRadians(-120)));
     public static final Pose2d RED_REEF_E_POSITION = new Pose2d(12.61,5.03,new Rotation2d(Math.toRadians(-60)));

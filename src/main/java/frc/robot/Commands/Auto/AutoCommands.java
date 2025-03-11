@@ -1,6 +1,7 @@
 package frc.robot.Commands.Auto;
 
 import java.util.Vector;
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
@@ -19,8 +20,10 @@ import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Vision.Vision;
 
 public class AutoCommands {
+    private static BooleanSupplier redOrBlue = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? true : false;
     private static DoubleSupplier vector = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? 1 : -1;
         private final static CannonSubsystem cannon = CannonSubsystem.getInstance();
+        
     private final static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
     private static Vision _frontCamera = Vision.getFrontCamera();
     private static double MaxSpeed = RobotContainer.MaxSpeed;
@@ -29,7 +32,7 @@ public class AutoCommands {
                                                                                           // max angular velocity
           private static final CommandSwerveDrivetrain swerve = RobotContainer.drivetrain;
     
-      private static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+      private static final SwerveRequest.RobotCentric drive = new SwerveRequest.RobotCentric()
           .withDeadband(MaxSpeed * 0.1) // ^joy stick deadband but i'm not shure why we need Max Speed here?
           .withRotationalDeadband(MaxAngularRate * 0.1)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
@@ -38,7 +41,7 @@ public class AutoCommands {
     public static Command driveStright(){
         return Commands.runOnce(() -> swerve.setControl(
             drive
-                .withVelocityX(0.15 * MaxSpeed * vector.getAsDouble())
+                .withVelocityX(0.15 * MaxSpeed)
                 .withVelocityY(0)));
     }
 
@@ -96,7 +99,7 @@ public class AutoCommands {
     public static Command normalCommand(){
         return Commands.sequence(driveStright().
         andThen(Commands.waitUntil(() ->_frontCamera.getXfromTarget() < 1 && _frontCamera.getXfromTarget() != 0))
-        ,new driveToPointWithPIDCommand(false).withTimeout(2),
+        ,new driveToPointWithPIDCommand(redOrBlue.getAsBoolean()).withTimeout(2),
         putCoralL4()
         );
     }

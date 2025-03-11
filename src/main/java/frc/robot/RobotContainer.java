@@ -52,8 +52,8 @@ public class RobotContainer {
 
     public static final CommandXboxController _driverController = new CommandXboxController(0);
     public static final CommandXboxController _operatorController = new CommandXboxController(1);
-    public static final CommandXboxController _testerController = new CommandXboxController(2);
-    public static final CommandXboxController _sysIdController = new CommandXboxController(3);
+    // public static final CommandXboxController _testerController = new CommandXboxController(2);
+    // public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
     private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.3 : 1.0;
 
@@ -146,16 +146,16 @@ public class RobotContainer {
         _operatorController.povLeft().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT));
 
 
-        // Tester
-        _testerController.a().onTrue(cannon.catchCoralCommand());
-        _testerController.y().onTrue(cannon.loosenCoralCommand());
+        // // Tester
+        // _testerController.a().onTrue(cannon.catchCoralCommand());
+        // _testerController.y().onTrue(cannon.loosenCoralCommand());
 
-        _testerController.povUp().whileTrue(elevator.moveCommand(1));
-        _testerController.povDown().whileTrue(elevator.moveCommand(-1));
-        _testerController.start().onTrue(elevator.resetElevatorCommand());
+        // _testerController.povUp().whileTrue(elevator.moveCommand(1));
+        // _testerController.povDown().whileTrue(elevator.moveCommand(-1));
+        // _testerController.start().onTrue(elevator.resetElevatorCommand());
 
-        _sysIdController.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
-        _sysIdController.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
+        // _sysIdController.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
+        // _sysIdController.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
 
         // _driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
         // _driverController.b().whileTrue(drivetrain.applyRequest(() ->

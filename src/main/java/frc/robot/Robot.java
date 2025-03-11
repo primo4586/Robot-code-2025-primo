@@ -60,10 +60,6 @@ public class Robot extends TimedRobot {
      */
     SignalLogger.start();
     
-    /*
-     * this is to log network tabale. it could log more but you need to tune it. 
-     */
-    DataLogManager.start();
   }
 
   @Override

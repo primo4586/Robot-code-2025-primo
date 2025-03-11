@@ -4,6 +4,7 @@ import java.util.HashMap;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -173,5 +174,8 @@ public class Elastic {
 
     public static void setTargetPose(Pose2d targetPose) {
         m_field.getObject("Reef Target").setPose(targetPose);
+    }
+    public static void displayTimer(){
+        SmartDashboard.putNumber("timer", Timer.getMatchTime());
     }
 }

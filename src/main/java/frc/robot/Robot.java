@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     Elastic.dispalyCommandScheduler();
     Elastic.displayRobotPose();
+    Elastic.displayTimer();
     m_robotContainer.log();
     UpdateGlobalPoseVision.updateGlobalPoseVision(isDisabled()); // update global pose with vision
   }

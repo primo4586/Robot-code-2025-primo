@@ -48,15 +48,15 @@ public class ElevatorConstanst {
     }
 
     public static final double HIGHT_OF_THE_GROUND = 0;
-    public static final double MINIMUN_POSITION_ERROR = 0.05;
-    public static final double MINIMUN_VELOCITY_ERROR = 0.05;
+    public static final double MINIMUN_POSITION_ERROR = 0.08;
+    public static final double MINIMUN_VELOCITY_ERROR = 0.08;
 
     public static final double MOVE_POWER = 0.3;
 
     public static final double L1_HEIGHT = 0;
-    public static final double L2_HEIGHT = 0.7705078125;
-    public static final double L3_HEIGHT = 1.521484375;
-    public static final double L4_HEIGHT = 2.515869140625; 
+    public static final double L2_HEIGHT = 0.703857421875;
+    public static final double L3_HEIGHT = 1.390380859375;
+    public static final double L4_HEIGHT = 2.520263671875; 
     //our reef height: 2.553173828125 - 0.10;
     //real reef height: 2.31689453125; 
 

@@ -55,10 +55,10 @@ public class ElevatorConstanst {
 
     public static final double L1_HEIGHT = 0;
     public static final double L2_HEIGHT = 0.703857421875;
-    public static final double L3_HEIGHT = 1.390380859375;
-    public static final double L4_HEIGHT = 2.441650390625; 
+    public static final double L3_HEIGHT = 1.46826171875;
+    public static final double L4_HEIGHT = 2.517822265625; 
     //our reef height: 2.553173828125 - 0.10;
-    //real reef height: 2.441650390625; 
+    //real reef height: 2.517822265625; 
 
     public static final double LOW_ALGEA_HEIGHT = 0.89;
     public static final double HIGH_ALGEA_HEIGHT = 0;

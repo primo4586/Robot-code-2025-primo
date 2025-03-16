@@ -1,0 +1,117 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.Commands.swerveCommands;
+
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
+import frc.robot.PrimoLib.PrimoCalc;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Vision.Vision;
+import frc.robot.subsystems.Vision.VisionConstants;
+
+import static frc.robot.Commands.swerveCommands.SwerveCommandsConstants.*;
+
+/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+public class DriveToDistanceWithCamera extends Command {
+  private boolean isRight;
+  private static Pose2d _target;
+  private static Vision _rightCamera = Vision.getRightCamera();
+  private static Vision _leftCamera = Vision.getLeftCamera();
+  private Vision _Camera;
+  private static Pose2d _CameraTarget;
+
+  PIDController driveXPidController;
+  PIDController driveYPidController;
+  PIDController driveRotationPidController;
+
+  private static final CommandSwerveDrivetrain swerve = RobotContainer.drivetrain;
+
+  private static final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric()
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
+  private static final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric()
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+
+  private static double velocityX;
+  private static double velocityY;
+  private static double angularRate;
+
+  /*
+   * i dont think we need profile because we use feed foword to control the
+   * velocity
+   * and we use FOC to control the acceleration.
+   * but MA did use profile.
+   */
+
+  public DriveToDistanceWithCamera(boolean isRight) {
+    addRequirements(swerve);
+    this.isRight = isRight;
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    _Camera =  this.isRight ? _leftCamera : _rightCamera;
+    _CameraTarget = this.isRight ? VisionConstants.leftReefTargetGoal : VisionConstants.rightReefTargetGoal;
+    driveXPidController = new PIDController(3.7, 0, 0);
+    driveYPidController = new PIDController(3.7, 0, 0);
+    driveXPidController.setTolerance(0.02);
+    driveYPidController.setTolerance(0.02);
+    driveXPidController.setSetpoint(0);
+    driveYPidController.setSetpoint(0);
+    _target = PrimoCalc.ChooseReef(this.isRight);
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    if (_Camera.getDetectingObject()) {
+
+      velocityX = driveXPidController.calculate(_Camera.getXfromTarget(),_CameraTarget.getX());
+      velocityY = driveYPidController.calculate(_Camera.getYfromTarget(),_CameraTarget.getY());
+      angularRate = driveRotationPidController.calculate(_Camera.getAngleFromTarget(),_CameraTarget.getRotation().getRadians());
+      if (velocityX > MAX_VELOCITY_X)
+          velocityX = MAX_VELOCITY_X;
+
+      if (velocityY > MAX_VELOCITY_Y)
+          velocityY = MAX_VELOCITY_Y;
+
+      if (angularRate > MAX_ANGULAR_RATE)
+          angularRate = MAX_ANGULAR_RATE;
+      
+
+      swerve.setControl(
+          robotCentric
+              .withVelocityX(velocityX)
+              .withVelocityY(velocityY)
+              .withRotationalRate(angularRate));
+    } else {
+      swerve.setControl(
+            fieldCentric
+              .withVelocityX(
+                  driveXPidController.calculate(swerve.getState().Pose.getX(), _target.getX()))
+              .withVelocityY(
+                  driveYPidController.calculate(swerve.getState().Pose.getY(), _target.getY()))
+                  .withRotationalRate(driveRotationPidController.calculate(swerve.getState().Pose.getRotation().getRadians(),
+                  _target.getRotation().getRadians())));
+    }
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return driveXPidController.atSetpoint() && driveYPidController.atSetpoint();
+  }
+}

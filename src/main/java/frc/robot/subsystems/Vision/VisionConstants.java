@@ -14,7 +14,7 @@ import edu.wpi.first.math.numbers.N3;
 
 public class VisionConstants { // Todo: find values
     // right camera
-    public static final String RIGHT_CAMERA_NAME = "rightCamera";
+    public static final String RIGHT_CAMERA_NAME = "rigtCamera";
     public static final Transform3d RIGHT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0, 0, 0),
             new Rotation3d(0, 0, 0));
 
@@ -51,8 +51,8 @@ public class VisionConstants { // Todo: find values
                                                                                                        // each camera
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(5, 5, Integer.MAX_VALUE);
 
-    public static final Pose2d leftReefTargetGoal = new Pose2d(0.319, -0.085, new Rotation2d(14.93));
+    public static final Pose2d leftReefTargetGoal = new Pose2d(0.319, -0.085, new Rotation2d()); // TODO: tune
 
-    public static final Pose2d rightReefTargetGoal = new Pose2d(0, 0, new Rotation2d(1));
+    public static final Pose2d rightReefTargetGoal = new Pose2d(0, 0, new Rotation2d());
 
 }

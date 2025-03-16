@@ -8,24 +8,24 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Vision.Vision;
 
 public class UpdateGlobalPoseVision {
-    private static Vision _frontCamera = Vision.getFrontCamera();
+    private static Vision _rightCamera = Vision.getRightCamera();
     private static double[] frontCameraEstimatePosition = {0.0,0.0,0.0};
 
     public static void updateGlobalPoseVision(boolean disabled){
-            var visionEst = _frontCamera.getEstimatedGlobalPose(); //the vision estimate
+            var visionEst = _rightCamera.getEstimatedGlobalPose(); //the vision estimate
 
     visionEst.ifPresent(
         est -> { //if there is a vision estimate
 
-          if (true) { // if the robot is disabled then we trust the vision rotation
-            var estStdDevs = _frontCamera.getEstimationStdDevs(); //the estimation standard deviations
+          if (disabled) { // if the robot is disabled then we trust the vision rotation
+            var estStdDevs = _rightCamera.getEstimationStdDevs(); //the estimation standard deviations
             RobotContainer.drivetrain.addVisionMeasurement( // add the vision measurement to the global pose estimator
                 est.estimatedPose.toPose2d(), // add the vision measurement to the global pose estimator with the vision rotation
                 Utils.fpgaToCurrentTime(est.timestampSeconds), // add the timestamp
                 estStdDevs); // add the estimation standard deviations
 
           } else { // if the robot is not disabled then we dont trust the vision rotation.
-            var estStdDevs = _frontCamera.getEstimationStdDevs(); //the estimation standard deviations
+            var estStdDevs = _rightCamera.getEstimationStdDevs(); //the estimation standard deviations
             RobotContainer.drivetrain.addVisionMeasurement( // add the vision measurement to the global pose estimator
                 new Pose2d(est.estimatedPose.toPose2d().getTranslation(), // add the vision Translation to the global pose estimator
                     RobotContainer.drivetrain.getState().Pose.getRotation()), // add the odometry rotation

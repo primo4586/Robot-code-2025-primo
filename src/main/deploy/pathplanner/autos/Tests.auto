@@ -5,9 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "SimplePath"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "R2 to J"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": null
+                }
+              }
+            ]
           }
         }
       ]

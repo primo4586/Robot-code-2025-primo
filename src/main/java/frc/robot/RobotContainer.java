@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.Auto.AutoCommands;
+import frc.robot.Commands.swerveCommands.DriveToDistanceWithCamera;
 import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -134,8 +135,8 @@ public class RobotContainer {
         
         
 
-        _driverController.leftTrigger().whileTrue(new driveToPointWithPIDCommand(false));
-        _driverController.rightTrigger().whileTrue(new driveToPointWithPIDCommand(true));
+        _driverController.leftTrigger().whileTrue(new DriveToDistanceWithCamera(false));
+        _driverController.rightTrigger().whileTrue(new DriveToDistanceWithCamera(true));
 
         // Operator Controller
 

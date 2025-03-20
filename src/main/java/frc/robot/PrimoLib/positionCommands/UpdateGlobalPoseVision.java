@@ -23,7 +23,6 @@ public class UpdateGlobalPoseVision {
             var estStdDevs = _leftCamera.getEstimationStdDevs(); //the estimation standard deviations
                 RobotContainer.drivetrain.addVisionMeasurement(
                         est.estimatedPose.toPose2d(), Utils.getCurrentTimeSeconds(), estStdDevs);
-                System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
           } else { // if the robot is not disabled then we dont trust the vision rotation.
             var estStdDevs = _leftCamera.getEstimationStdDevs(); //the estimation standard deviations

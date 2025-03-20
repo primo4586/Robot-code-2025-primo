@@ -1,8 +1,6 @@
 package frc.robot.Commands.Auto;
 
-import java.util.Vector;
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -21,7 +19,6 @@ import frc.robot.subsystems.Vision.Vision;
 
 public class AutoCommands {
     private static BooleanSupplier redOrBlue = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? true : false;
-    private static DoubleSupplier vector = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? 1 : -1;
         private final static CannonSubsystem cannon = CannonSubsystem.getInstance();
         
     private final static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();

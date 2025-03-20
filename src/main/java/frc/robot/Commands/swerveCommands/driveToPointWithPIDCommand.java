@@ -2,7 +2,6 @@
 package frc.robot.Commands.swerveCommands;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest.FieldCentricFacingAngle;
 
 import java.util.function.DoubleSupplier;
 

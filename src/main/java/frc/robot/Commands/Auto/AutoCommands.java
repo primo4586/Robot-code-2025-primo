@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -97,7 +100,11 @@ public class AutoCommands {
         return Commands.sequence(driveStright().
         andThen(Commands.waitUntil(() ->_rightCamera.getXfromTarget() < 1 && _rightCamera.getXfromTarget() != 0))
         ,new driveToPointWithPIDCommand(redOrBlue.getAsBoolean()).withTimeout(2),
-        putCoralL4()
+        putCoralL4(),elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT)
         );
+    }
+
+    public static Command waitToCoral(){
+        return Commands.race(new WaitUntilCommand(() -> cannon.getSensor()), Commands.waitSeconds(2));    
     }
 }

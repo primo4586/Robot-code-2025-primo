@@ -69,6 +69,14 @@ public class RobotContainer {
         NamedCommands.registerCommand("putCoralL2", AutoCommands.putCoralL2());
         NamedCommands.registerCommand("putCoralL1", AutoCommands.putCoralL1());
 
+        NamedCommands.registerCommand("waitToCoral", AutoCommands.waitToCoral());
+
+        NamedCommands.registerCommand("alignToRight", new driveToPointWithPIDCommand(true));
+        NamedCommands.registerCommand("alignToLeft", new driveToPointWithPIDCommand(false));
+
+        NamedCommands.registerCommand("lowerElevator", elevator.setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT)); 
+        NamedCommands.registerCommand("elevatorToL3", elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));  
+
         // autoChooser = AutoBuilder.buildAutoChooser("Tests");
         // SmartDashboard.putData("Auto Mode", autoChooser);
 

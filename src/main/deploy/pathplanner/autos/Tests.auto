@@ -5,19 +5,182 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "R2 to J"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "alignToRight"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "putCoralL4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "R2 to J"
+                  "pathName": "J to collection"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": null
+                  "name": "lowerElevator"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "waitToCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Collection1 to K"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "alignToLeft"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "putCoralL4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "K to collection"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "lowerElevator"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "waitToCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Collection1 to K"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "alignToRight"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ElevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "putCoralL4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "lowerElevator"
                 }
               }
             ]

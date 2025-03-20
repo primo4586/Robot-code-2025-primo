@@ -34,6 +34,9 @@ public class CannonSubsystem extends SubsystemBase {
     configs();
   }
 
+  public boolean getSensor(){
+    return m_sensor.get();
+  }
 
   /**
    * collects until the sensor is true

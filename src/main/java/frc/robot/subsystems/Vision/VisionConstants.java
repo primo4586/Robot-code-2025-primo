@@ -15,13 +15,13 @@ import edu.wpi.first.math.numbers.N3;
 public class VisionConstants { // Todo: find values
     // right camera
     public static final String RIGHT_CAMERA_NAME = "rigtCamera";
-    public static final Transform3d RIGHT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0, 0, 0),
-            new Rotation3d(0, 0, 0));
+    public static final Transform3d RIGHT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(26.5, -7, 62.75),
+            new Rotation3d(0, -20, 0));
 
     // left camera
     public static final String LEFT_CAMERA_NAME = "leftCamera";
-    public static final Transform3d LEFT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0, 0, 0),
-            new Rotation3d(0, 0, 0));
+    public static final Transform3d LEFT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(4, -26, 17),
+            new Rotation3d(0, 20, 0));
 
     // front camera
     public static final String FRONT_CAMERA_NAME = "frontCamera";
@@ -51,8 +51,8 @@ public class VisionConstants { // Todo: find values
                                                                                                        // each camera
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, Integer.MAX_VALUE);
 
-    public static final Pose2d leftReefTargetGoal = new Pose2d(0.319, -0.085, new Rotation2d()); // TODO: tune
+    public static final Pose2d leftReefTargetGoal = new Pose2d(0.38, 0.01, new Rotation2d(0)); // TODO: tune
 
-    public static final Pose2d rightReefTargetGoal = new Pose2d(0, 0, new Rotation2d());
+    public static final Pose2d rightReefTargetGoal = new Pose2d(0.44, -0.05, new Rotation2d(0));
 
 }

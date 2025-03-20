@@ -1,0 +1,195 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R3 to F"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "alignToRight"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "putCoralL4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "F to collection"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "lowerElevator"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "waitToCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "collection to C"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "alignToLeft"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "putCoralL4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "C to collection"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "lowerElevator"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "waitToCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "collection to D"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "alignToRight"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ElevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "putCoralL4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "lowerElevator"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

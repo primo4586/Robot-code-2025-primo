@@ -49,7 +49,7 @@ public class VisionConstants { // Todo: find values
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(3, 3, Integer.MAX_VALUE); // TODO: tune to
                                                                                                        // each camera
-    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(5, 5, Integer.MAX_VALUE);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, Integer.MAX_VALUE);
 
     public static final Pose2d leftReefTargetGoal = new Pose2d(0.319, -0.085, new Rotation2d()); // TODO: tune
 

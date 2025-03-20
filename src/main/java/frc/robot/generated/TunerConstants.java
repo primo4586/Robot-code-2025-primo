@@ -27,14 +27,14 @@ public class TunerConstants {
     // The steer motor uses any SwerveModule.SteerRequestType control request with the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
     private static final Slot0Configs steerGains = new Slot0Configs()
-        .withKP(100).withKI(0).withKD(0.5)
-        .withKS(0.1).withKV(0).withKA(0)
+        .withKP(85).withKI(0).withKD(0)
+        .withKS(0.26652).withKV(2.2104).withKA(0)
         .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
     // When using closed-loop control, the drive motor uses the control
     // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
     private static final Slot0Configs driveGains = new Slot0Configs() //^ the values are base of SYSID
-        .withKP(27.052).withKI(0).withKD(0.72306)
-        .withKS(0.19749).withKV(0.12141);
+        .withKP(8.3733).withKI(0).withKD(0.0)
+        .withKS(0.20835).withKV(2.2255);
 
     // The closed-loop output type to use for the steer motors;
     // This affects the PID/FF gains for the steer motors
@@ -60,8 +60,6 @@ public class TunerConstants {
     // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
     // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
     private static final TalonFXConfiguration driveInitialConfigs = new TalonFXConfiguration()
-    .withClosedLoopRamps(new ClosedLoopRampsConfigs()
-    .withVoltageClosedLoopRampPeriod(0.1))
     .withCurrentLimits(new CurrentLimitsConfigs()
     .withSupplyCurrentLimit(SUPPLY_CURRENT_LIMIT) //^this value is base of ctre docs and was added after battry went dead 
     .withSupplyCurrentLimitEnable(true)

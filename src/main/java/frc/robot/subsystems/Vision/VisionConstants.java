@@ -52,8 +52,8 @@ public class VisionConstants { // Todo: find values
                                                                                                        // each camera
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 0.5);
 
-    public static final Pose2d leftReefTargetGoal = new Pose2d(0.38, 0.01, new Rotation2d()); // TODO: tune
+    public static final Pose2d leftReefTargetGoal = new Pose2d(0.39, 0.01, new Rotation2d(Math.toRadians(3)));
 
-    public static final Pose2d rightReefTargetGoal = new Pose2d(0.44, 0.06 , new Rotation2d(Math.toRadians(-5)));
+    public static final Pose2d rightReefTargetGoal = new Pose2d(0.44, 0.06 , new Rotation2d(Math.toRadians(3)));
 
 }

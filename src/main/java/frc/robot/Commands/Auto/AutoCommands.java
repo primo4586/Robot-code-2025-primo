@@ -1,17 +1,11 @@
 package frc.robot.Commands.Auto;
-
-import java.util.function.BooleanSupplier;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.RobotContainer;
-import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
+import frc.robot.Commands.swerveCommands.DriveToDistanceWithCamera;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
 import frc.robot.subsystems.Elevator.ElevatorConstanst;
@@ -19,7 +13,7 @@ import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Vision.Vision;
 
 public class AutoCommands {
-    private static BooleanSupplier redOrBlue = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? true : false;
+    // private static BooleanSupplier redOrBlue = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? true : false;
         private final static CannonSubsystem cannon = CannonSubsystem.getInstance();
         
     private final static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
@@ -97,7 +91,7 @@ public class AutoCommands {
     public static Command normalCommand(){
         return Commands.sequence(driveStright().
         andThen(Commands.waitUntil(() ->_rightCamera.getXfromTarget() < 1 && _rightCamera.getXfromTarget() != 0))
-        ,new driveToPointWithPIDCommand(redOrBlue.getAsBoolean()).withTimeout(2),
+        ,new DriveToDistanceWithCamera(false).withTimeout(2),
         putCoralL4(),elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT)
         );
     }

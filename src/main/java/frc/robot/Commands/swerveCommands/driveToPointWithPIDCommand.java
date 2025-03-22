@@ -2,9 +2,6 @@
 package frc.robot.Commands.swerveCommands;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest.FieldCentricFacingAngle;
-import com.pathplanner.lib.auto.AutoBuilder;
-
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -23,6 +20,7 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   private static Pose2d _target;
   PIDController driveXPidController;
   PIDController driveYPidController;
+  private DoubleSupplier vector = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? 1 : -1;
 
   static double MaxSpeed = RobotContainer.MaxSpeed;
   static double MaxAngularRate = RobotContainer.MaxSpeed;
@@ -64,11 +62,11 @@ public class driveToPointWithPIDCommand extends Command { // TODO: need to orgen
   public void execute() {
     SmartDashboard.putNumber("swerve x error", driveXPidController.getError());
     SmartDashboard.putNumber("swerve y error", driveYPidController.getError());
-    // SmartDashboard.putNumber("swerve rot error", swerve.getState().Pose.getRotation());
-    // swerve.setControl(
-    //     facingAngel
-    //         .withVelocityX(vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX()))
-    //         .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY())));
+    SmartDashboard.putNumber("swerve rot error", swerve.getState().Pose.getRotation().getDegrees());
+    swerve.setControl(
+        facingAngel
+            .withVelocityX(vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX()))
+            .withVelocityY(vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY())));
   }
 
   // Called once the command ends or is interrupted.

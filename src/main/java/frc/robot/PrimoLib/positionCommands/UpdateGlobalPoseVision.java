@@ -1,10 +1,6 @@
 package frc.robot.PrimoLib.positionCommands;
 
-import java.io.PrintStream;
-
 import com.ctre.phoenix6.Utils;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Vision.Vision;
@@ -24,14 +20,15 @@ public class UpdateGlobalPoseVision {
                 RobotContainer.drivetrain.addVisionMeasurement(
                         est.estimatedPose.toPose2d(), Utils.getCurrentTimeSeconds(), estStdDevs);
 
-          } else { // if the robot is not disabled then we dont trust the vision rotation.
-            var estStdDevs = _leftCamera.getEstimationStdDevs(); //the estimation standard deviations
-            RobotContainer.drivetrain.addVisionMeasurement( // add the vision measurement to the global pose estimator
-                new Pose2d(est.estimatedPose.toPose2d().getTranslation(), // add the vision Translation to the global pose estimator
-                    RobotContainer.drivetrain.getState().Pose.getRotation()), // add the odometry rotation
-                Utils.fpgaToCurrentTime(est.timestampSeconds), // add the timestamp
-                estStdDevs); // add the estimation standard deviations
           }
+          //  else { // if the robot is not disabled then we dont trust the vision rotation.
+          //   var estStdDevs = _leftCamera.getEstimationStdDevs(); //the estimation standard deviations
+          //   RobotContainer.drivetrain.addVisionMeasurement( // add the vision measurement to the global pose estimator
+          //       new Pose2d(est.estimatedPose.toPose2d().getTranslation(), // add the vision Translation to the global pose estimator
+          //           RobotContainer.drivetrain.getState().Pose.getRotation()), // add the odometry rotation
+          //       Utils.fpgaToCurrentTime(est.timestampSeconds), // add the timestamp
+          //       estStdDevs); // add the estimation standard deviations
+          // }
         
         // display the vision estimate
         frontCameraEstimatePosition[0] = visionEst.get().estimatedPose.toPose2d().getTranslation().getX();

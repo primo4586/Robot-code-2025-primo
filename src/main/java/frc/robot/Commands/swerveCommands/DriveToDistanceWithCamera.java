@@ -19,8 +19,6 @@ import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionConstants;
 
 import static frc.robot.Commands.swerveCommands.SwerveCommandsConstants.*;
-
-import java.util.Vector;
 import java.util.function.DoubleSupplier;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -28,8 +26,6 @@ public class DriveToDistanceWithCamera extends Command {
   private DoubleSupplier vector = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? 1 : -1;
   private boolean isRight;
   private static Pose2d _target;
-  private static Vision _rightCamera = Vision.getRightCamera();
-  private static Vision _leftCamera = Vision.getLeftCamera();
   private Vision _Camera;
   private static Pose2d _CameraTarget;
 

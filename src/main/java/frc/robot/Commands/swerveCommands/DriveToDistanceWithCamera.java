@@ -9,6 +9,8 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.PrimoLib.PrimoCalc;
@@ -18,14 +20,20 @@ import frc.robot.subsystems.Vision.VisionConstants;
 
 import static frc.robot.Commands.swerveCommands.SwerveCommandsConstants.*;
 
+import java.util.Vector;
+import java.util.function.DoubleSupplier;
+
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DriveToDistanceWithCamera extends Command {
+  private DoubleSupplier vector = () -> DriverStation.getAlliance().orElse(Alliance.Red) == Alliance.Blue ? 1 : -1;
   private boolean isRight;
   private static Pose2d _target;
   private static Vision _rightCamera = Vision.getRightCamera();
   private static Vision _leftCamera = Vision.getLeftCamera();
   private Vision _Camera;
   private static Pose2d _CameraTarget;
+
+  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
   PIDController driveXPidController;
   PIDController driveYPidController;
@@ -58,10 +66,11 @@ public class DriveToDistanceWithCamera extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _Camera =  this.isRight ? _leftCamera : _rightCamera;
-    _CameraTarget = this.isRight ? VisionConstants.leftReefTargetGoal : VisionConstants.rightReefTargetGoal;
+    _Camera =  this.isRight ? Vision.getLeftCamera() : Vision.getRightCamera();
+    _CameraTarget = this.isRight ? VisionConstants.rightReefTargetGoal : VisionConstants.leftReefTargetGoal;
     driveXPidController = new PIDController(3.7, 0, 0);
     driveYPidController = new PIDController(3.7, 0, 0);
+    driveRotationPidController = new PIDController(5, 0, 0);
     driveXPidController.setTolerance(0.02);
     driveYPidController.setTolerance(0.02);
     driveXPidController.setSetpoint(0);
@@ -72,41 +81,39 @@ public class DriveToDistanceWithCamera extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (_Camera.getDetectingObject()) {
+      if (_Camera.getDetectingObject()){
+        velocityX =  - driveXPidController.calculate(_Camera.getXfromTarget(),_CameraTarget.getX());
+        velocityY =  - driveYPidController.calculate(_Camera.getYfromTarget(),_CameraTarget.getY());
+        angularRate = - driveRotationPidController.calculate(Math.toRadians(_Camera.getAngleFromTarget()),_CameraTarget.getRotation().getRadians());
+        if (Math.abs(velocityX) > MAX_VELOCITY_X)
+            velocityX = MAX_VELOCITY_X;
 
-      velocityX = driveXPidController.calculate(_Camera.getXfromTarget(),_CameraTarget.getX());
-      velocityY = driveYPidController.calculate(_Camera.getYfromTarget(),_CameraTarget.getY());
-      angularRate = driveRotationPidController.calculate(_Camera.getAngleFromTarget(),_CameraTarget.getRotation().getRadians());
-      if (velocityX > MAX_VELOCITY_X)
-          velocityX = MAX_VELOCITY_X;
+        if (Math.abs(velocityY) > MAX_VELOCITY_Y)
+            velocityY = MAX_VELOCITY_Y;
 
-      if (velocityY > MAX_VELOCITY_Y)
-          velocityY = MAX_VELOCITY_Y;
+        if (Math.abs(angularRate) > MAX_ANGULAR_RATE)
+            angularRate = MAX_ANGULAR_RATE;
+        
 
-      if (angularRate > MAX_ANGULAR_RATE)
-          angularRate = MAX_ANGULAR_RATE;
-      
-
-      swerve.setControl(
-          robotCentric
-              .withVelocityX(velocityX)
-              .withVelocityY(velocityY)
-              .withRotationalRate(angularRate));
+        swerve.setControl(
+            robotCentric
+                .withVelocityX(velocityX)
+                .withVelocityY(velocityY)
+                .withRotationalRate(angularRate));
     } else {
       swerve.setControl(
             fieldCentric
               .withVelocityX(
-                  driveXPidController.calculate(swerve.getState().Pose.getX(), _target.getX()))
+                vector.getAsDouble() * driveXPidController.calculate( swerve.getState().Pose.getX(), _target.getX()))
               .withVelocityY(
-                  driveYPidController.calculate(swerve.getState().Pose.getY(), _target.getY()))
-                  .withRotationalRate(driveRotationPidController.calculate(swerve.getState().Pose.getRotation().getRadians(),
-                  _target.getRotation().getRadians())));
+                vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY(), _target.getY())));
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    swerve.applyRequest(() -> brake);
   }
 
   // Returns true when the command should end.

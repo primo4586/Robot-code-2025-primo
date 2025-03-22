@@ -17,12 +17,12 @@ public class VisionConstants { // Todo: find values
     // right camera
     public static final String RIGHT_CAMERA_NAME = "rightCamera";
     public static final Transform3d RIGHT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.265, -0.07, 0.6275),
-            new Rotation3d(0, -20, 0));
+            new Rotation3d(0, 0, 0));
 
     // left camera
     public static final String LEFT_CAMERA_NAME = "leftCamera";
     public static final Transform3d LEFT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.04, -0.26, 0.17),
-            new Rotation3d(0, 20, 0));
+            new Rotation3d(0, 0, 0));
 
     // front camera
     public static final String FRONT_CAMERA_NAME = "frontCamera";
@@ -48,12 +48,12 @@ public class VisionConstants { // Todo: find values
     // The standard deviations of our vision estimated poses, which affect
     // correction rate
     // (Fake values. Experiment and determine estimation noise on an actual robot.)
-    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(3, 3, Integer.MAX_VALUE); // TODO: tune to
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(3, 3, 0.5); // TODO: tune to
                                                                                                        // each camera
-    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, Integer.MAX_VALUE);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 0.5);
 
     public static final Pose2d leftReefTargetGoal = new Pose2d(0.38, 0.01, new Rotation2d(0)); // TODO: tune
 
-    public static final Pose2d rightReefTargetGoal = new Pose2d(0.44, -0.05, new Rotation2d(0));
+    public static final Pose2d rightReefTargetGoal = new Pose2d(0.44, 0, new Rotation2d(0));
 
 }

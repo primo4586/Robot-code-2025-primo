@@ -6,11 +6,16 @@ package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Elevator.ElevatorConstanst;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Vision.VisionConstants;
+import frc.robot.Commands.Auto.AutoCommands;
+import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
 import frc.robot.PrimoLib.Elastic;
 import frc.robot.PrimoLib.positionCommands.UpdateGlobalPoseVision;
 
@@ -20,6 +25,18 @@ public class Robot extends TimedRobot {
   private final RobotContainer m_robotContainer;
 
   public Robot() {
+        NamedCommands.registerCommand("putCoralL4", AutoCommands.putCoralL4());
+        NamedCommands.registerCommand("putCoralL3", AutoCommands.putCoralL3());
+        NamedCommands.registerCommand("putCoralL2", AutoCommands.putCoralL2());
+        NamedCommands.registerCommand("putCoralL1", AutoCommands.putCoralL1());
+
+        NamedCommands.registerCommand("waitToCoral", AutoCommands.waitToCoral());
+
+        NamedCommands.registerCommand("alignToRight", new driveToPointWithPIDCommand(true));
+        NamedCommands.registerCommand("alignToLeft", new driveToPointWithPIDCommand(false));
+
+        NamedCommands.registerCommand("lowerElevator", ElevatorSubsystem.getInstance().setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT)); 
+        NamedCommands.registerCommand("elevatorToL3", ElevatorSubsystem.getInstance().setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT)); 
     m_robotContainer = new RobotContainer();
     // Elastic.loadPaths();
 

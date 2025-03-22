@@ -69,6 +69,7 @@ public class Vision {
     public static Vision getLeftCamera() {
         if (leftCamera == null) {
             leftCamera = new Vision(LEFT_CAMERA_NAME, LEFT_CAMERA_TO_ROBOT);
+            
         }
         return leftCamera;
     }

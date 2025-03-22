@@ -11,25 +11,6 @@
           }
         },
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "alignToRight"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "elevatorToL3"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "sequential",
           "data": {
             "commands": [
@@ -37,12 +18,6 @@
                 "type": "named",
                 "data": {
                   "name": "putCoralL4"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "elevatorToL3"
                 }
               }
             ]

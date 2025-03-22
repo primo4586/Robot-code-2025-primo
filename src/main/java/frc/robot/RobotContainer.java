@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.*;
 import java.util.function.DoubleSupplier;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -106,7 +107,7 @@ public class RobotContainer {
         // )
         // );
         drivetrain.setDefaultCommand(
-                drivetrain.applyRequest(() -> forwardStraight
+                drivetrain.applyRequest(() -> drive
                         .withVelocityX(-_driverController.getLeftY() * slowMode.getAsDouble() * 0.7 * MaxSpeed)
                         .withVelocityY(-_driverController.getLeftX() * slowMode.getAsDouble() * 0.7 * MaxSpeed)
                         .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * 0.9)));
@@ -197,7 +198,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
-        return AutoCommands.normalCommand(); // TODO: connect the chooser to the path
+        return new PathPlannerAuto("Left auto"); // TODO: connect the chooser to the path
 
     }
 

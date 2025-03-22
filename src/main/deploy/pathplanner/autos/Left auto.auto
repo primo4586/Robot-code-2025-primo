@@ -15,6 +15,25 @@
           "data": {
             "commands": [
               {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "elevatorToL3"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "alignToRight"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "putCoralL4"

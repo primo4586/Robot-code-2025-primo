@@ -24,18 +24,6 @@ public class Robot extends TimedRobot {
   private final RobotContainer m_robotContainer;
 
   public Robot() {
-        NamedCommands.registerCommand("putCoralL4", AutoCommands.putCoralL4());
-        NamedCommands.registerCommand("putCoralL3", AutoCommands.putCoralL3());
-        NamedCommands.registerCommand("putCoralL2", AutoCommands.putCoralL2());
-        NamedCommands.registerCommand("putCoralL1", AutoCommands.putCoralL1());
-
-        NamedCommands.registerCommand("waitToCoral", AutoCommands.waitToCoral());
-
-        NamedCommands.registerCommand("alignToRight", new driveToPointWithPIDCommand(true));
-        NamedCommands.registerCommand("alignToLeft", new driveToPointWithPIDCommand(false));
-
-        NamedCommands.registerCommand("lowerElevator", ElevatorSubsystem.getInstance().setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT)); 
-        NamedCommands.registerCommand("elevatorToL3", ElevatorSubsystem.getInstance().setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT)); 
     m_robotContainer = new RobotContainer();
     // Elastic.loadPaths();
 

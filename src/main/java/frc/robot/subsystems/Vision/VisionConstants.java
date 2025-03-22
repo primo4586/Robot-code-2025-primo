@@ -16,12 +16,12 @@ public class VisionConstants { // Todo: find values
         //! DONT FORGET these values are in METERS not C"M!!
     // right camera
     public static final String RIGHT_CAMERA_NAME = "rightCamera";
-    public static final Transform3d RIGHT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.265, -0.07, 0.6275),
+    public static final Transform3d RIGHT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(-0.535, -0.07, 0.6275),
             new Rotation3d(0, 0, 0));
 
     // left camera
     public static final String LEFT_CAMERA_NAME = "leftCamera";
-    public static final Transform3d LEFT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.04, -0.26, 0.17),
+    public static final Transform3d LEFT_CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.06, 0.26, 0.17),
             new Rotation3d(0, 0, 0));
 
     // front camera

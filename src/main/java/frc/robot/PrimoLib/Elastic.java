@@ -19,36 +19,35 @@ public class Elastic {
     public static CannonSubsystem cannonSubsystem = CannonSubsystem.getInstance();
 
     public static HashMap<String, PathPlannerPath> pathsMap = new HashMap<>();
-    static final String[] PATHS = new String[] {
+    static final String[] PATHS = {"Left auto", "Right auto"};
             // "H path",
-            "H to collection",
+            //"H to collection"
             // "Collection2 to D",
             // "literallyWalkForward"
-    };
 
-    //
-    // public static void loadPaths() {
-    // for(String path : PATHS) {
-    // try {
-    // pathsMap.put(path, PathPlannerPath.fromPathFile(path));
-    // System.out.println("LOADED PROPERLY!!!");
-    // System.out.println("LOADED PROPERLY!!!");
-    // System.out.println("LOADED PROPERLY!!!");
-    // System.out.println("LOADED PROPERLY!!!");
-    // System.out.println("LOADED PROPERLY!!!");
-    // System.out.println("LOADED PROPERLY!!!");
-    // System.out.println("LOADED PROPERLY!!!");
-    // } catch (Exception e) {
-    // System.out.println(path + " didn't load properly!!!1");
-    // System.out.println(path + " didn't load properly!!!2");
-    // System.out.println(path + " didn't load properly!!!3");
-    // System.out.println(path + " didn't load properly!!!4");
-    // System.out.println(path + " didn't load properly!!!5");
-    // // System.out.println(e.getMessage());
-    // e.printStackTrace();
-    // }
-    // }
-    // }
+    
+    public static void loadPaths() {
+    for(String path : PATHS) {
+    try {
+    pathsMap.put(path, PathPlannerPath.fromPathFile(path));
+    System.out.println("LOADED PROPERLY!!!");
+    System.out.println("LOADED PROPERLY!!!");
+    System.out.println("LOADED PROPERLY!!!");
+    System.out.println("LOADED PROPERLY!!!");
+    System.out.println("LOADED PROPERLY!!!");
+    System.out.println("LOADED PROPERLY!!!");
+    System.out.println("LOADED PROPERLY!!!");
+    } catch (Exception e) {
+    System.out.println(path + " didn't load properly!!!1");
+    System.out.println(path + " didn't load properly!!!2");
+    System.out.println(path + " didn't load properly!!!3");
+    System.out.println(path + " didn't load properly!!!4");
+    System.out.println(path + " didn't load properly!!!5");
+    // System.out.println(e.getMessage());
+    e.printStackTrace();
+    }
+    }
+    }
 
     @SuppressWarnings({ "rawtypes", "unchecked" }) // TODO understand
     public static void autoSelector() {
@@ -153,6 +152,20 @@ public class Elastic {
 
         SmartDashboard.putData("cycle 3 level", m_chooserLevelCycle2);
 
+    }
+
+    @SuppressWarnings("unchecked")
+    public static void simpleAutoSelector(){
+        try{
+        @SuppressWarnings("rawtypes")
+        SendableChooser auto = new SendableChooser<>();
+        auto.setDefaultOption("middle", "middle");
+        auto.addOption("left", "left");
+        auto.addOption("right", "right");
+        SmartDashboard.putData("Auto Selector", auto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void dispalyCommandScheduler() {

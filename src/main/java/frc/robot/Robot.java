@@ -5,16 +5,10 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
-import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Elevator.ElevatorConstanst;
-import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Vision.VisionConstants;
-import frc.robot.Commands.Auto.AutoCommands;
-import frc.robot.Commands.swerveCommands.driveToPointWithPIDCommand;
 import frc.robot.PrimoLib.Elastic;
 import frc.robot.PrimoLib.positionCommands.UpdateGlobalPoseVision;
 
@@ -25,7 +19,7 @@ public class Robot extends TimedRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
-    // Elastic.loadPaths();
+    Elastic.loadPaths();
 
     Elastic.autoSelector();
     

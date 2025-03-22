@@ -65,7 +65,7 @@ public class DriveToDistanceWithCamera extends Command {
     _Camera =  this.isRight ? Vision.getLeftCamera() : Vision.getRightCamera();
     _CameraTarget = this.isRight ? VisionConstants.rightReefTargetGoal : VisionConstants.leftReefTargetGoal;
     driveXPidController = new PIDController(3.7, 0, 0);
-    driveYPidController = new PIDController(3.7, 0, 0);
+    driveYPidController = new PIDController(4, 0, 0);
     driveRotationPidController = new PIDController(5, 0, 0);
     driveXPidController.setTolerance(0.02);
     driveYPidController.setTolerance(0.02);
@@ -76,11 +76,12 @@ public class DriveToDistanceWithCamera extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
+  public void execute() {;
       if (_Camera.getDetectingObject()){
         velocityX =  - driveXPidController.calculate(_Camera.getXfromTarget(),_CameraTarget.getX());
         velocityY =  - driveYPidController.calculate(_Camera.getYfromTarget(),_CameraTarget.getY());
-        angularRate = - driveRotationPidController.calculate(Math.toRadians(_Camera.getAngleFromTarget()),_CameraTarget.getRotation().getRadians());
+        angularRate = MAX_ANGULAR_RATE *  driveRotationPidController.calculate(Math.toRadians(_Camera.getAngleFromTarget()),_CameraTarget.getRotation().getRadians());
+        System.out.println(angularRate);
         if (Math.abs(velocityX) > MAX_VELOCITY_X)
             velocityX = MAX_VELOCITY_X;
 
@@ -102,7 +103,8 @@ public class DriveToDistanceWithCamera extends Command {
               .withVelocityX(
                 vector.getAsDouble() * driveXPidController.calculate( swerve.getState().Pose.getX(), _target.getX()))
               .withVelocityY(
-                vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY(), _target.getY())));
+                vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY(), _target.getY())))
+                ;
     }
   }
 

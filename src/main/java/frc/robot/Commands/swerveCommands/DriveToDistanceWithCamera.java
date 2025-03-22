@@ -67,7 +67,7 @@ public class DriveToDistanceWithCamera extends Command {
     driveXPidController = new PIDController(3.7, 0, 0);
     driveYPidController = new PIDController(4, 0, 0);
     driveRotationPidController = new PIDController(60, 0, 0);
-    driveRotationPidController.enableContinuousInput(-2 * Math.PI,2 * Math.PI);
+    driveRotationPidController.enableContinuousInput( -Math.PI, Math.PI);
     driveXPidController.setTolerance(0.02);
     driveYPidController.setTolerance(0.02);
     driveXPidController.setSetpoint(0);

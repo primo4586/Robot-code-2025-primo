@@ -66,7 +66,7 @@ public class DriveToDistanceWithCamera extends Command {
     _CameraTarget = this.isRight ? VisionConstants.rightReefTargetGoal : VisionConstants.leftReefTargetGoal;
     driveXPidController = new PIDController(3.7, 0, 0);
     driveYPidController = new PIDController(4, 0, 0);
-    driveRotationPidController = new PIDController(60, 0, 0);
+    driveRotationPidController = new PIDController(2.1, 0, 0);
     driveRotationPidController.enableContinuousInput( -Math.PI, Math.PI);
     driveXPidController.setTolerance(0.02);
     driveYPidController.setTolerance(0.02);
@@ -82,7 +82,6 @@ public class DriveToDistanceWithCamera extends Command {
         velocityX =  - driveXPidController.calculate(_Camera.getXfromTarget(),_CameraTarget.getX());
         velocityY =  - driveYPidController.calculate(_Camera.getYfromTarget(),_CameraTarget.getY());
         angularRate = MAX_ANGULAR_RATE *  driveRotationPidController.calculate(_Camera.getAngleFromTarget(),_CameraTarget.getRotation().getRadians());
-        System.out.println(angularRate +  " " + driveRotationPidController.getError());
         if (Math.abs(velocityX) > MAX_VELOCITY_X)
             velocityX = MAX_VELOCITY_X;
 

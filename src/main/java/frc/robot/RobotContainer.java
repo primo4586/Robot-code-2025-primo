@@ -200,13 +200,14 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        if(SmartDashboard.getString("Auto Selector", "middle").equals("middle")) {
-            return AutoCommands.normalCommand();
-        } else if(SmartDashboard.getString("Auto Selector", "middle").equals("left")) { 
-            return new PathPlannerAuto("Left auto");
-        } else {            
-            return new PathPlannerAuto("Right auto");
-        }
+        return AutoCommands.normalCommand();
+        // if(SmartDashboard.getString("Auto Selector", "middle").equals("middle")) {
+        //     return AutoCommands.normalCommand();
+        // } else if(SmartDashboard.getString("Auto Selector", "middle").equals("left")) { 
+        //     return new PathPlannerAuto("Left auto");
+        // } else {            
+        //     return new PathPlannerAuto("Right auto");
+        // }
 
     }
 

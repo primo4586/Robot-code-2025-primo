@@ -54,6 +54,6 @@ public class VisionConstants { // Todo: find values
 
     public static final Pose2d leftReefTargetGoal = new Pose2d(0.39, 0.01, new Rotation2d(Math.toRadians(-177)));
 
-    public static final Pose2d rightReefTargetGoal = new Pose2d(0.44, 0.06 , new Rotation2d(Math.toRadians(180)));
+    public static final Pose2d rightReefTargetGoal = new Pose2d(0.44, 0.07 , new Rotation2d(Math.toRadians(180)));
 
 }

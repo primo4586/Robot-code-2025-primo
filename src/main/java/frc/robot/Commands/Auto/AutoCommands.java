@@ -17,7 +17,7 @@ public class AutoCommands {
         private final static CannonSubsystem cannon = CannonSubsystem.getInstance();
         
     private final static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
-    private static Vision _rightCamera = Vision.getRightCamera();
+    private static Vision _leftCamera = Vision.getLeftCamera();
     private static double MaxSpeed = RobotContainer.MaxSpeed;
                                                                                         // speed
     private static double MaxAngularRate = RobotContainer.MaxAngularRate; // 3/4 of a rotation per second
@@ -90,13 +90,13 @@ public class AutoCommands {
     
     public static Command normalCommand(){
         return Commands.sequence(driveStright().
-        andThen(Commands.waitUntil(() ->_rightCamera.getXfromTarget() < 1 && _rightCamera.getXfromTarget() != 0))
-        ,new DriveToDistanceWithCamera(false).withTimeout(2),
+        andThen(Commands.waitUntil(() ->_leftCamera.getXfromTarget() < 1 && _leftCamera.getXfromTarget() != 0))
+        ,new DriveToDistanceWithCamera(true).withTimeout(4),
         putCoralL4(),elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT)
         );
     }
 
     public static Command waitToCoral(){
-        return Commands.race(new WaitUntilCommand(() -> cannon.getSensor()), Commands.waitSeconds(2));    
+        return Commands.race(new WaitUntilCommand(() -> !cannon.getSensor()), Commands.waitSeconds(2));    
     }
 }

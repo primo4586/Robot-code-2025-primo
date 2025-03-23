@@ -68,8 +68,8 @@ public class DriveToDistanceWithCamera extends Command {
     driveYPidController = new PIDController(4, 0, 0);
     driveRotationPidController = new PIDController(2.1, 0, 0);
     driveRotationPidController.enableContinuousInput( -Math.PI, Math.PI);
-    driveXPidController.setTolerance(0.02);
-    driveYPidController.setTolerance(0.02);
+    driveXPidController.setTolerance(0.03);
+    driveYPidController.setTolerance(0.03);
     driveXPidController.setSetpoint(0);
     driveYPidController.setSetpoint(0);
     _target = PrimoCalc.ChooseReef(this.isRight);
@@ -111,7 +111,11 @@ public class DriveToDistanceWithCamera extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    swerve.applyRequest(() -> brake);
+    swerve.setControl(
+      robotCentric
+          .withVelocityX(0)
+          .withVelocityY(0)
+          .withRotationalRate(0));
   }
 
   // Returns true when the command should end.

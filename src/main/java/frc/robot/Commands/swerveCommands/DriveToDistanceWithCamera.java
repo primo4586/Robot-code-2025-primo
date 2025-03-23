@@ -81,7 +81,7 @@ public class DriveToDistanceWithCamera extends Command {
       if (_Camera.getDetectingObject()){
         velocityX =  - driveXPidController.calculate(_Camera.getXfromTarget(),_CameraTarget.getX());
         velocityY =  - driveYPidController.calculate(_Camera.getYfromTarget(),_CameraTarget.getY());
-        angularRate = MAX_ANGULAR_RATE *  driveRotationPidController.calculate(Math.toRadians(_Camera.getAngleFromTarget()),_CameraTarget.getRotation().getRadians());
+        angularRate = MAX_ANGULAR_RATE *  driveRotationPidController.calculate(_Camera.getAngleFromTarget(),_CameraTarget.getRotation().getRadians());
         System.out.println(angularRate +  " " + driveRotationPidController.getError());
         if (Math.abs(velocityX) > MAX_VELOCITY_X)
             velocityX = MAX_VELOCITY_X;

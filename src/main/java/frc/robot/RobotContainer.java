@@ -20,6 +20,7 @@ import frc.robot.Commands.swerveCommands.DriveToDistanceWithCamera;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
+import frc.robot.subsystems.Disposer.Disposer;
 import frc.robot.subsystems.Elevator.ElevatorConstanst;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 
@@ -41,6 +42,7 @@ public class RobotContainer {
 
     private final CannonSubsystem cannon = CannonSubsystem.getInstance();
     private final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
+    private final Disposer disposer = Disposer.getInstance();
 
     SlewRateLimiter xAccLimiterb = new SlewRateLimiter(10);
     SlewRateLimiter yAccLimiterb = new SlewRateLimiter(10);
@@ -150,6 +152,9 @@ public class RobotContainer {
         _operatorController.povRight().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT));
         _operatorController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
         _operatorController.povLeft().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT));
+
+        _operatorController.rightTrigger().onTrue(disposer.preparingCommand());
+        _operatorController.leftTrigger().onTrue(disposer.goHomeCommand());
 
 
         // // Tester

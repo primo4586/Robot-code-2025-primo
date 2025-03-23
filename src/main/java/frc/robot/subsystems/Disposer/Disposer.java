@@ -1,34 +1,37 @@
+package frc.robot.subsystems.Disposer;
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
-package frc.robot.subsystems.Disposer;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkMaxConfig;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.subsystems.Cannon.CannonConstants.MOTOR_SPEED;
 import static frc.robot.subsystems.Disposer.DisposerConstants.*;
 
+import static frc.robot.Misc.*;
 public class Disposer extends SubsystemBase {
-  private SparkMax _motor;
-  private RelativeEncoder _encoder;
-  private PIDController _pidController;
+
+  private TalonFX m_motor; // falcon 500 motor
+  private PositionVoltage systemControl; // to control a position
+
+
 
   // singelton
   private static Disposer instance;
 
   /**
-   * Gets the instance of Disposer. This is the only way to get an
-   * instance of the class, as the constructor is private.
+   * Get the single instance of the Disposer.
+   * This class is a singleton, so there is only one instance of it. This
+   * method is used to get that instance.
    *
-   * @return the instance of Disposer
+   * @return the single instance of the Disposer
    */
   public static Disposer getInstance() {
     if (instance == null) {
@@ -38,62 +41,66 @@ public class Disposer extends SubsystemBase {
   }
 
   private Disposer() {
-    _motor = new SparkMax(MOTOR_ID, MotorType.kBrushless);
-    _encoder = _motor.getAlternateEncoder();
-    _encoder.setPosition(0);
-    _pidController = new PIDController(KP, KD, KS);
-    _pidController.setSetpoint(0);
-    _pidController.setTolerance(MINIMUN_POSITION_ERROR);
+    m_motor = new TalonFX(MOTOR_ID, CANIVOR_NAME);
+    systemControl = new PositionVoltage(0);
+    resetPosition();
     configs();
+
   }
 
-  /**
-   * A command that moves the disposer to a given position.
-   * this command is without the pid controller and over shoot the given position
-   *
-   * @param position the position to move to.
-   * @return a command that moves the disposer to the given position.
-   */
-  public Command moveCommand(double position) {
-    return startEnd(() -> _motor.setVoltage(_encoder.getPosition() < position ? MOTOR_SPEED : -MOTOR_SPEED),
-        () -> _motor.setVoltage(0))
-        .until(() -> Math.abs(_encoder.getPosition() - position) < MINIMUN_POSITION_ERROR);
+
+  public void resetPosition() {
+    m_motor.setPosition(0);
   }
 
-  /**
-   * A command that moves the disposer to a given position using a PID
-   * controller. This command is more accurate than the moveCommand and will
-   * not over shoot the given position.
-   *
-   * @param position the position to move to.
-   * @return a command that moves the disposer to the given position using a
-   *         PID controller.
-   */
-  public Command moveWithPIDCommand(double position){
-    return startEnd(() -> _motor.setVoltage(_pidController.calculate(_encoder.getPosition(), position)),
-    () -> _motor.set(0)
-    ).until(() -> _pidController.atSetpoint());
+  public Command preparingCommand() {
+    return runOnce(() -> m_motor.setControl(systemControl.withPosition(READY_POSITION)));
   }
 
-  /**
-   * Resets the encoder position to 0.
-   *
-   * @param position - the position to set the encoder to. ignored.
-   * @return a command that resets the encoder position to 0.
-   */
-  public Command resetPositionCommand(double position) {
-    return runOnce(() ->_encoder.setPosition(0));
+  public Command goHomeCommand() {
+    return runOnce(() -> m_motor.setControl(systemControl.withPosition(HOME_POSITION)));
   }
+
 
   @Override
   public void periodic() {
   }
 
-  private void configs(){
-    SparkMaxConfig config = new SparkMaxConfig();
-    config.smartCurrentLimit(PEAK_CURRENT).
-    idleMode(NEUTRAL_MODE).inverted(INVERTED);
-    _motor.configure(config, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  private void configs() {
+     TalonFXConfiguration configuration = new TalonFXConfiguration();
+ 
+     //Slot:
+     configuration.Slot0.kP = KP;
+     configuration.Slot0.kD = KD;
+     configuration.Slot0.kV = KV;
+     configuration.Slot0.kS = KS;
+ 
+   //Peeks:
+     configuration.CurrentLimits.SupplyCurrentLimitEnable = true;
+     configuration.CurrentLimits.SupplyCurrentLimit = PEAK_CURRENT;
 
+     configuration.Voltage.PeakForwardVoltage = PEAK_VOLTAGE;
+     configuration.Voltage.PeakReverseVoltage = PEAK_VOLTAGE * -1;
+    
+ 
+     // forward and backward limits 
+     configuration.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+     configuration.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+     configuration.SoftwareLimitSwitch.ForwardSoftLimitThreshold = FOWORD_LIMIT;
+     configuration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = BACKWARD_LIMIT;
+
+     configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+     configuration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+     StatusCode statusCode = StatusCode.StatusCodeNotInitialized;
+ 
+ 
+     //upload configs to motor
+     for (int i = 0; i < 5; i++){
+       statusCode = m_motor.getConfigurator().apply(configuration);
+       if (statusCode.isOK())
+         break;
+     }
+     if (!statusCode.isOK())
+       System.out.println("Disposer Config Failed:" + statusCode.toString());
   }
 }

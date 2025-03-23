@@ -12,10 +12,9 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Misc;
 
 import static frc.robot.subsystems.Disposer.DisposerConstants.*;
-
-import static frc.robot.Misc.*;
 public class Disposer extends SubsystemBase {
 
   private TalonFX m_motor; // falcon 500 motor
@@ -41,7 +40,7 @@ public class Disposer extends SubsystemBase {
   }
 
   private Disposer() {
-    m_motor = new TalonFX(MOTOR_ID, CANIVOR_NAME);
+    m_motor = new TalonFX(MOTOR_ID);
     systemControl = new PositionVoltage(0);
     resetPosition();
     configs();
@@ -54,11 +53,11 @@ public class Disposer extends SubsystemBase {
   }
 
   public Command preparingCommand() {
-    return runOnce(() -> m_motor.setControl(systemControl.withPosition(READY_POSITION)));
+    return runOnce(() -> m_motor.setControl(systemControl.withPosition(READY_POSITION).withVelocity(2)));
   }
 
   public Command goHomeCommand() {
-    return runOnce(() -> m_motor.setControl(systemControl.withPosition(HOME_POSITION)));
+    return runOnce(() -> m_motor.setControl(systemControl.withPosition(HOME_POSITION).withVelocity(2)));
   }
 
 
@@ -90,7 +89,7 @@ public class Disposer extends SubsystemBase {
      configuration.SoftwareLimitSwitch.ReverseSoftLimitThreshold = BACKWARD_LIMIT;
 
      configuration.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-     configuration.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+     configuration.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
      StatusCode statusCode = StatusCode.StatusCodeNotInitialized;
  
  

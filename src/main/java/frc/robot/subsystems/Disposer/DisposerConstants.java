@@ -1,10 +1,10 @@
 package frc.robot.subsystems.Disposer;
 
 public class DisposerConstants {
-    public static final int MOTOR_ID = 20; 
+    public static final int MOTOR_ID = 50; 
 
         // PID Constants
-    public static final double KP = 10;
+    public static final double KP = 1;
     public static final double KD = 0;
     public static final double KS  = 0;
     public static final double KA = 0;

@@ -16,7 +16,7 @@ public class CannonSubsystem extends SubsystemBase {
 
   private SparkMax m_motor;
   private DigitalInput m_sensor;
-  private boolean hasCoral = false;
+  private boolean ReadyForCoral = false;
 
   //singlton
   private static CannonSubsystem instance;
@@ -94,12 +94,12 @@ public class CannonSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Coral Sensor", m_sensor.get());
     if (m_sensor.get()){
-      if (hasCoral){
+      if (ReadyForCoral){
         catchCoralCommand().schedule();
-        hasCoral = false;
+        ReadyForCoral = false;
       }
     }else{
-      hasCoral = true;
+      ReadyForCoral = true;
     }
 
 

@@ -97,6 +97,6 @@ public class AutoCommands {
     }
 
     public static Command waitToCoral(){
-        return Commands.race(new WaitUntilCommand(() -> !cannon.getSensor()), Commands.waitSeconds(2));    
+        return Commands.race(new WaitUntilCommand(() -> cannon.getSensor()), Commands.waitSeconds(2));    
     }
 }

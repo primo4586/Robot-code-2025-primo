@@ -30,16 +30,16 @@ public class Misc {
     public static final Pose2d BLUE_REEF_K_POSITION = new Pose2d(3.88,5.22,new Rotation2d(Math.toRadians(-60)));
     public static final Pose2d BLUE_REEF_L_POSITION = new Pose2d(3.57,5.04,new Rotation2d(Math.toRadians(-60)));
 
-    public static final Pose2d RED_REEF_A_POSITION = new Pose2d(14.39,3.94,new Rotation2d(Math.toRadians(180)));
-    public static final Pose2d RED_REEF_B_POSITION = new Pose2d(14.39,4.28,new Rotation2d(Math.toRadians(180)));
-    public static final Pose2d RED_REEF_C_POSITION = new Pose2d(13.79,4.88,new Rotation2d(Math.toRadians(-120)));
-    public static final Pose2d RED_REEF_D_POSITION = new Pose2d(13.48,5.31,new Rotation2d(Math.toRadians(-120)));
-    public static final Pose2d RED_REEF_E_POSITION = new Pose2d(12.43,5.20,new Rotation2d(Math.toRadians(-60)));
-    public static final Pose2d RED_REEF_F_POSITION = new Pose2d(12.16,5.03,new Rotation2d(Math.toRadians(-60)));
-    public static final Pose2d RED_REEF_G_POSITION = new Pose2d(11.77,4.07,new Rotation2d(Math.toRadians(0)));
-    public static final Pose2d RED_REEF_H_POSITION = new Pose2d(12.03,3.77,new Rotation2d(Math.toRadians(0)));
+    public static final Pose2d RED_REEF_A_POSITION = new Pose2d(14.260,3.885,new Rotation2d(Math.toRadians(180)));
+    public static final Pose2d RED_REEF_B_POSITION = new Pose2d(14.301,4.315,new Rotation2d(Math.toRadians(180)));
+    public static final Pose2d RED_REEF_C_POSITION = new Pose2d(13.733,5.015,new Rotation2d(Math.toRadians(-120)));
+    public static final Pose2d RED_REEF_D_POSITION = new Pose2d(13.424,5.275,new Rotation2d(Math.toRadians(-120)));
+    public static final Pose2d RED_REEF_E_POSITION = new Pose2d(12.522,5.081,new Rotation2d(Math.toRadians(-60)));
+    public static final Pose2d RED_REEF_F_POSITION = new Pose2d(12.191,4.978,new Rotation2d(Math.toRadians(-60)));
+    public static final Pose2d RED_REEF_G_POSITION = new Pose2d(11.844,4.127,new Rotation2d(Math.toRadians(0)));
+    public static final Pose2d RED_REEF_H_POSITION = new Pose2d(11.802,3.750,new Rotation2d(Math.toRadians(0)));
     public static final Pose2d RED_REEF_I_POSITION = new Pose2d(12.46,3.22,new Rotation2d(Math.toRadians(60)));
     public static final Pose2d RED_REEF_J_POSITION = new Pose2d(12.75,2.98,new Rotation2d(Math.toRadians(60)));
-    public static final Pose2d RED_REEF_K_POSITION = new Pose2d(13.51,3.06,new Rotation2d(Math.toRadians(120)));
-    public static final Pose2d RED_REEF_L_POSITION = new Pose2d(13.80,3.28,new Rotation2d(Math.toRadians(120)));
+    public static final Pose2d RED_REEF_K_POSITION = new Pose2d( 13.632,2.968,new Rotation2d(Math.toRadians(120)));
+    public static final Pose2d RED_REEF_L_POSITION = new Pose2d(13.953,3.084,new Rotation2d(Math.toRadians(120)));
 }

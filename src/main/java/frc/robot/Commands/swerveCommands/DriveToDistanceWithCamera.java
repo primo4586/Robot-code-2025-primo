@@ -19,6 +19,8 @@ import frc.robot.subsystems.Vision.Vision;
 import frc.robot.subsystems.Vision.VisionConstants;
 
 import static frc.robot.Commands.swerveCommands.SwerveCommandsConstants.*;
+
+import java.lang.annotation.Target;
 import java.util.function.DoubleSupplier;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -62,12 +64,12 @@ public class DriveToDistanceWithCamera extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    _Camera =  this.isRight ? Vision.getLeftCamera() : Vision.getRightCamera();
+    _Camera = this.isRight ? Vision.getLeftCamera() : Vision.getRightCamera();
     _CameraTarget = this.isRight ? VisionConstants.rightReefTargetGoal : VisionConstants.leftReefTargetGoal;
     driveXPidController = new PIDController(3.7, 0, 0);
     driveYPidController = new PIDController(4, 0, 0);
     driveRotationPidController = new PIDController(2.1, 0, 0);
-    driveRotationPidController.enableContinuousInput( -Math.PI, Math.PI);
+    driveRotationPidController.enableContinuousInput(-Math.PI, Math.PI);
     driveXPidController.setTolerance(0.01);
     driveYPidController.setTolerance(0.01);
     driveXPidController.setSetpoint(0);
@@ -77,45 +79,52 @@ public class DriveToDistanceWithCamera extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {;
-      if (_Camera.getDetectingObject()){
-        velocityX =  - driveXPidController.calculate(_Camera.getXfromTarget(),_CameraTarget.getX());
-        velocityY =  - driveYPidController.calculate(_Camera.getYfromTarget(),_CameraTarget.getY());
-        angularRate = MAX_ANGULAR_RATE *  driveRotationPidController.calculate(_Camera.getAngleFromTarget(),_CameraTarget.getRotation().getRadians());
-        if (Math.abs(velocityX) > MAX_VELOCITY_X)
-            velocityX = MAX_VELOCITY_X;
+  public void execute() {
+    ;
+    if (_Camera.getDetectingObject()) {
+      velocityX = -driveXPidController.calculate(_Camera.getXfromTarget(), _CameraTarget.getX());
+      velocityY = -driveYPidController.calculate(_Camera.getYfromTarget(), _CameraTarget.getY());
+      angularRate = MAX_ANGULAR_RATE * driveRotationPidController.calculate(_Camera.getAngleFromTarget(),
+          _CameraTarget.getRotation().getRadians());
+      if (Math.abs(velocityX) > MAX_VELOCITY_X)
+        velocityX = MAX_VELOCITY_X;
 
-        if (Math.abs(velocityY) > MAX_VELOCITY_Y)
-            velocityY = MAX_VELOCITY_Y;
+      if (Math.abs(velocityY) > MAX_VELOCITY_Y)
+        velocityY = MAX_VELOCITY_Y;
 
-        if (Math.abs(angularRate) > MAX_ANGULAR_RATE)
-            angularRate = MAX_ANGULAR_RATE;
-        
+      if (Math.abs(angularRate) > MAX_ANGULAR_RATE)
+        angularRate = MAX_ANGULAR_RATE;
 
-        swerve.setControl(
-            robotCentric
-                .withVelocityX(velocityX)
-                .withVelocityY(velocityY)
-                .withRotationalRate(angularRate));
+      swerve.setControl(
+          robotCentric
+              .withVelocityX(velocityX)
+              .withVelocityY(velocityY)
+              .withRotationalRate(angularRate));
     } else {
       swerve.setControl(
-            fieldCentric
+          fieldCentric
               .withVelocityX(
-                vector.getAsDouble() * driveXPidController.calculate( swerve.getState().Pose.getX(), _target.getX()))
+                  vector.getAsDouble() * driveXPidController.calculate(swerve.getState().Pose.getX(), _target.getX()))
               .withVelocityY(
-                vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY(), _target.getY())))
-                ;
+                  vector.getAsDouble() * driveYPidController.calculate(swerve.getState().Pose.getY(), _target.getY())));
     }
   }
-
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     swerve.setControl(
-      robotCentric
-          .withVelocityX(0)
-          .withVelocityY(0)
-          .withRotationalRate(0));
+        robotCentric
+            .withVelocityX(0)
+            .withVelocityY(0)
+            .withRotationalRate(0));
+    System.out.println(
+        _Camera.getTargetID()
+            + " " +
+            isRight
+            + " X: " +
+            swerve.getState().Pose.getX()
+            + " Y: " +
+            swerve.getState().Pose.getY());
   }
 
   // Returns true when the command should end.

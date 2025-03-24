@@ -44,6 +44,9 @@ import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
 import static frc.robot.subsystems.Vision.VisionConstants.*;
 
 public class Vision {
@@ -266,6 +269,9 @@ public class Vision {
     public double getAngleFromTarget() {
         return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getRotation().getAngle() //TODO EILON READ THIS CRAP
                 : 0;
+    }
+    public double getTargetID(){
+        return camera.getLatestResult().getBestTarget().getFiducialId();
     }
 
 }

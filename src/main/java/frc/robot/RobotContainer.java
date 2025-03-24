@@ -107,7 +107,7 @@ public class RobotContainer {
         // )
         // );
         drivetrain.setDefaultCommand(
-                drivetrain.applyRequest(() -> drive
+                drivetrain.applyRequest(() -> forwardStraight
                         .withVelocityX(-_driverController.getLeftY() * slowMode.getAsDouble() * 0.7 * MaxSpeed)
                         .withVelocityY(-_driverController.getLeftX() * slowMode.getAsDouble() * 0.7 * MaxSpeed)
                         .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * 0.9)));
@@ -200,7 +200,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("Right auto");
+        return new PathPlannerAuto("New Auto");
         // if(SmartDashboard.getString("Auto Selector", "middle").equals("middle")) {
         //     return AutoCommands.normalCommand();
         // } else if(SmartDashboard.getString("Auto Selector", "middle").equals("left")) { 

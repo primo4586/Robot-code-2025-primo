@@ -82,7 +82,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "collection to C"
+            "pathName": "collection to D"
           }
         },
         {
@@ -119,6 +119,12 @@
                 "data": {
                   "name": "elevatorToL3"
                 }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.3
+                }
               }
             ]
           }
@@ -130,7 +136,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "C to collection"
+                  "pathName": "D to collection"
                 }
               },
               {
@@ -151,7 +157,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "collection to D"
+            "pathName": "collection to C"
           }
         },
         {
@@ -161,7 +167,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "alignToRight"
+                  "name": "alignToLeft"
                 }
               },
               {

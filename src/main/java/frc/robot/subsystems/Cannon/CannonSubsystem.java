@@ -93,19 +93,15 @@ public class CannonSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putBoolean("Coral Sensor", m_sensor.get());
-    if (m_sensor.get()){
-      if (ReadyForCoral){
-        System.out.println("hi");
-        System.out.println("hi");
-        System.out.println("hi");
-        System.out.println("hi");
+    // if (m_sensor.get()){
+    //   if (ReadyForCoral){
         
-        catchCoralCommand().schedule();
-        ReadyForCoral = false;
-      }
-    }else{
-      ReadyForCoral = true;
-    }
+    //     catchCoralCommand().schedule();
+    //     ReadyForCoral = false;
+    //   }
+    // }else{
+    //   ReadyForCoral = true;
+    // }
 
 
   }

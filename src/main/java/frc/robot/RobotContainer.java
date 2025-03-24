@@ -76,8 +76,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("alignToRight", new DriveToDistanceWithCamera(true));
         NamedCommands.registerCommand("alignToLeft", new DriveToDistanceWithCamera(false));
 
-        NamedCommands.registerCommand("lowerElevator", elevator.setTargetPositionCommand(ElevatorConstanst.L1_HEIGHT)); 
-        NamedCommands.registerCommand("elevatorToL3", elevator.setTargetPositionCommand(ElevatorConstanst.L3_HEIGHT));  
+        NamedCommands.registerCommand("lowerElevator", elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT)); 
+        NamedCommands.registerCommand("elevatorToL3", elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));  
 
         // autoChooser = AutoBuilder.buildAutoChooser("Tests");
         // SmartDashboard.putData("Auto Mode", autoChooser);
@@ -200,7 +200,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return AutoCommands.normalCommand();
+        return new PathPlannerAuto("Right auto");
         // if(SmartDashboard.getString("Auto Selector", "middle").equals("middle")) {
         //     return AutoCommands.normalCommand();
         // } else if(SmartDashboard.getString("Auto Selector", "middle").equals("left")) { 

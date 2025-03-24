@@ -44,6 +44,12 @@
                 "data": {
                   "name": "elevatorToL3"
                 }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.3
+                }
               }
             ]
           }
@@ -68,9 +74,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "waitToCoral"
+            "waitTime": 1.0
           }
         },
         {
@@ -86,7 +92,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "alignToLeft"
+                  "name": "alignToRight"
                 }
               },
               {
@@ -137,9 +143,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "waitToCoral"
+            "waitTime": 1.0
           }
         },
         {
@@ -161,7 +167,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ElevatorToL3"
+                  "name": "elevatorToL3"
                 }
               }
             ]

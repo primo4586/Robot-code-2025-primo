@@ -20,8 +20,9 @@ public class Robot extends TimedRobot {
   public Robot() {
     m_robotContainer = new RobotContainer();
     Elastic.loadPaths();
+    
 
-    Elastic.autoSelector();
+    Elastic.simpleAutoSelector();
     
     Elastic.displayField();
     RobotContainer.drivetrain.setStateStdDevs(VisionConstants.kSingleTagStdDevs);

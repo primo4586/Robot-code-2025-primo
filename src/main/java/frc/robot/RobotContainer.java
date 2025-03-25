@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.Auto.AutoCommands;
 import frc.robot.Commands.swerveCommands.DriveToDistanceWithCamera;
+import frc.robot.PrimoLib.Elastic;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Cannon.CannonSubsystem;
@@ -200,14 +201,15 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("Right auto");
-        // if(SmartDashboard.getString("Auto Selector", "middle").equals("middle")) {
-        //     return AutoCommands.normalCommand();
-        // } else if(SmartDashboard.getString("Auto Selector", "middle").equals("left")) { 
-        //     return new PathPlannerAuto("Left auto");
-        // } else {            
-        //     return new PathPlannerAuto("Right auto");
-        // }
+        // return new PathPlannerAuto("Right auto");
+        String selected = Elastic.auto.getSelected().toString();
+        if(selected == "middle") {
+            return AutoCommands.normalCommand();
+        } else if(selected == "left") { 
+            return new PathPlannerAuto("Left auto");
+        } else {            
+            return new PathPlannerAuto("Right auto");
+        }
 
     }
 

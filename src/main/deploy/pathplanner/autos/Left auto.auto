@@ -11,32 +11,44 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "elevatorToL3"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "alignToRight"
-                      }
-                    }
-                  ]
+                  "name": "alignToRight"
                 }
               },
               {
                 "type": "named",
                 "data": {
+                  "name": "elevatorToL3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
                   "name": "putCoralL4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorToL3"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.3
                 }
               }
             ]
@@ -62,15 +74,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "waitToCoral"
+            "waitTime": 1.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Collection1 to K"
+            "pathName": "collection to L"
           }
         },
         {
@@ -80,7 +92,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "alignToLeft"
+                  "name": "alignToRight"
                 }
               },
               {
@@ -107,6 +119,12 @@
                 "data": {
                   "name": "elevatorToL3"
                 }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.3
+                }
               }
             ]
           }
@@ -118,7 +136,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "K to collection"
+                  "pathName": "L to collection"
                 }
               },
               {
@@ -131,9 +149,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "waitToCoral"
+            "waitTime": 1.0
           }
         },
         {
@@ -149,7 +167,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "alignToRight"
+                  "name": "alignToLeft"
                 }
               },
               {

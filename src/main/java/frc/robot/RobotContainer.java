@@ -15,6 +15,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Commands.CommandGroupFactory;
 import frc.robot.Commands.Auto.AutoCommands;
 import frc.robot.Commands.swerveCommands.DriveToDistanceWithCamera;
 import frc.robot.PrimoLib.Elastic;
@@ -151,7 +152,7 @@ public class RobotContainer {
         _operatorController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
         _operatorController.povLeft().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT));
 
-        _operatorController.rightTrigger().onTrue(disposer.preparingCommand());
+        _operatorController.rightTrigger().onTrue(CommandGroupFactory.getAlgeaOut());
         _operatorController.leftTrigger().onTrue(disposer.goHomeCommand());
 
 

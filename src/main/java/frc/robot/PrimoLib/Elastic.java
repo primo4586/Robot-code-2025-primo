@@ -14,6 +14,7 @@ import frc.robot.subsystems.Cannon.CannonSubsystem;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 
 public class Elastic {
+    public static SendableChooser auto;
     static Field2d m_field = new Field2d();
     public static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
     public static CannonSubsystem cannonSubsystem = CannonSubsystem.getInstance();
@@ -157,8 +158,7 @@ public class Elastic {
     @SuppressWarnings("unchecked")
     public static void simpleAutoSelector(){
         try{
-        @SuppressWarnings("rawtypes")
-        SendableChooser auto = new SendableChooser<>();
+        auto = new SendableChooser<>();
         auto.setDefaultOption("middle", "middle");
         auto.addOption("left", "left");
         auto.addOption("right", "right");

@@ -14,6 +14,8 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.CommandGroupFactory;
 import frc.robot.Commands.Auto.AutoCommands;
@@ -137,6 +139,8 @@ public class RobotContainer {
 
         _driverController.leftTrigger().whileTrue(new DriveToDistanceWithCamera(false));
         _driverController.rightTrigger().whileTrue(new DriveToDistanceWithCamera(true));
+
+        _driverController.back().and(_driverController.start()).onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
 
         // Operator Controller
 

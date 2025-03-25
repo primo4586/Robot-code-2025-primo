@@ -19,7 +19,7 @@ public class DisposerConstants {
 
     //Angles
     public static final double HOME_POSITION = 0; //if this value causes problems then raise this value by very little
-    public static final double READY_POSITION = 15;
+    public static final double READY_POSITION = 11;
     
 
 }

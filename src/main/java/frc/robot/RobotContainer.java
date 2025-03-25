@@ -198,15 +198,14 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new PathPlannerAuto("ahh");
-        // String selected = Elastic.auto.getSelected().toString();
-        // if(selected == "middle") {
-        //     return AutoCommands.normalCommand();
-        // } else if(selected == "left") { 
-        //     return new PathPlannerAuto("Left auto");
-        // } else {            
-        //     return new PathPlannerAuto("Right auto");
-        // }
+        String selected = Elastic.auto.getSelected().toString();
+        if(selected == "middle") {
+            return AutoCommands.normalCommand();
+        } else if(selected == "left") { 
+            return new PathPlannerAuto("Left auto");
+        } else {            
+            return new PathPlannerAuto("Right auto");
+        }
 
     }
 

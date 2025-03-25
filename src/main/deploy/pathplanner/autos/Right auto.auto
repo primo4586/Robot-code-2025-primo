@@ -5,9 +5,15 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "elevatroToL2"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "R3 to F"
+            "pathName": "R3 to E"
           }
         },
         {
@@ -17,13 +23,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "alignToRight"
+                  "name": "alignToLeft"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "elevatorToL3"
+                  "name": "elevatorToL4"
                 }
               }
             ]
@@ -61,7 +67,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "F to collection"
+                  "pathName": "E to collection"
                 }
               },
               {
@@ -77,6 +83,12 @@
           "type": "wait",
           "data": {
             "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "elevatroToL2"
           }
         },
         {
@@ -98,7 +110,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "elevatorToL3"
+                  "name": "elevatorToL4"
                 }
               }
             ]
@@ -155,6 +167,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "elevatroToL2"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "collection to C"
@@ -173,7 +191,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "elevatorToL3"
+                  "name": "elevatorToL4"
                 }
               }
             ]

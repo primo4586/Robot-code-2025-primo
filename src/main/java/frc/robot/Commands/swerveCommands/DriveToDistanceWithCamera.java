@@ -117,14 +117,6 @@ public class DriveToDistanceWithCamera extends Command {
             .withVelocityX(0)
             .withVelocityY(0)
             .withRotationalRate(0));
-    System.out.println(
-        _Camera.getTargetID()
-            + " " +
-            isRight
-            + " X: " +
-            swerve.getState().Pose.getX()
-            + " Y: " +
-            swerve.getState().Pose.getY());
   }
 
   // Returns true when the command should end.

@@ -58,11 +58,6 @@ public class RobotContainer {
 
     private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.3 : 1.0;
 
-    private DoubleSupplier targetAngle = () -> _driverController.povUp().getAsBoolean() ? 0.0
-            : _driverController.povRight().getAsBoolean() ? 90.0
-                    : _driverController.povDown().getAsBoolean() ? 180.0
-                            : _driverController.povLeft().getAsBoolean() ? 270.0 : -1;
-
     /* Path follower */
     // private final SendableChooser<Command> autoChooser;
 
@@ -215,6 +210,5 @@ public class RobotContainer {
 
     public void log() {
         SmartDashboard.putNumber("slowMode", slowMode.getAsDouble());
-        SmartDashboard.putNumber("swerve angel ", targetAngle.getAsDouble());
     }
 }

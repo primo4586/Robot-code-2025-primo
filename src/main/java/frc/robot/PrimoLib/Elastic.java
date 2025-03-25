@@ -1,6 +1,8 @@
 package frc.robot.PrimoLib;
 
 import java.util.HashMap;
+
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -20,7 +22,7 @@ public class Elastic {
     public static CannonSubsystem cannonSubsystem = CannonSubsystem.getInstance();
 
     public static HashMap<String, PathPlannerPath> pathsMap = new HashMap<>();
-    static final String[] PATHS = {"Left auto", "Right auto"};
+    static final String[] PATHS = {"Left auto", "Right auto", "ahh"};
             // "H path",
             //"H to collection"
             // "Collection2 to D",
@@ -48,6 +50,7 @@ public class Elastic {
     e.printStackTrace();
     }
     }
+    PathfindingCommand.warmupCommand().schedule();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" }) // TODO understand

@@ -73,7 +73,9 @@ public class RobotContainer {
         NamedCommands.registerCommand("alignToLeft", new DriveToDistanceWithCamera(false));
 
         NamedCommands.registerCommand("lowerElevator", elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT)); 
-        NamedCommands.registerCommand("elevatorToL3", elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));  
+        NamedCommands.registerCommand("elevatorToL3", elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
+        NamedCommands.registerCommand("elevatorToL4", elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT));
+        NamedCommands.registerCommand("elevatroToL2", elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT));  
 
         // autoChooser = AutoBuilder.buildAutoChooser("Tests");
         // SmartDashboard.putData("Auto Mode", autoChooser);
@@ -196,15 +198,15 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        // return new PathPlannerAuto("Right auto");
-        String selected = Elastic.auto.getSelected().toString();
-        if(selected == "middle") {
-            return AutoCommands.normalCommand();
-        } else if(selected == "left") { 
-            return new PathPlannerAuto("Left auto");
-        } else {            
-            return new PathPlannerAuto("Right auto");
-        }
+        return new PathPlannerAuto("ahh");
+        // String selected = Elastic.auto.getSelected().toString();
+        // if(selected == "middle") {
+        //     return AutoCommands.normalCommand();
+        // } else if(selected == "left") { 
+        //     return new PathPlannerAuto("Left auto");
+        // } else {            
+        //     return new PathPlannerAuto("Right auto");
+        // }
 
     }
 

@@ -169,12 +169,6 @@
                 "data": {
                   "name": "alignToLeft"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ElevatorToL3"
-                }
               }
             ]
           }

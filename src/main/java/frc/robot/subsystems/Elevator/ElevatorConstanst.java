@@ -11,7 +11,7 @@ public class ElevatorConstanst {
     public static final int FOLLOW_TALONFX_ID = 31;
 
     public static final double ROLLER_RADIUS = 0.048; // In meters
-    public static final double MAXIMUM_HIGHT = 2.516845703125; // In meters
+    public static final double MAXIMUM_HIGHT = 2.516845703125 + 0.1; // In meters
     public static final double GEAR_RATIO = 15 ;
 
     public static TalonFXConfiguration ELEVATOR_CONFIG = new TalonFXConfiguration();
@@ -26,7 +26,7 @@ public class ElevatorConstanst {
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
       ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+      ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAXIMUM_HIGHT; 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -2;
@@ -38,9 +38,9 @@ public class ElevatorConstanst {
       ELEVATOR_CONFIG.Slot0.kS = 17; // Current to overcome static friction
       //^ when using MotionMagicTorqueCurrentFOC you dont kV and kA
       // ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps
-      // ELEVATOR_CONFIG.Slot0.kA = 0.75; // Volts for an acceleration of 1 rps/s 
-      ELEVATOR_CONFIG.Slot0.kP = 100;
-      ELEVATOR_CONFIG.Slot0.kI = 0.0;
+      // ELEVATOR_CONFIG.Slot0.kA = 0.75; // VoltPs for an acceleration of 1 rps/s 
+      ELEVATOR_CONFIG.Slot0.kP = 130;
+      ELEVATOR_CONFIG.Slot0.kI = 50;
       ELEVATOR_CONFIG.Slot0.kD = 130;
 
       ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 10;

@@ -7,30 +7,15 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.HashMap;
 import java.util.function.DoubleSupplier;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.commands.PathfindingCommand;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Commands.CommandGroupFactory;
-import frc.robot.Commands.Auto.AutoCommands;
-import frc.robot.Commands.swerveCommands.DriveToDistanceWithCamera;
-import frc.robot.PrimoLib.Elastic;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Cannon.CannonSubsystem;
-import frc.robot.subsystems.Disposer.Disposer;
-import frc.robot.subsystems.Elevator.ElevatorConstanst;
-import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 
 public class RobotContainer {
     public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -43,25 +28,12 @@ public class RobotContainer {
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
-    private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CannonSubsystem cannon = CannonSubsystem.getInstance();
-    private final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
-    private final Disposer disposer = Disposer.getInstance();
-
-    SlewRateLimiter xAccLimiterb = new SlewRateLimiter(10);
-    SlewRateLimiter yAccLimiterb = new SlewRateLimiter(10);
-    SlewRateLimiter rotAccLimiterb = new SlewRateLimiter(10);
 
     public final static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public static final CommandXboxController _driverController = new CommandXboxController(0);
-    public static final CommandXboxController _operatorController = new CommandXboxController(1);
-    // public static final CommandXboxController _testerController = new CommandXboxController(2);
-    // public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
     private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.3 : 1.0;
  
@@ -69,24 +41,7 @@ public class RobotContainer {
     /* Path follower */
     // private final SendableChooser<Command> autoChooser;
 
-    public RobotContainer() {
-        NamedCommands.registerCommand("putCoralL4", AutoCommands.putCoralL4());
-        NamedCommands.registerCommand("putCoralL3", AutoCommands.putCoralL3());
-        NamedCommands.registerCommand("putCoralL2", AutoCommands.putCoralL2());
-        NamedCommands.registerCommand("putCoralL1", AutoCommands.putCoralL1());
-
-        NamedCommands.registerCommand("waitToCoral", AutoCommands.waitToCoral());
-
-        NamedCommands.registerCommand("alignToRight", new DriveToDistanceWithCamera(true));
-        NamedCommands.registerCommand("alignToLeft", new DriveToDistanceWithCamera(false));
-
-        NamedCommands.registerCommand("lowerElevator", elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT)); 
-        NamedCommands.registerCommand("elevatorToL3", elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
-        NamedCommands.registerCommand("elevatorToL4", elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT));
-        NamedCommands.registerCommand("elevatroToL2", elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT));  
-
-        // autoChooser = AutoBuilder.buildAutoChooser("Tests");
-        // SmartDashboard.putData("Auto Mode", autoChooser);
+    public RobotContainer() {  
 
         configureBindings();
         loadPaths();
@@ -98,28 +53,19 @@ public class RobotContainer {
 
         drivetrain.setDefaultCommand(
                 drivetrain.applyRequest(() -> drive
-                        .withVelocityX(-_driverController.getLeftY() * 0.3 *  0.7 * MaxSpeed) // the * 0.3 is safe mode and replace slow mode 
-                        .withVelocityY(-_driverController.getLeftX() * 0.3 * 0.7 * MaxSpeed)
-                        .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * 0.9)));
+                        .withVelocityX(-_driverController.getLeftY() * slowMode.getAsDouble() *  0.7 * MaxSpeed) // now if you press slow mode you go fast 
+                        .withVelocityY(-_driverController.getLeftX() * slowMode.getAsDouble() * 0.7 * MaxSpeed)
+                        .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * 0.9 * slowMode.getAsDouble())));
         // reset the field-centric heading on left bumper press
         _driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-    public Command getAutonomousCommand() {
-        String selected = Elastic.auto.getSelected().toString();
-        if(selected == "middle") {
-            return AutoCommands.normalCommand();
-        } else if(selected == "left") { 
-            return new PathPlannerAuto("Left auto");
-        } else {            
-            return new PathPlannerAuto("Right auto");
-        }
+    public Command getAutonomousCommand() { 
+        return Commands.none(); // no one run auto and delete childrens 
 
     }
 
-    public void log() {
-        SmartDashboard.putNumber("slowMode", slowMode.getAsDouble());
-    }
+    public void log() {}
 }

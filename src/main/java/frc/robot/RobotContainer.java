@@ -64,12 +64,6 @@ public class RobotContainer {
     // public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
     private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.3 : 1.0;
-    static final String[] PATHS = { "F to collection", "R2 to J", "J to collection", "collection to L", "L to collection", "Collection1 to K", "R3 to E", "E to collection", "collection to D", "D to collection", "collection to C"};
-    // "H path",
-    //"H to collection"
-    // "Collection2 to D",
-    // "literallyWalkForward"
-    public static HashMap<String, PathPlannerPath> pathsMap = new HashMap<>();
  
 
     /* Path follower */
@@ -98,19 +92,7 @@ public class RobotContainer {
         loadPaths();
     }
 
-    public static void loadPaths() {
-        for(String path : PATHS) {
-            try {
-                pathsMap.put(path, PathPlannerPath.fromPathFile(path));
-                System.out.println("Loaded \"" + path + "\" successfully!");
- 
-            } catch (Exception e) {
-                System.out.println("wasn't able to load path \"" + path + "\"");
-                e.printStackTrace();
-            }
-        }
-        PathfindingCommand.warmupCommand().schedule();
-    }
+    public static void loadPaths() {}
 
     private void configureBindings() {
 

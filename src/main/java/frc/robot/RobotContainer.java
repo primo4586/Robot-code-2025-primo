@@ -113,115 +113,12 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        // // Note that X is defined as forward according to WPILib convention,
-        // // and Y is defined as to the left according to WPILib convention.
-        // drivetrain.setDefaultCommand(
-        // new ConditionalCommand(
-        // drivetrain.applyRequest(() ->
-        // drive.withVelocityX(_driverController.getLeftY() * slowMode.getAsDouble() *
-        // 0.45 * MaxSpeed)
-        // .withVelocityY(_driverController.getLeftX() * slowMode.getAsDouble() * 0.45 *
-        // MaxSpeed)
-        // .withRotationalRate(_driverController.getRightX() * MaxAngularRate * 0.9)),
-        // drivetrain.applyRequest(() ->
-        // angleDrive.withVelocityX(_driverController.getLeftY() * MaxSpeed * 0.45) //
-        // Drive forward with negative Y (forward)
-        // .withVelocityY(_driverController.getLeftX() * MaxSpeed * 0.45) // Drive left
-        // with negative X (left)
-        // .withTargetDirection(new
-        // Rotation2d((Math.toRadians(targetAngle.getAsDouble()))))),
-        // () -> targetAngle.getAsDouble() == -1
-        // )
-        // );
+
         drivetrain.setDefaultCommand(
                 drivetrain.applyRequest(() -> drive
-                        .withVelocityX(-_driverController.getLeftY() * slowMode.getAsDouble() * 0.7 * MaxSpeed)
-                        .withVelocityY(-_driverController.getLeftX() * slowMode.getAsDouble() * 0.7 * MaxSpeed)
+                        .withVelocityX(-_driverController.getLeftY() * 0.3 *  0.7 * MaxSpeed) // the * 0.3 is safe mode and replace slow mode 
+                        .withVelocityY(-_driverController.getLeftX() * 0.3 * 0.7 * MaxSpeed)
                         .withRotationalRate(-_driverController.getRightX() * MaxAngularRate * 0.9)));
-
-        // //driver Controller
-        // drivetrain.setDefaultCommand(
-        // // Drivetrain will execute this command periodically
-        // drivetrain.applyRequest(() ->
-        // angleDrive.withVelocityX(-_driverController.getLeftY() * MaxSpeed * 0.1) //
-        // Drive forward with negative Y (forward)
-        // .withVelocityY(-_driverController.getLeftX() * MaxSpeed * 0.1) // Drive left
-        // with negative X (left)
-        // .withTargetDirection(new
-        // Rotation2d((Math.toRadians(targetAngle.getAsDouble())))) // Drive
-        // counterclockwise with negative X (left)
-        // ).unless(() -> targetAngle.getAsDouble() == -1)
-        // );
-
-        // temp
-        elevator.setDefaultCommand(elevator.relocatePositionCommand());
-        _operatorController.x().whileTrue(elevator.moveCommand(1).andThen(elevator.relocatePositionCommand()));
-        ;
-        _operatorController.b().whileTrue(elevator.moveCommand(-1).andThen(elevator.relocatePositionCommand()));
-        _driverController.leftStick().onTrue(cannon.loosenCoralCommand());
-        _driverController.rightStick().onTrue(cannon.loosenCoralCommand());
-        
-        
-
-        _driverController.leftTrigger().whileTrue(new DriveToDistanceWithCamera(false));
-        _driverController.rightTrigger().whileTrue(new DriveToDistanceWithCamera(true));
-
-        _driverController.back().and(_driverController.start()).onTrue(Commands.runOnce(() -> CommandScheduler.getInstance().cancelAll()));
-
-        // Operator Controller
-
-        // cannon
-        _operatorController.a().onTrue(cannon.adjustCoralCommand());
-        _operatorController.y().onTrue(cannon.loosenCoralCommand());
-        _operatorController.start().onTrue(cannon.stopMotorCommand());
-
-        // elevator buttons
-
-        _operatorController.povUp().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT));
-        _operatorController.povRight().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT));
-        _operatorController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
-        _operatorController.povLeft().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L4_HEIGHT));
-
-        _operatorController.rightTrigger().onTrue(CommandGroupFactory.getAlgeaOut());
-        _operatorController.leftTrigger().onTrue(disposer.goHomeCommand());
-
-
-        // // Tester
-        // _testerController.a().onTrue(cannon.catchCoralCommand());
-        // _testerController.y().onTrue(cannon.loosenCoralCommand());
-
-        // _testerController.povUp().whileTrue(elevator.moveCommand(1));
-        // _testerController.povDown().whileTrue(elevator.moveCommand(-1));
-        // _testerController.start().onTrue(elevator.resetElevatorCommand());
-
-        // _sysIdController.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
-        // _sysIdController.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
-
-        // _driverController.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        // _driverController.b().whileTrue(drivetrain.applyRequest(() ->
-        // point.withModuleDirection(new Rotation2d(-_driverController.getLeftY(),
-        // -_driverController.getLeftX()))
-        // ));
-
-        // _driverController.pov(0).whileTrue(drivetrain.applyRequest(() ->
-        // forwardStraight.withVelocityX(0.5).withVelocityY(0))
-        // );
-        // _driverController.pov(180).whileTrue(drivetrain.applyRequest(() ->
-        // forwardStraight.withVelocityX(-0.5).withVelocityY(0))
-        // );
-
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        // _driverController.back().and(_driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        // _driverController.back().and(_driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        // _driverController.start().and(_driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        // _driverController.start().and(_driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-
-        // m_joystick.y().whileTrue(m_mechanism.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        // m_joystick.a().whileTrue(m_mechanism.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-        // m_joystick.b().whileTrue(m_mechanism.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        // m_joystick.x().whileTrue(m_mechanism.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
         // reset the field-centric heading on left bumper press
         _driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 

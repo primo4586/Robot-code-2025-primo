@@ -20,38 +20,8 @@ public class Elastic {
     static Field2d m_field = new Field2d();
     public static ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
     public static CannonSubsystem cannonSubsystem = CannonSubsystem.getInstance();
-
-    public static HashMap<String, PathPlannerPath> pathsMap = new HashMap<>();
-    static final String[] PATHS = {"Left auto", "Right auto", "ahh"};
-            // "H path",
-            //"H to collection"
-            // "Collection2 to D",
-            // "literallyWalkForward"
-
     
-    public static void loadPaths() {
-    for(String path : PATHS) {
-    try {
-    pathsMap.put(path, PathPlannerPath.fromPathFile(path));
-    System.out.println("LOADED PROPERLY!!!");
-    System.out.println("LOADED PROPERLY!!!");
-    System.out.println("LOADED PROPERLY!!!");
-    System.out.println("LOADED PROPERLY!!!");
-    System.out.println("LOADED PROPERLY!!!");
-    System.out.println("LOADED PROPERLY!!!");
-    System.out.println("LOADED PROPERLY!!!");
-    } catch (Exception e) {
-    System.out.println(path + " didn't load properly!!!1");
-    System.out.println(path + " didn't load properly!!!2");
-    System.out.println(path + " didn't load properly!!!3");
-    System.out.println(path + " didn't load properly!!!4");
-    System.out.println(path + " didn't load properly!!!5");
-    // System.out.println(e.getMessage());
-    e.printStackTrace();
-    }
-    }
-    PathfindingCommand.warmupCommand().schedule();
-    }
+
 
     @SuppressWarnings({ "rawtypes", "unchecked" }) // TODO understand
     public static void autoSelector() {

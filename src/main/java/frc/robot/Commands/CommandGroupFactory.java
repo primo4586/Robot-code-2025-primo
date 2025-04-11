@@ -29,7 +29,7 @@ public class CommandGroupFactory {
     }
 
     public static Command getAlgeaOut(){
-        return Commands.sequence(drive(-1),disposer.preparingCommand(),new DriveToDistanceWithCamera(true),disposer.goHomeCommand(),drive(-1));
+        return Commands.sequence(disposer.preparingCommand(),new DriveToDistanceWithCamera(true),disposer.goHomeCommand(),drive(-1));
     }
 }
 

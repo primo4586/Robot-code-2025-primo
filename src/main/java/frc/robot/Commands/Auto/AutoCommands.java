@@ -89,7 +89,7 @@ public class AutoCommands {
     }
     
     public static Command normalCommand(){
-        return Commands.sequence(driveStright().
+        return Commands.sequence(Commands.waitSeconds(2),driveStright().withTimeout(4).
         andThen(Commands.waitUntil(() ->_leftCamera.getXfromTarget() < 1 && _leftCamera.getXfromTarget() != 0))
         ,new DriveToDistanceWithCamera(true).withTimeout(4),
         putCoralL4(),elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT)

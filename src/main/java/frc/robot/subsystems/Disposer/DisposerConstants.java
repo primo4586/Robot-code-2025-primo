@@ -11,7 +11,7 @@ public class DisposerConstants {
     public static final double KV = 0;
 
     public static final double PEAK_VOLTAGE = 11.5;
-    public static final double PEAK_CURRENT = 10;
+    public static final double PEAK_CURRENT = 20;
 
     public static final double FOWORD_LIMIT = 40; 
     public static final double BACKWARD_LIMIT = 0;

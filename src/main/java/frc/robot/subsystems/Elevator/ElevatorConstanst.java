@@ -40,7 +40,7 @@ public class ElevatorConstanst {
       // ELEVATOR_CONFIG.Slot0.kV = 3.0932; // Volts for a velocity target of 1 rps
       // ELEVATOR_CONFIG.Slot0.kA = 0.75; // VoltPs for an acceleration of 1 rps/s 
       ELEVATOR_CONFIG.Slot0.kP = 130;
-      ELEVATOR_CONFIG.Slot0.kI = 50;
+      ELEVATOR_CONFIG.Slot0.kI = 30;
       ELEVATOR_CONFIG.Slot0.kD = 130;
 
       ELEVATOR_CONFIG.MotionMagic.MotionMagicCruiseVelocity = 10;

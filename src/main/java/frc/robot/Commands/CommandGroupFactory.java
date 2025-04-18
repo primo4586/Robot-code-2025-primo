@@ -5,13 +5,19 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.Commands.swerveCommands.DriveToDistanceWithCamera;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Cannon.CannonSubsystem;
 import frc.robot.subsystems.Disposer.Disposer;
+import frc.robot.subsystems.Elevator.ElevatorConstanst;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 
 public class CommandGroupFactory {
     private static final Disposer disposer = Disposer.getInstance();
+    private static final CannonSubsystem cannon = CannonSubsystem.getInstance();
+    private static final ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
     private static final CommandSwerveDrivetrain swerve = RobotContainer.drivetrain;
     private static double MaxSpeed = RobotContainer.MaxSpeed;
       private static final SwerveRequest.RobotCentric drive = new SwerveRequest.RobotCentric()
@@ -30,6 +36,19 @@ public class CommandGroupFactory {
 
     public static Command getAlgeaOut(){
         return Commands.sequence(disposer.preparingCommand(),new DriveToDistanceWithCamera(true),disposer.goHomeCommand(),drive(-1));
+    }
+
+    public static Command removeAlgeaFromL2(){
+        return Commands.sequence(elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT), Commands.waitSeconds(1),
+        getAlgeaOut(), elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT));
+    }
+
+    public static Command safePlaceCoral(boolean isRight){
+        return Commands.sequence(elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT),
+        new DriveToDistanceWithCamera(isRight),
+        cannon.loosenCoralCommand(),
+        elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT)
+        );
     }
 }
 

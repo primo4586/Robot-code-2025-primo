@@ -63,7 +63,6 @@ public class RobotContainer {
     // public static final CommandXboxController _testerController = new CommandXboxController(2);
     // public static final CommandXboxController _sysIdController = new CommandXboxController(3);
 
-    private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.3 : 1.0;
     static final String[] PATHS = { "F to collection", "R2 to J", "J to collection", "collection to L", "L to collection", "Collection1 to K", "R3 to E", "E to collection", "collection to D", "D to collection", "collection to C"};
     // "H path",
     //"H to collection"
@@ -123,6 +122,11 @@ public class RobotContainer {
         _driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        _driverController.rightTrigger().onTrue(CommandGroupFactory.safePlaceCoral(true));
+        _driverController.leftTrigger().onTrue(CommandGroupFactory.safePlaceCoral(false));
+        _driverController.y().onTrue(CommandGroupFactory.removeAlgeaFromL2());
+        _driverController.start().onTrue(disposer.goHomeCommand()); // in case it gets stuck or something
     }
 
     public Command getAutonomousCommand() {
@@ -138,6 +142,6 @@ public class RobotContainer {
     }
 
     public void log() {
-        SmartDashboard.putNumber("slowMode", slowMode.getAsDouble());
-    }
+
+        }
 }

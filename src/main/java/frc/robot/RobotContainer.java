@@ -16,10 +16,7 @@ import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Commands.CommandGroupFactory;
 import frc.robot.Commands.Auto.AutoCommands;
@@ -123,10 +120,11 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        _driverController.rightTrigger().onTrue(CommandGroupFactory.safePlaceCoral(true));
+        _driverController.rightTrigger().onTrue(CommandGroupFactory.safePlaceRight());
         _driverController.leftTrigger().onTrue(CommandGroupFactory.safePlaceCoral(false));
         _driverController.y().onTrue(CommandGroupFactory.removeAlgeaFromL2());
         _driverController.start().onTrue(disposer.goHomeCommand()); // in case it gets stuck or something
+        _driverController.back().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT));
     }
 
     public Command getAutonomousCommand() {

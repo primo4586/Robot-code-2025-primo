@@ -123,10 +123,10 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        _driverController.rightTrigger().onTrue(CommandGroupFactory.safePlaceCoral(true));
-        _driverController.leftTrigger().onTrue(CommandGroupFactory.safePlaceCoral(false));
-        _driverController.y().onTrue(CommandGroupFactory.removeAlgeaFromL2());
-        _driverController.start().onTrue(disposer.goHomeCommand()); // in case it gets stuck or something
+        _driverController.povUp().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L3_HEIGHT));
+        _driverController.povRight().or(_driverController.povLeft()).onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT));
+        _driverController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT));
+        _driverController.y().onTrue(cannon.loosenCoralCommand());
     }
 
     public Command getAutonomousCommand() {

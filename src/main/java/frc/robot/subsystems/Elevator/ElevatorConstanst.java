@@ -32,7 +32,7 @@ public class ElevatorConstanst {
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ReverseSoftLimitThreshold = -2;
 
       ELEVATOR_CONFIG.Slot0.GravityType = GravityTypeValue.Elevator_Static;
-      ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO / (ROLLER_RADIUS * 2 * Math.PI);
+      ELEVATOR_CONFIG.Feedback.SensorToMechanismRatio = GEAR_RATIO + (ROLLER_RADIUS * 2 * Math.PI);
 
       ELEVATOR_CONFIG.Slot0.kG = 3; // Current to overcome gravity
       ELEVATOR_CONFIG.Slot0.kS = 17; // Current to overcome static friction
@@ -47,7 +47,7 @@ public class ElevatorConstanst {
       ELEVATOR_CONFIG.MotionMagic.MotionMagicAcceleration = 3 ;      
     }
 
-    public static final double HIGHT_OF_THE_GROUND = 0;
+    public static final double HIGHT_OF_THE_GROUND = 1;
     public static final double MINIMUN_POSITION_ERROR = 0.1;
     public static final double MINIMUN_VELOCITY_ERROR = 1;
 

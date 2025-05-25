@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
+import frc.robot.subsystems.Vision.Vision;
 
 public class RobotContainer {
     public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top
@@ -36,6 +38,10 @@ public class RobotContainer {
     public static final CommandXboxController _driverController = new CommandXboxController(0);
 
     private DoubleSupplier slowMode = () -> _driverController.leftBumper().getAsBoolean() ? 0.3 : 1.0;
+    ElevatorSubsystem elevator = ElevatorSubsystem.getInstance();
+    Vision vision = Vision.getRightCamera();
+    DoubleSupplier hight = () -> vision.getHightFromTarget();
+    
  
 
     /* Path follower */
@@ -60,6 +66,7 @@ public class RobotContainer {
         _driverController.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+        _driverController.a().onTrue(elevator.relocatePositionCommand(hight));
     }
 
     public Command getAutonomousCommand() { 

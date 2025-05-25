@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Misc;
 import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.Elevator.ElevatorConstanst.*;
+
+import java.util.function.DoubleSupplier;
 public class ElevatorSubsystem extends SubsystemBase {
   private TalonFX m_masterMotor; // falcon 500
   private TalonFX m_followMotor; // falcon 500
@@ -66,6 +68,7 @@ private final SysIdRoutine m_sysIdRoutine =
     m_followMotor = new TalonFX(FOLLOW_TALONFX_ID, Misc.CANIVOR_NAME);
     follower = new Follower(MASTER_TALONFX_ID, true);
     resetElevator();
+
     configs();
   }
 
@@ -139,6 +142,18 @@ private final SysIdRoutine m_sysIdRoutine =
     }).withName("Relocate elevator to " + angel)
     .withInterruptBehavior(InterruptionBehavior.kCancelSelf);
   }
+
+  public Command relocatePositionCommand(DoubleSupplier angel) {
+
+    return run(() -> 
+    {
+      targetPosition = angel.getAsDouble();
+      m_masterMotor.setControl(_systemControl.withPosition(targetPosition));
+      m_followMotor.setControl(follower); // following the master
+    }).withName("Relocate elevator to " + angel)
+    .withInterruptBehavior(InterruptionBehavior.kCancelSelf);
+  }
+
   /**
    * a Command that moves the Elavator at a constant power {@link #MOVE_POWER}
    * with direction of the parameter and stop the elevator

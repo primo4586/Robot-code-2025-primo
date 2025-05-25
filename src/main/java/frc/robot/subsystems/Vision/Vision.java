@@ -270,6 +270,10 @@ public class Vision {
         return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getRotation().getAngle() //TODO EILON READ THIS CRAP
                 : 0;
     }
+
+    public double getHightFromTarget() {
+        return getDetectingObject() ? camera.getLatestResult().getBestTarget().bestCameraToTarget.getZ() : 0;
+    }
     public double getTargetID(){
         return camera.getLatestResult().getBestTarget().getFiducialId();
     }

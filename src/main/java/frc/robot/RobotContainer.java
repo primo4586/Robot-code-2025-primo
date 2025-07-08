@@ -127,6 +127,10 @@ public class RobotContainer {
         _driverController.povRight().or(_driverController.povLeft()).onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L2_HEIGHT));
         _driverController.povDown().onTrue(elevator.relocatePositionCommand(ElevatorConstanst.L1_HEIGHT));
         _driverController.y().onTrue(cannon.loosenCoralCommand());
+
+        _driverController.start().onTrue(elevator.resetCommand());
+        _driverController.leftBumper().whileTrue(elevator.moveCommand(1));
+        _driverController.rightBumper().whileTrue(elevator.moveCommand(-1));
     }
 
     public Command getAutonomousCommand() {

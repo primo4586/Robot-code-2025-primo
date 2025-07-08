@@ -24,7 +24,7 @@ public class ElevatorConstanst {
 
 
       ELEVATOR_CONFIG.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-      ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+      ELEVATOR_CONFIG.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
       ELEVATOR_CONFIG.SoftwareLimitSwitch.ForwardSoftLimitThreshold = MAXIMUM_HIGHT; 

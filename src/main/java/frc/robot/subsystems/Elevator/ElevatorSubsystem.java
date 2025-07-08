@@ -147,15 +147,25 @@ private final SysIdRoutine m_sysIdRoutine =
    * @return
    */
 public Command moveCommand(int vec){
-  return runEnd(() -> 
+  return startEnd(() -> 
     {
       m_masterMotor.set(MOVE_POWER * vec);
       m_followMotor.setControl(follower);
     }, 
-    () -> 
-      targetPosition = m_masterMotor.getPosition().getValueAsDouble() // todo: fixed this part
+    () -> {
+      targetPosition = m_masterMotor.getPosition().getValueAsDouble() ;// todo: fixed this part
+      m_masterMotor.stopMotor();}
       
       ).withName("move elevator Command" + MOVE_POWER * vec);
+  }
+
+  private void reset(){
+    m_masterMotor.setPosition(0);
+    targetPosition = 0;
+  }
+
+  public Command resetCommand(){
+    return runOnce(() -> reset());
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
